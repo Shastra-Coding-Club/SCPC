@@ -81,10 +81,7 @@ export function TeamTree() {
     show: { opacity: 1, transition: { staggerChildren: 0.18, delayChildren: 0.2 } },
   }
 
-  const nodeVariant = {
-    hidden: { opacity: 0, y: 30, scale: 0.9 },
-    show: (i: number) => ({ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: i * 0.12 } }),
-  }
+  // per-node animation will be set inline so we can provide a typed delay per index
 
   return (
     <section className="py-12">
@@ -99,7 +96,13 @@ export function TeamTree() {
           <div className="flex items-center justify-center mb-6">
             <div className="grid grid-cols-7 gap-6">
               {core.map((m, idx) => (
-                <motion.div key={m.id} custom={idx} variants={nodeVariant} className="flex flex-col items-center gap-2" ref={(el) => (nodeRefs.current[m.id] = el)}>
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: idx * 0.12 } }}
+                  className="flex flex-col items-center gap-2"
+                  ref={(el) => { nodeRefs.current[m.id] = el }}
+                >
                   <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-black shadow-lg">
                     <img src={avatar(m.name)} alt={m.name} className="w-full h-full object-cover" />
                   </div>
@@ -116,7 +119,13 @@ export function TeamTree() {
           <div className="flex items-center justify-center mb-6">
             <div className="grid grid-cols-5 gap-6">
               {subCore.map((m, idx) => (
-                <motion.div key={m.id} custom={idx} variants={nodeVariant} className="flex flex-col items-center gap-2" ref={(el) => (nodeRefs.current[m.id] = el)}>
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: 0.4 + idx * 0.12 } }}
+                  className="flex flex-col items-center gap-2"
+                  ref={(el) => { nodeRefs.current[m.id] = el }}
+                >
                   <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-black shadow-md">
                     <img src={avatar(m.name, 'f97316')} alt={m.name} className="w-full h-full object-cover" />
                   </div>
@@ -133,7 +142,13 @@ export function TeamTree() {
           <div className="flex items-center justify-center">
             <div className="grid grid-cols-3 gap-6">
               {advisory.map((m, idx) => (
-                <motion.div key={m.id} custom={idx} variants={nodeVariant} className="flex flex-col items-center gap-2" ref={(el) => (nodeRefs.current[m.id] = el)}>
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: 0.8 + idx * 0.12 } }}
+                  className="flex flex-col items-center gap-2"
+                  ref={(el) => { nodeRefs.current[m.id] = el }}
+                >
                   <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-black shadow-sm">
                     <img src={avatar(m.name, '6b7280')} alt={m.name} className="w-full h-full object-cover" />
                   </div>
