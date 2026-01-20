@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import React from 'react';
+import { ArrowRight, Terminal, Layers, Cpu } from 'lucide-react';
 
 // --- DATA & ASSETS ---
 const codeTemplates = [
@@ -19,7 +21,7 @@ const codeTemplates = [
     code: `int binarySearch(vector<int>& arr, int target) {\n    int left = 0, right = arr.size() - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;`,
     status: "Accepted",
     runtime: "2ms",
-    color: "text-purple-600"
+    color: "text-blue-600"
   },
   {
     name: "merge_sort.java",
@@ -27,7 +29,7 @@ const codeTemplates = [
     code: `void mergeSort(int[] arr, int l, int r) {\n    if (l < r) {\n        int m = l + (r - l) / 2;\n        mergeSort(arr, l, m);`,
     status: "Accepted",
     runtime: "8ms",
-    color: "text-orange-600"
+    color: "text-blue-600"
   },
   {
     name: "dfs.js",
@@ -35,7 +37,7 @@ const codeTemplates = [
     code: `function dfs(graph, node, visited = new Set()) {\n    if (visited.has(node)) return;\n    visited.add(node);\n    console.log(node);`,
     status: "Accepted",
     runtime: "5ms",
-    color: "text-yellow-600"
+    color: "text-blue-600"
   },
 ]
 
@@ -43,45 +45,56 @@ const duplicatedTemplates = [...codeTemplates, ...codeTemplates, ...codeTemplate
 
 // --- SUB-COMPONENTS ---
 
+// 1. CAROUSEL
 function CarouselStrip() {
   return (
-    <div className="w-full overflow-hidden border-y border-gray-200 bg-white/50 backdrop-blur-sm">
-      <div className="relative">
-        <div className="absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-gray-50 to-transparent"></div>
-        <div className="absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-gray-50 to-transparent"></div>
+    <div className="w-full max-w-7xl mx-auto mb-20">
+      {/* The Retro Container */}
+      <div className="overflow-hidden rounded-lg border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         
-        <div className="flex py-6">
-          <div 
-            className="flex gap-6 whitespace-nowrap will-change-transform" 
-            style={{ animation: 'scroll 40s linear infinite' }}
-          >
-            {duplicatedTemplates.map((t, i) => (
-              <div key={i} className="inline-block w-[300px] shrink-0 overflow-hidden rounded-md border border-gray-200 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] transition-transform hover:-translate-y-1">
-                {/* Header (VS Code Tab style) */}
-                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-3 py-2">
-                  <div className="flex items-center gap-2">
-                    <div className={`h-2 w-2 rounded-full ${t.language === "C++" ? "bg-blue-500" : t.language === "Python" ? "bg-yellow-500" : "bg-green-500"}`}></div>
-                    <span className="font-mono text-xs font-medium text-gray-600">{t.name}</span>
+        {/* Header */}
+        <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 border-b border-black">
+           <div className="text-sm font-semibold text-black">Live Submissions</div>
+        </div>
+
+        {/* Scrolling Content */}
+        <div className="relative bg-white">
+          <div className="absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-white to-transparent"></div>
+          <div className="absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-white to-transparent"></div>
+          
+          <div className="flex py-4">
+            <div 
+              className="flex gap-6 whitespace-nowrap will-change-transform" 
+              style={{ animation: 'scroll 40s linear infinite' }}
+            >
+              {duplicatedTemplates.map((t, i) => (
+                <div key={i} className="inline-block w-[300px] shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-transform hover:-translate-y-1">
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span className="font-mono text-xs font-medium text-gray-600">{t.name}</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400">{t.language}</span>
                   </div>
-                  <span className="text-[10px] font-bold text-gray-400">{t.language}</span>
-                </div>
-                
-                {/* Code Body */}
-                <div className="bg-white p-3">
-                  <pre className="font-mono text-[10px] leading-relaxed text-gray-600 opacity-80">
-                    {t.code}
-                  </pre>
-                  <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2">
-                    <span className="rounded bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase text-green-700">
-                      {t.status}
-                    </span>
-                    <span className="font-mono text-[10px] text-gray-400">
-                      Runtime: {t.runtime}
-                    </span>
+                  
+                  {/* Card Body */}
+                  <div className="bg-white p-3">
+                    <pre className="font-mono text-[10px] leading-relaxed text-gray-600 opacity-80">
+                      {t.code}
+                    </pre>
+                    <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2">
+                      <span className="rounded bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase text-green-700">
+                        {t.status}
+                      </span>
+                      <span className="font-mono text-[10px] text-gray-400">
+                        Runtime: {t.runtime}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -96,28 +109,68 @@ function CarouselStrip() {
   )
 }
 
-function FeatureCard({ title, subtitle, desc, index }: { title: string, subtitle: string, desc: string, index: number }) {
+// 2. CLEAN PIPELINE
+function ExecutionPipeline() {
+  const steps = [
+    {
+      title: "Qualifier",
+      type: "Online Round",
+      desc: "HackerRank filtering based on AC count & penalty time.",
+      icon: <Terminal className="w-6 h-6" />
+    },
+    {
+      title: "The Hackathon",
+      type: "Offline Main",
+      desc: "12-hour sprint solving real-world algo challenges.",
+      icon: <Cpu className="w-6 h-6" />
+    },
+    {
+      title: "Judgment",
+      type: "Final Viva",
+      desc: "Code review by experts from product-based companies.",
+      icon: <Layers className="w-6 h-6" />
+    }
+  ];
+
   return (
-    <div className="group relative h-full overflow-hidden rounded-xl border border-gray-200 bg-white p-8 transition-all duration-300 hover:border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(37,99,235,1)]">
-      {/* Background Grid Pattern on Hover */}
-      <div className="absolute inset-0 z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-10"
-           style={{ backgroundImage: 'radial-gradient(#2563eb 1px, transparent 1px)', backgroundSize: '8px 8px' }}>
-      </div>
+    <div className="w-full max-w-7xl mx-auto">
+      <div className="rounded-xl border border-blue-200 bg-white shadow-xl overflow-hidden">
+        <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-100">
+           {steps.map((step, i) => (
+             <div key={i} className="group relative p-10 min-h-[280px] transition-colors hover:bg-blue-50/30 flex flex-col h-full">
+                
+                {/* Index Marker */}
+                <div className="absolute top-6 right-6 font-mono text-sm text-blue-300 group-hover:text-blue-500 transition-colors">
+                  [{i}]
+                </div>
 
-      <div className="relative z-10 flex h-full flex-col">
-        <div className="mb-6 flex items-center justify-between">
-            <div className="inline-block rounded border border-blue-100 bg-blue-50 px-3 py-1 font-mono text-xs font-semibold text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-            func round_{index}()
-            </div>
-            <span className="translate-x-4 font-mono text-xl font-bold text-blue-600 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                -&gt;
-            </span>
+                {/* Connection Arrow */}
+                {i < steps.length - 1 && (
+                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-8 z-10 text-blue-200 transform -translate-y-1/2 translate-x-1/2">
+                    <ArrowRight className="w-8 h-8 bg-white rounded-full p-1" />
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="flex flex-col h-full justify-center">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-3 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      {step.icon}
+                    </div>
+                    <div className="font-mono text-sm text-blue-500 font-medium px-3 py-1.5 rounded-md bg-blue-50/50 border border-blue-100">
+                        void step_{i+1}()
+                    </div>
+                  </div>
+                  
+                  {/* Bigger Fonts */}
+                  <h4 className="text-3xl font-bold text-gray-900 mb-4">{step.title}</h4>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+             </div>
+           ))}
         </div>
-
-        <h4 className="mb-3 text-2xl font-bold text-gray-900 group-hover:text-blue-700">{title}</h4>
-        <p className="mb-4 font-mono text-sm font-medium text-gray-500">{subtitle}</p>
-        {/* Increased text size and spacing here */}
-        <p className="flex-grow text-base leading-7 text-gray-600">{desc}</p>
       </div>
     </div>
   )
@@ -143,25 +196,13 @@ export function About() {
            }}>
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
+        {/* 1. Live Submissions (AT TOP) */}
+        <CarouselStrip />
+
+        {/* 2. Header */}
         <div className="mb-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mx-auto mb-6 w-max rounded-full border border-gray-200 bg-white px-5 py-2 shadow-sm"
-          >
-            <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
-              </span>
-              System Online
-            </span>
-          </motion.div>
-          
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -183,15 +224,10 @@ export function About() {
           </motion.p>
         </div>
 
-        {/* Carousel */}
-        <div className="mb-24">
-            <CarouselStrip />
-        </div>
-
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
           
-          {/* Mission (Left) & Verdict Stats (Right) */}
-          <div className="mb-24 grid gap-12 lg:grid-cols-2">
+          {/* Mission & STICKER STATS */}
+          <div className="mb-32 grid gap-12 lg:grid-cols-2">
             
             {/* LEFT COLUMN: Mission Text */}
             <motion.div 
@@ -203,7 +239,6 @@ export function About() {
               <h3 className="mb-8 font-mono text-3xl font-bold text-gray-900">
                 <span className="text-blue-600">#</span> define MISSION
               </h3>
-              {/* Increased Text Size and Leading */}
               <p className="text-xl leading-8 text-gray-600">
                 To foster innovation and competitive excellence among the next generation of programmers. 
                 <span className="font-semibold text-gray-900"> TCET SHASTRA</span> is where talent meets runtime constraints, and ideas transform into O(1) solutions.
@@ -221,45 +256,95 @@ export function About() {
               </div>
             </motion.div>
 
-            {/* RIGHT COLUMN: The "Verdict Pass" Stats */}
+            {/* RIGHT COLUMN: Blue/White Stickers with ORANGE TAPE */}
             <motion.div 
+               className="grid grid-cols-2 gap-6"
                initial={{ opacity: 0, x: 20 }}
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true }}
-               className="grid grid-cols-1 gap-6 sm:grid-cols-2"
             >
-               {[
-                 { label: "Colleges", val: "15+", icon: "🏛️", varName: "n_colleges" },
-                 { label: "Duration", val: "12h", icon: "⏳", varName: "time_limit" },
-                 { label: "Problem Sets", val: "Hard", icon: "💀", varName: "difficulty" },
-                 { label: "Opportunities", val: "Yes", icon: "💼", varName: "intern_flag" },
-               ].map((stat, i) => (
-                 <div key={i} className="group relative flex flex-col items-start justify-center overflow-hidden rounded-xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-green-500 hover:shadow-md">
-                    
-                    {/* Hover Progress Bar */}
-                    <div className="absolute left-0 top-0 h-1.5 w-0 bg-green-500 transition-all duration-500 group-hover:w-full"></div>
+               {/* Sticker 1: Colleges */}
+               <motion.div 
+                  className="relative group mt-6"
+                  whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                  initial={{ rotate: -2 }}
+               >
+                  {/* Tape (Orange) */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] rotate-2 shadow-sm z-10 border border-orange-400/50 backdrop-blur-sm opacity-90"></div>
+                  
+                  <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                    <div className="relative z-10">
+                      <div className="font-mono text-xs text-blue-500 mb-1">var n_colleges</div>
+                      <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">15+</div>
+                      <div className="w-8 h-1 bg-blue-500 rounded-full"></div>
+                    </div>
+                    <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-blue-50 rounded-full"></div>
+                  </div>
+               </motion.div>
 
-                    <div className="mb-4 flex w-full items-center justify-between">
-                        <span className="font-mono text-xs text-gray-400 group-hover:text-green-600">
-                            var {stat.varName}
-                        </span>
-                        <span className="opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">
-                            PASS
-                        </span>
+               {/* Sticker 2: Duration */}
+               <motion.div 
+                  className="relative group"
+                  whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                  initial={{ rotate: 3 }}
+               >
+                  {/* Tape (Orange) */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] -rotate-1 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
+                  
+                  <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                    <div className="relative z-10">
+                      <div className="font-mono text-xs text-blue-500 mb-1">const duration</div>
+                      <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">12h</div>
+                      <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div className="h-full w-2/3 bg-blue-500 rounded-full"></div>
+                      </div>
                     </div>
+                  </div>
+               </motion.div>
+
+               {/* Sticker 3: Problem Sets */}
+               <motion.div 
+                  className="relative group mt-6"
+                  whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                  initial={{ rotate: 2 }}
+               >
+                  {/* Tape (Orange) */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] -rotate-2 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
+                  
+                  <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                    <div className="relative z-10">
+                      <div className="font-mono text-xs text-blue-500 mb-1">enum difficulty</div>
+                      <div className="text-3xl font-black text-slate-900 mb-2 tracking-tighter">HARD</div>
+                      <div className="inline-block px-2 py-0.5 bg-blue-50 rounded text-[10px] font-bold text-blue-600">
+                        O(N log N)
+                      </div>
+                    </div>
+                     <div className="absolute top-0 right-0 w-full h-full opacity-10" style={{backgroundImage: 'radial-gradient(#3b82f6 1px, transparent 1px)', backgroundSize: '8px 8px'}}></div>
+                  </div>
+               </motion.div>
+
+               {/* Sticker 4: Internships */}
+               <motion.div 
+                  className="relative group"
+                  whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                  initial={{ rotate: -1 }}
+               >
+                  {/* Tape (Orange) */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] rotate-1 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
+                  
+                  <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                    <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-blue-500 border border-white shadow-sm z-20"></div>
                     
-                    <div className="flex items-center gap-4">
-                        <span className="text-3xl grayscale transition-all group-hover:grayscale-0">{stat.icon}</span>
-                        <div className="font-mono text-3xl font-bold text-gray-900 group-hover:text-black">
-                            {stat.val}
-                        </div>
+                    <div className="relative z-10">
+                      <div className="font-mono text-xs text-blue-500 mb-1">bool hired</div>
+                      <div className="text-3xl font-black text-slate-900 mb-2 tracking-tighter">YES</div>
+                      <div className="flex items-center gap-2 mt-1">
+                         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                         <span className="text-[10px] font-bold text-blue-600">INTERNSHIPS</span>
+                      </div>
                     </div>
-                    
-                    <div className="mt-2 text-xs font-bold text-gray-500 uppercase tracking-wide group-hover:text-green-700">
-                        {stat.label}
-                    </div>
-                 </div>
-               ))}
+                  </div>
+               </motion.div>
             </motion.div>
           </div>
 
@@ -272,29 +357,8 @@ export function About() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative grid gap-8 md:grid-cols-3"
           >
-            {/* Decorative Flow Line (Desktop Only) */}
-            <div className="absolute top-1/2 hidden w-full -translate-y-1/2 border-t-2 border-dashed border-gray-200 md:block"></div>
-
-            <FeatureCard 
-              index={1} 
-              title="Qualifier" 
-              subtitle="Online Round" 
-              desc="Standard competitive programming problems on HackerRank. Filter top teams based on AC count and penalty time." 
-            />
-            <FeatureCard 
-              index={2} 
-              title="The Hackathon" 
-              subtitle="Offline Main Event" 
-              desc="12-hour intense coding sprint. Solve real-world algorithm challenges and system design problem statements." 
-            />
-            <FeatureCard 
-              index={3} 
-              title="Judgment" 
-              subtitle="Presentation & Viva" 
-              desc="Code review and final presentations judged by industry experts from top product-based companies." 
-            />
+             <ExecutionPipeline />
           </motion.div>
 
         </div>
