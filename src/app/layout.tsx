@@ -29,8 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/scpc.png" />
+        <link rel="icon" href="/scpc.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/scpc.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/scpc.png" />
         <link rel="apple-touch-icon" href="/scpc.png" />
+        <meta name="msapplication-TileImage" content="/scpc.png" />
         <meta name="theme-color" content="#0f172a" />
         <meta property="og:title" content="SCPC — Shastra Competitive Programming Competition" />
         <meta property="og:description" content="SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details." />
@@ -41,6 +44,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            function onKey(e){
+              try{
+                if(e.ctrlKey && e.key === 'Enter'){
+                  var el = document.getElementById('hero-register') || document.getElementById('site-register') || document.querySelector('a[href="#contact"]');
+                  if(el){ el.click(); }
+                }
+              }catch(err){/* ignore */}
+            }
+            window.addEventListener('keydown', onKey);
+            // expose so React cleanup isn't required for this small script
+          })();
+        `}} />
         {children}
       </body>
     </html>

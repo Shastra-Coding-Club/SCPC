@@ -35,6 +35,20 @@ export function Hero() {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault()
+        const registerLink = document.querySelector('a#hero-register') as HTMLAnchorElement
+        if (registerLink) {
+          registerLink.click()
+        }
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center bg-white pt-24 pb-12 overflow-hidden">
       {/* Decorative background logo (watermark - centered) */}
@@ -106,7 +120,7 @@ export function Hero() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-4"
+            className="space-y-4 flex flex-col"
           >
             <h2 className="text-3xl font-bold text-black">Event Detail</h2>
             
@@ -139,7 +153,7 @@ export function Hero() {
               </div>
 
               {/* Code Content */}
-              <div className="bg-white/30 p-4 min-h-64 max-h-96 overflow-y-auto font-mono text-sm">
+              <div className="bg-white/30 p-4 min-h-80 max-h-96 overflow-y-auto font-mono text-sm flex-1">
                 {registrationCode.split('\n').map((line, idx) => (
                   <div key={idx} className="hover:bg-gray-50 px-2 py-1 transition-colors leading-relaxed">
                     <span className="text-gray-400 mr-3 inline-block w-8 text-right">{String(idx + 1).padStart(2, '0')}</span>
@@ -157,11 +171,11 @@ export function Hero() {
 
             {/* Action Button */}
             <div className="pt-2">
-              <Link href="#contact">
-                <Button size="sm" className="w-full bg-blue-600 text-white hover:bg-blue-700">
+              <a id="hero-register" href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer">
+                <Button size="sm" className="w-full bg-[#f97316] text-white hover:bg-[#e55f10]">
                   Register Now
                 </Button>
-              </Link>
+              </a>
             </div>
 
             <p className="text-xs text-gray-500 text-center">Press Ctrl + Enter to submit</p>

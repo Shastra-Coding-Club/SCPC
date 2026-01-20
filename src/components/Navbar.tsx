@@ -55,8 +55,8 @@ export function Navbar() {
 
         {/* Right Section - CTA */}
         <div className="flex items-center gap-2">
-          <Link href="#contact">
-            <Button size="sm" className="rounded-lg bg-black px-5 text-white shadow-md hover:bg-gray-800 active:scale-[0.98] transition-all duration-200">
+          <Link id="site-register" href="#contact">
+            <Button size="sm" className="rounded-lg bg-[#f97316] px-5 text-white shadow-md hover:bg-[#e55f10] active:scale-[0.98] transition-all duration-200">
               Register
             </Button>
           </Link>
@@ -93,8 +93,8 @@ export function Navbar() {
                   Contact
                 </Button>
               </Link>
-              <Link href="#contact" onClick={() => setMobileOpen(false)}>
-                <Button className="w-full bg-black text-white hover:bg-gray-800 active:scale-[0.98] transition-all duration-200">
+              <Link id="site-register" href="#contact" onClick={() => setMobileOpen(false)}>
+                <Button className="w-full bg-[#f97316] text-white hover:bg-[#e55f10] active:scale-[0.98] transition-all duration-200">
                   Register
                 </Button>
               </Link>
