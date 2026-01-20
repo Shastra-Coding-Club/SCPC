@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
+// using native img for public PNG/SVG to avoid Next Image SVG optimization issues
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
@@ -36,9 +36,8 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link href="#home" className="flex items-center gap-2.5 group">
-          <span className="text-2xl font-bold tracking-tight text-black">
-            SCPC
-          </span>
+          <img src="/scpc.png" alt="SCPC logo" width={44} height={44} className="rounded-md" />
+          <span className="sr-only">SCPC</span>
         </Link>
 
         {/* Desktop Navigation - Centered */}

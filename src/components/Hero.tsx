@@ -36,8 +36,23 @@ export function Hero() {
   }
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-white pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-white pt-24 pb-12 overflow-hidden">
+      {/* Decorative background logo (watermark - centered) */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/scpc.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: '35%',
+          opacity: 0.22,
+        }}
+      />
+
+      {/* Main glassmorphic container with watermark visible behind */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-8">
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-12 items-stretch">
           {/* Left Section - Problem Description */}
@@ -96,7 +111,7 @@ export function Hero() {
             <h2 className="text-3xl font-bold text-black">Event Detail</h2>
             
             {/* Code Editor Box */}
-            <div className="bg-white border-2 border-black rounded-lg shadow-lg overflow-hidden">
+            <div className="bg-white/40 backdrop-blur-sm border border-black/20 rounded-lg shadow-lg overflow-hidden">
               {/* Header */}
               <div className="bg-gray-100 px-4 py-3 border-b-2 border-black flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -124,7 +139,7 @@ export function Hero() {
               </div>
 
               {/* Code Content */}
-              <div className="bg-white p-4 min-h-64 max-h-96 overflow-y-auto font-mono text-sm">
+              <div className="bg-white/30 p-4 min-h-64 max-h-96 overflow-y-auto font-mono text-sm">
                 {registrationCode.split('\n').map((line, idx) => (
                   <div key={idx} className="hover:bg-gray-50 px-2 py-1 transition-colors leading-relaxed">
                     <span className="text-gray-400 mr-3 inline-block w-8 text-right">{String(idx + 1).padStart(2, '0')}</span>
@@ -151,6 +166,7 @@ export function Hero() {
 
             <p className="text-xs text-gray-500 text-center">Press Ctrl + Enter to submit</p>
           </motion.div>
+        </div>
         </div>
       </div>
     </section>
