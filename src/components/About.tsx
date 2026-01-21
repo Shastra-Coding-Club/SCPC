@@ -48,7 +48,7 @@ const duplicatedTemplates = [...codeTemplates, ...codeTemplates, ...codeTemplate
 // 1. CAROUSEL
 function CarouselStrip() {
   return (
-    <div className="w-full max-w-7xl mx-auto mb-20">
+    <div className="w-full max-w-7xl mx-auto mb-20 overflow-hidden">
       {/* The Retro Container */}
       <div className="overflow-hidden rounded-lg border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         
