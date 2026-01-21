@@ -86,15 +86,15 @@ export function TeamTree() {
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial="hidden" animate="show" variants={containerVariant} ref={containerRef} className="relative bg-white border-2 border-black rounded-lg p-8">
+        <motion.div initial="hidden" animate="show" variants={containerVariant} ref={containerRef} className="relative bg-white border-2 border-black rounded-lg p-4 sm:p-6 lg:p-8 overflow-hidden">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-black">Organising Committee</h2>
             <p className="text-sm text-gray-600">Meet the core and supporting teams</p>
           </div>
 
           {/* Core row - large photos */}
-          <div className="flex items-center justify-center mb-6">
-            <div className="grid grid-cols-7 gap-6">
+          <div className="flex items-center justify-center mb-6 overflow-x-auto">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3 sm:gap-4 md:gap-6">
               {core.map((m, idx) => (
                 <motion.div
                   key={m.id}
@@ -103,7 +103,7 @@ export function TeamTree() {
                   className="flex flex-col items-center gap-2"
                   ref={(el) => { nodeRefs.current[m.id] = el }}
                 >
-                  <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-black shadow-lg">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-black shadow-lg">
                     <img src={avatar(m.name)} alt={m.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="text-sm text-center">
@@ -116,8 +116,8 @@ export function TeamTree() {
           </div>
 
           {/* Sub-core row */}
-          <div className="flex items-center justify-center mb-6">
-            <div className="grid grid-cols-5 gap-6">
+          <div className="flex items-center justify-center mb-6 overflow-x-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
               {subCore.map((m, idx) => (
                 <motion.div
                   key={m.id}
@@ -126,7 +126,7 @@ export function TeamTree() {
                   className="flex flex-col items-center gap-2"
                   ref={(el) => { nodeRefs.current[m.id] = el }}
                 >
-                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-black shadow-md">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-black shadow-md">
                     <img src={avatar(m.name, 'f97316')} alt={m.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="text-sm text-center">
@@ -139,8 +139,8 @@ export function TeamTree() {
           </div>
 
           {/* Advisory row */}
-          <div className="flex items-center justify-center">
-            <div className="grid grid-cols-3 gap-6">
+          <div className="flex items-center justify-center overflow-x-auto">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {advisory.map((m, idx) => (
                 <motion.div
                   key={m.id}
