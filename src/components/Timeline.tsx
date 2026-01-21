@@ -309,20 +309,20 @@ export function Timeline() {
           {/* Data Structure Visualizer - Right */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              <div className="bg-gray-900 rounded-xl p-6 text-white shadow-xl">
+              <div className="bg-white rounded-xl p-6 border-2 border-gray-200 shadow-lg">
                 {/* Visualizer Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     {mode === 'stack' ? (
-                      <Layers className="w-5 h-5 text-blue-400" />
+                      <Layers className="w-5 h-5 text-blue-600" />
                     ) : (
-                      <ListOrdered className="w-5 h-5 text-orange-400" />
+                      <ListOrdered className="w-5 h-5 text-orange-500" />
                     )}
-                    <span className="font-mono font-bold">
+                    <span className="font-mono font-bold text-gray-900">
                       {mode === 'stack' ? 'Stack' : 'Queue'}&lt;Event&gt;
                     </span>
                   </div>
-                  <span className="text-xs text-gray-400 font-mono">
+                  <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
                     size: {structure.length}
                   </span>
                 </div>
@@ -330,7 +330,7 @@ export function Timeline() {
                 {/* Visualizer Body */}
                 <div className="space-y-2 min-h-[300px]">
                   {mode === 'stack' && (
-                    <div className="text-xs text-gray-500 font-mono mb-2 flex items-center gap-2">
+                    <div className="text-xs text-gray-500 font-mono mb-2 flex items-center gap-2 bg-blue-50 px-2 py-1 rounded">
                       <span>↓ TOP (pop here)</span>
                     </div>
                   )}
@@ -340,7 +340,7 @@ export function Timeline() {
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-gray-500 text-sm font-mono py-8 text-center"
+                        className="text-gray-400 text-sm font-mono py-8 text-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
                       >
                         // Empty {mode}
                         <br />
@@ -369,17 +369,17 @@ export function Timeline() {
                           transition={{ type: "spring", stiffness: 500, damping: 30 }}
                           className={`p-3 rounded-lg border-2 font-mono text-sm ${
                             mode === 'stack' 
-                              ? 'bg-blue-900/50 border-blue-500' 
-                              : 'bg-orange-900/50 border-orange-500'
-                          } ${pos === 0 ? 'ring-2 ring-white/30' : ''}`}
+                              ? 'bg-blue-50 border-blue-300 text-blue-900' 
+                              : 'bg-orange-50 border-orange-300 text-orange-900'
+                          } ${pos === 0 ? 'ring-2 ring-offset-1 ' + (mode === 'stack' ? 'ring-blue-400' : 'ring-orange-400') : ''}`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-xs text-gray-400">[{pos}]</span>
+                            <span className={`text-xs ${mode === 'stack' ? 'text-blue-500' : 'text-orange-500'}`}>[{pos}]</span>
                             <span className="font-bold truncate ml-2">
                               {scheduleItems[itemIndex].title}
                             </span>
                           </div>
-                          <div className="text-xs text-gray-400 mt-1">
+                          <div className={`text-xs mt-1 ${mode === 'stack' ? 'text-blue-600' : 'text-orange-600'}`}>
                             {scheduleItems[itemIndex].time}
                           </div>
                         </motion.div>
@@ -388,15 +388,15 @@ export function Timeline() {
                   </AnimatePresence>
 
                   {mode === 'queue' && structure.length > 0 && (
-                    <div className="text-xs text-gray-500 font-mono mt-2 flex items-center gap-2">
+                    <div className="text-xs text-gray-500 font-mono mt-2 flex items-center gap-2 bg-orange-50 px-2 py-1 rounded">
                       <span>↑ BACK (enqueue here)</span>
                     </div>
                   )}
                 </div>
 
                 {/* Code Preview */}
-                <div className="mt-4 pt-4 border-t border-gray-700">
-                  <div className="font-mono text-xs text-gray-400">
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="font-mono text-xs bg-gray-900 text-gray-300 p-3 rounded-lg">
                     <div className="text-green-400">// Last operation:</div>
                     {currentStep >= 0 ? (
                       <div className="text-blue-300">

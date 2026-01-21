@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 // TeamTree: separate component with larger core avatars and slow hierarchical staggered animation
 export function TeamTree() {
@@ -48,45 +48,66 @@ export function TeamTree() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({})
+  const [mounted, setMounted] = useState(false)
 
-  useLayoutEffect(() => {
+  // Only run on client side after mount
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Calculate positions after mount and on resize
+  useEffect(() => {
+    if (!mounted) return
+
     const calculate = () => {
-      const rect = containerRef.current?.getBoundingClientRect()
-      if (!rect) return
+      const container = containerRef.current
+      if (!container) return
+      
+      const rect = container.getBoundingClientRect()
       const pos: Record<string, { x: number; y: number }> = {}
-      const all = [...core, ...subCore, ...advisory]
-      all.forEach((n) => {
+      const allMembers = [...core, ...subCore, ...advisory]
+      
+      allMembers.forEach((n) => {
         const el = nodeRefs.current[n.id]
         if (el) {
           const r = el.getBoundingClientRect()
-          pos[n.id] = { x: r.left + r.width / 2 - rect.left, y: r.top + r.height / 2 - rect.top }
+          pos[n.id] = { 
+            x: r.left + r.width / 2 - rect.left, 
+            y: r.top + r.height / 2 - rect.top 
+          }
         }
       })
+      
       setPositions(pos)
     }
 
-    calculate()
-    const t = window.setTimeout(calculate, 600)
+    // Wait for animations to settle
+    const timeouts = [
+      window.setTimeout(calculate, 100),
+      window.setTimeout(calculate, 500),
+      window.setTimeout(calculate, 1000),
+    ]
+    
     window.addEventListener('resize', calculate)
+    
     return () => {
-      clearTimeout(t)
+      timeouts.forEach(t => clearTimeout(t))
       window.removeEventListener('resize', calculate)
     }
-  }, [core, subCore, advisory])
+  }, [mounted])
 
-  const avatar = (name: string, bg = '2563eb') => `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=ffffff&rounded=true&size=256`
+  const avatar = (name: string, bg = '2563eb') => 
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=ffffff&rounded=true&size=256`
 
-  const containerVariant = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.18, delayChildren: 0.2 } },
-  }
-
-  // per-node animation will be set inline so we can provide a typed delay per index
+  if (!mounted) return null
 
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial="hidden" animate="show" variants={containerVariant} ref={containerRef} className="relative bg-white border-2 border-black rounded-lg p-4 sm:p-6 lg:p-8 overflow-hidden">
+        <div 
+          ref={containerRef} 
+          className="relative bg-white border-2 border-black rounded-lg p-4 sm:p-6 lg:p-8 overflow-hidden"
+        >
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-black">Organising Committee</h2>
             <p className="text-sm text-gray-600">Meet the core and supporting teams</p>
@@ -99,7 +120,8 @@ export function TeamTree() {
                 <motion.div
                   key={m.id}
                   initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: idx * 0.12 } }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 160, damping: 18, delay: idx * 0.12 }}
                   className="flex flex-col items-center gap-2"
                   ref={(el) => { nodeRefs.current[m.id] = el }}
                 >
@@ -122,7 +144,8 @@ export function TeamTree() {
                 <motion.div
                   key={m.id}
                   initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: 0.4 + idx * 0.12 } }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.4 + idx * 0.12 }}
                   className="flex flex-col items-center gap-2"
                   ref={(el) => { nodeRefs.current[m.id] = el }}
                 >
@@ -145,7 +168,8 @@ export function TeamTree() {
                 <motion.div
                   key={m.id}
                   initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 160, damping: 18, delay: 0.8 + idx * 0.12 } }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.8 + idx * 0.12 }}
                   className="flex flex-col items-center gap-2"
                   ref={(el) => { nodeRefs.current[m.id] = el }}
                 >
@@ -161,70 +185,68 @@ export function TeamTree() {
             </div>
           </div>
 
-          {/* SVG edges overlay (animated slowly) */}
-          <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%">
-            {Object.keys(positions).length > 0 && (
-              <>
-                {/* chair connections */}
-                {core.slice(1).map((c, idx) => {
-                  const a = positions[core[0].id]
-                  const b = positions[c.id]
-                  if (!a || !b) return null
-                  return (
-                    <motion.path
-                      key={`edge-${c.id}`}
-                      d={`M ${a.x} ${a.y} C ${a.x} ${(a.y + b.y) / 2} ${b.x} ${(a.y + b.y) / 2} ${b.x} ${b.y}`}
-                      stroke="#111827"
-                      strokeWidth={2}
-                      fill="none"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1.6, delay: 0.6 + idx * 0.12 }}
-                    />
-                  )
-                })}
+          {/* SVG edges overlay */}
+          {Object.keys(positions).length > 0 && (
+            <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%">
+              {/* Chair to core connections */}
+              {core.slice(1).map((c, idx) => {
+                const a = positions[core[0].id]
+                const b = positions[c.id]
+                if (!a || !b) return null
+                return (
+                  <motion.path
+                    key={`edge-${c.id}`}
+                    d={`M ${a.x} ${a.y} C ${a.x} ${(a.y + b.y) / 2} ${b.x} ${(a.y + b.y) / 2} ${b.x} ${b.y}`}
+                    stroke="#e5e7eb"
+                    strokeWidth={2}
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.2, delay: 0.5 + idx * 0.1 }}
+                  />
+                )
+              })}
 
-                {/* tech -> subcore */}
-                {subCore.map((s, idx) => {
-                  const tech = positions[core[2].id]
-                  const node = positions[s.id]
-                  if (!tech || !node) return null
-                  return (
-                    <motion.path
-                      key={`edge-tech-${s.id}`}
-                      d={`M ${tech.x} ${tech.y} C ${tech.x} ${(tech.y + node.y) / 2} ${node.x} ${(tech.y + node.y) / 2} ${node.x} ${node.y}`}
-                      stroke="#6b7280"
-                      strokeWidth={1.6}
-                      fill="none"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1.6, delay: 1.0 + idx * 0.12 }}
-                    />
-                  )
-                })}
+              {/* Tech lead to sub-core connections */}
+              {subCore.map((s, idx) => {
+                const tech = positions[core[2].id]
+                const node = positions[s.id]
+                if (!tech || !node) return null
+                return (
+                  <motion.path
+                    key={`edge-tech-${s.id}`}
+                    d={`M ${tech.x} ${tech.y} C ${tech.x} ${(tech.y + node.y) / 2} ${node.x} ${(tech.y + node.y) / 2} ${node.x} ${node.y}`}
+                    stroke="#ddd6fe"
+                    strokeWidth={1.5}
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.2, delay: 1.0 + idx * 0.1 }}
+                  />
+                )
+              })}
 
-                {/* advisory -> chair */}
-                {advisory.map((a, idx) => {
-                  const chair = positions[core[0].id]
-                  const node = positions[a.id]
-                  if (!chair || !node) return null
-                  return (
-                    <motion.path
-                      key={`edge-ad-${a.id}`}
-                      d={`M ${chair.x} ${chair.y} C ${chair.x} ${(chair.y + node.y) / 2} ${node.x} ${(chair.y + node.y) / 2} ${node.x} ${node.y}`}
-                      stroke="#f97316"
-                      strokeWidth={1.6}
-                      fill="none"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1.8, delay: 1.6 + idx * 0.14 }}
-                    />
-                  )
-                })}
-              </>
-            )}
-          </svg>
-        </motion.div>
+              {/* Advisory to chair connections */}
+              {advisory.map((a, idx) => {
+                const chair = positions[core[0].id]
+                const node = positions[a.id]
+                if (!chair || !node) return null
+                return (
+                  <motion.path
+                    key={`edge-ad-${a.id}`}
+                    d={`M ${chair.x} ${chair.y} C ${chair.x} ${(chair.y + node.y) / 2} ${node.x} ${(chair.y + node.y) / 2} ${node.x} ${node.y}`}
+                    stroke="#fed7aa"
+                    strokeWidth={1.5}
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 1.4, delay: 1.5 + idx * 0.12 }}
+                  />
+                )
+              })}
+            </svg>
+          )}
+        </div>
       </div>
     </section>
   )
