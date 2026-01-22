@@ -52,7 +52,7 @@ export function Navbar() {
       >
         {/* Logo */}
         <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer">
-          <img src="/scpc.png" alt="SCPC logo" width={44} height={44} />
+          <img id="site-header-logo" src="/scpc.png" alt="SCPC logo" width={44} height={44} />
           <span className="sr-only">SCPC</span>
         </a>
 
