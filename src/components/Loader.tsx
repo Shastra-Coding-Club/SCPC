@@ -4,40 +4,32 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { CodeTyper } from "./CodeTyper";
 import "../styles/loader.css";
 
-// Larger, more interesting HTML snippet
-const HTML_SNIPPET = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCPC 2026 — Shastra Competitive Programming</title>
-  <link rel="stylesheet" href="/styles/arena.css" />
-</head>
-<body>
-  <header id="site-header">
-    <nav class="nav-container">
-      <a href="/" class="logo">SCPC</a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#timeline">Timeline</a></li>
-        <li><a href="#prizes">Prizes</a></li>
-      </ul>
-      <button class="btn-register">Register</button>
-    </nav>
-  </header>
+// C++ Competitive Programming Template
+const CPP_SNIPPET = `#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define pb push_back
+#define mp make_pair
+#define endl "\\n"
+#define F first
+#define S second
+#define umap unordered_map<int, int>
+#define mset multiset<pair<int, int>>
+#define mst multiset<int>
+#define vct vector<int>
+#define pii pair<int, int>
+#define ld long double
+#define vpii vector<pair<int, int>>
+#define lli long long int
+#define F(i, n) for(int i = 0; i < (n); ++i)
+#define R(i, n) for(int i = (n) - 1; i >= 0; --i)
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-  <main id="arena">
-    <section class="hero">
-      <h1>Shastra Competitive Programming Competition</h1>
-      <p>Code. Compete. Conquer.</p>
-    </section>
+void solve() {
+    // SCPC 2026 - Code. Compete. Conquer.
+}`;
 
-    <!-- Loading competition arena... -->
-  </main>
-</body>
-</html>`;
-
-type LoaderState = "typing" | "holding" | "animating" | "done";
+type LoaderState = "logo-intro" | "typing" | "holding" | "animating" | "done";
 
 interface LoaderProps {
   appReadyPromise?: Promise<void> | null;
@@ -57,8 +49,8 @@ declare global {
 
 export function Loader({
   appReadyPromise,
-  timeout = 10000,
-  minDurationMs = 2500,
+  timeout = 15000,
+  minDurationMs = 4000,
   onFinish,
   headerLogoSelector = "#site-header-logo",
 }: LoaderProps) {
@@ -68,10 +60,11 @@ export function Loader({
   const [fadeOverlay, setFadeOverlay] = useState(false);
   const [isRemoved, setIsRemoved] = useState(false);
   const [codeVisible, setCodeVisible] = useState(true);
-  
-  // Speed settings for returning visitors
-  const [typingDuration, setTypingDuration] = useState(1800);
+
+  // Speed settings - slower for better splash experience
+  const [typingDuration, setTypingDuration] = useState(3500);
   const [effectiveMinDuration, setEffectiveMinDuration] = useState(minDurationMs);
+  const [logoIntroComplete, setLogoIntroComplete] = useState(false);
 
   const logoRef = useRef<HTMLDivElement>(null);
   const logoImgRef = useRef<HTMLImageElement>(null);
@@ -93,10 +86,33 @@ export function Loader({
     const hasSeen = localStorage.getItem("scpc-intro-seen");
     if (hasSeen) {
       isReturningUser.current = true;
-      setTypingDuration(600); // 3x faster typing
-      setEffectiveMinDuration(1000); // Reduced hold time
+      setTypingDuration(1500); // Faster for returning users but still visible
+      setEffectiveMinDuration(2000); // Reduced hold time
     }
   }, [minDurationMs]);
+
+  // Logo intro phase - show logo slowly first
+  useEffect(() => {
+    if (state !== "logo-intro") return;
+
+    // Show logo with slow fade in
+    const showLogoTimer = setTimeout(() => {
+      setLogoVisible(true);
+    }, 300);
+
+    // After logo is visible for a bit, start code typing
+    const logoIntroDuration = isReturningUser.current ? 1000 : 1800;
+    const startTypingTimer = setTimeout(() => {
+      setLogoIntroComplete(true);
+      setCodeVisible(true);
+      setState("typing");
+    }, logoIntroDuration);
+
+    return () => {
+      clearTimeout(showLogoTimer);
+      clearTimeout(startTypingTimer);
+    };
+  }, [state]);
 
   // Handle app ready promise
   useEffect(() => {
@@ -129,15 +145,15 @@ export function Loader({
   // Check if we can exit and do it
   const checkAndExit = useCallback(() => {
     if (exitTriggeredRef.current) return;
-    
+
     const now = Date.now();
     const elapsed = now - mountTimeRef.current;
     const minPassed = elapsed >= effectiveMinDuration;
-    
+
     // Ensure logo has been visible for at least 300ms (to prevent flicker)
     const logoTime = logoShownTimeRef.current ? now - logoShownTimeRef.current : 0;
     const logoMinPassed = logoTime >= 400; // 400ms minimum logo presence
-    
+
     const ready = appReadyRef.current;
     const typed = typingDoneRef.current;
 
@@ -155,24 +171,28 @@ export function Loader({
     runFLIPAnimation();
   }, []);
 
-  // When typing completes
+  // When typing completes - now show logo with slow animation
   const handleTypingComplete = useCallback(() => {
     if (typingDoneRef.current) return;
-    
-    typingDoneRef.current = true;
-    // Record when logo started showing
-    logoShownTimeRef.current = Date.now();
-    
-    setCodeVisible(false);
-    setLogoVisible(true);
-    setState("holding");
-    
-    // Show skip button significantly faster for returning users or immediate
-    const skipDelay = isReturningUser.current ? 0 : 300;
-    setTimeout(() => setShowSkip(true), skipDelay);
 
-    // Check exit with small delay to allow logo time to accumulate
-    setTimeout(() => checkAndExit(), 100);
+    typingDoneRef.current = true;
+
+    // First fade out the code
+    setCodeVisible(false);
+
+    // After a brief pause, show logo with slow smooth animation
+    setTimeout(() => {
+      setLogoVisible(true);
+      logoShownTimeRef.current = Date.now();
+      setState("holding");
+
+      // Show skip button after logo has been visible a bit
+      const skipDelay = isReturningUser.current ? 500 : 1200;
+      setTimeout(() => setShowSkip(true), skipDelay);
+
+      // Check exit with delay to allow logo animation to complete
+      setTimeout(() => checkAndExit(), 800);
+    }, 600); // 600ms pause before logo appears
   }, [checkAndExit]);
 
   // Poll for exit during holding
@@ -186,7 +206,7 @@ export function Loader({
   const runFLIPAnimation = useCallback(() => {
     const logoContainer = logoRef.current;
     const logoImg = logoImgRef.current;
-    
+
     if (!logoContainer || !logoImg) {
       finishAnimation();
       return;
@@ -224,20 +244,20 @@ export function Loader({
     // Set up for animation - DON'T change position/size, only use transform
     logoContainer.style.willChange = "transform, opacity";
     logoContainer.style.transformOrigin = "center center";
-    
+
     // Apply INVERTED state (logo stays in visual same place)
     // Logo is already at center, we need it to END at header position
     // So we animate FROM current center TO header
-    
+
     // Start: logo at center (no transform needed - it's already there)
     // End: logo at header position
-    
+
     // Actually, FLIP means:
     // 1. Record FIRST (center position)
     // 2. Move element to LAST position instantly
     // 3. Apply inverse transform to make it LOOK like it's still at FIRST
     // 4. Animate transform to identity
-    
+
     // But since our logo container is absolutely centered, 
     // we'll animate directly from center to target using transform only
 
@@ -267,10 +287,10 @@ export function Loader({
 
     // Apply animation via CSS transition
     logoContainer.style.transition = "transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1)";
-    
+
     // Force reflow
     void logoContainer.offsetHeight;
-    
+
     // PLAY: Animate to target
     logoContainer.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
 
@@ -291,7 +311,7 @@ export function Loader({
   const finishAnimation = useCallback(() => {
     if (state === "done") return;
     setState("done");
-    
+
     // Small delay to ensure fade completes
     setTimeout(() => {
       setIsRemoved(true);
@@ -312,29 +332,28 @@ export function Loader({
       aria-label="Loading application"
       aria-busy={state !== "done"}
     >
-      {/* Code typing animation - large and prominent */}
+      {/* Code typing animation - runs first */}
       <div className={`loader-code-wrapper ${!codeVisible ? "fade-out" : ""}`}>
-        {state === "typing" ? (
+        {state === "typing" && codeVisible ? (
           <CodeTyper
-            snippet={HTML_SNIPPET}
+            snippet={CPP_SNIPPET}
             onComplete={handleTypingComplete}
             typingDuration={typingDuration}
           />
-        ) : (
+        ) : codeVisible ? (
           <div className="loader-code-container" aria-hidden="true">
             <pre className="loader-code">
-              <code>{HTML_SNIPPET}</code>
+              <code>{CPP_SNIPPET}</code>
             </pre>
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* Centered logo */}
       <div
         ref={logoRef}
-        className={`loader-logo-container ${logoVisible ? "visible" : ""} ${
-          state === "animating" ? "is-flipping" : ""
-        }`}
+        className={`loader-logo-container ${logoVisible ? "visible" : ""} ${state === "animating" ? "is-flipping" : ""
+          } ${state === "logo-intro" ? "intro-phase" : ""}`}
       >
         <img
           ref={logoImgRef}

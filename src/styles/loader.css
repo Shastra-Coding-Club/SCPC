@@ -59,7 +59,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.15) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
 
 .loader-code-container::-webkit-scrollbar {
@@ -71,7 +71,7 @@
 }
 
 .loader-code-container::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 3px;
 }
 
@@ -87,12 +87,43 @@
   padding: 0;
 }
 
-/* Syntax highlighting - more vibrant */
-.loader-code .tag { color: #0969da; font-weight: 500; }
-.loader-code .attr { color: #cf222e; }
-.loader-code .string { color: #0a3069; }
-.loader-code .comment { color: #6e7781; font-style: italic; }
-.loader-code .doctype { color: #8250df; font-weight: 600; }
+/* Syntax highlighting - C++ competitive programming */
+.loader-code .preprocessor {
+  color: #8250df;
+  font-weight: 600;
+}
+
+.loader-code .keyword {
+  color: #0969da;
+  font-weight: 500;
+}
+
+.loader-code .type {
+  color: #cf222e;
+  font-weight: 500;
+}
+
+.loader-code .macro {
+  color: #953800;
+  font-weight: 600;
+}
+
+.loader-code .string {
+  color: #0a3069;
+}
+
+.loader-code .comment {
+  color: #6e7781;
+  font-style: italic;
+}
+
+.loader-code .number {
+  color: #0550ae;
+}
+
+.loader-code .operator {
+  color: #24292f;
+}
 
 /* Typing cursor */
 .loader-cursor {
@@ -106,8 +137,70 @@
 }
 
 @keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Logo Appearance - Slow and Cinematic (after code typing)
+   -------------------------------------------------------------------------- */
+.loader-logo-container.intro-phase {
+  z-index: 10;
+  /* Logo on top during intro phase */
+}
+
+.loader-logo-container.intro-phase.visible {
+  animation: logo-intro-entrance 1.8s ease-out forwards;
+}
+
+/* Main logo entrance - slow dramatic reveal */
+.loader-logo-container.visible {
+  animation: logo-appear 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes logo-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  70% {
+    transform: scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-intro-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -172,12 +265,10 @@
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--loader-gold-light),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--loader-gold-light),
+      transparent);
   animation: sheen-sweep 2500ms ease-in-out infinite;
 }
 
@@ -185,19 +276,33 @@
    Idle Animations
    -------------------------------------------------------------------------- */
 @keyframes logo-idle-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
 }
 
 @keyframes sheen-sweep {
-  0% { left: -100%; }
-  40%, 100% { left: 200%; }
+  0% {
+    left: -100%;
+  }
+
+  40%,
+  100% {
+    left: 200%;
+  }
 }
 
 /* --------------------------------------------------------------------------
    Reduced Motion
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+
   .loader-overlay,
   .loader-code-wrapper,
   .loader-logo-container,

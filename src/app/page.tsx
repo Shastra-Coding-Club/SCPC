@@ -55,8 +55,8 @@ export default function Home() {
       {showLoader && (
         <Loader
           appReadyPromise={appReadyPromiseRef.current}
-          timeout={10000}
-          minDurationMs={2500}
+          timeout={15000}
+          minDurationMs={5000}
           onFinish={handleLoaderFinish}
         />
       )}
