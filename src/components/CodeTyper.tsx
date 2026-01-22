@@ -8,19 +8,30 @@ interface CodeTyperProps {
   typingDuration?: number; // Target duration in ms (default: 1500)
 }
 
-// Syntax highlighting for HTML
-function highlightHTML(text: string): React.ReactNode[] {
+// Syntax highlighting for C++
+function highlightCPP(text: string): React.ReactNode[] {
   const result: React.ReactNode[] = [];
   let remaining = text;
   let key = 0;
 
   const patterns: { regex: RegExp; className: string }[] = [
-    { regex: /^(<!DOCTYPE[^>]*>)/i, className: "doctype" },
-    { regex: /^(<!--[\s\S]*?-->)/, className: "comment" },
-    { regex: /^(<\/?[a-zA-Z][a-zA-Z0-9-]*)/, className: "tag" },
-    { regex: /^(\s+[a-zA-Z-]+)(?==)/, className: "attr" },
-    { regex: /^(="[^"]*")/, className: "string" },
-    { regex: /^(>)/, className: "tag" },
+    // Preprocessor directives
+    { regex: /^(#include|#define|#pragma|#ifndef|#ifdef|#endif|#if|#else)\b/, className: "preprocessor" },
+    // Comments
+    { regex: /^(\/\/[^\n]*)/, className: "comment" },
+    { regex: /^(\/\*[\s\S]*?\*\/)/, className: "comment" },
+    // Strings
+    { regex: /^("(?:\\.|[^"\\])*")/, className: "string" },
+    // Keywords
+    { regex: /^(using|namespace|void|int|long|double|float|char|bool|return|if|else|for|while|do|switch|case|break|continue|const|auto|typedef|struct|class|public|private|protected|virtual|static|template|typename|nullptr|true|false)\b/, className: "keyword" },
+    // Types and macros (common CP patterns)
+    { regex: /^(ll|lli|ld|pii|vct|vpii|umap|mset|mst|string|vector|pair|map|set|queue|stack|priority_queue|deque|list|unordered_map|unordered_set|multiset|multimap)\b/, className: "type" },
+    // Macro functions
+    { regex: /^(pb|mp|endl|F|S|IOS)\b/, className: "macro" },
+    // Numbers
+    { regex: /^(\b\d+\.?\d*\b)/, className: "number" },
+    // Operators and punctuation
+    { regex: /^([+\-*/%=<>!&|^~?:;,.()\[\]{}])/, className: "operator" },
   ];
 
   while (remaining.length > 0) {
@@ -90,8 +101,8 @@ export function CodeTyper({
       // Acceleration: Quadratic easing (starts slow, speeds up properly)
       // curve: y = x^2
       // We want characters to appear slowly at first, then faster.
-      const easedProgress = Math.pow(progress, 2); 
-      
+      const easedProgress = Math.pow(progress, 2);
+
       const currentCount = Math.floor(easedProgress * totalChars);
       setDisplayedLength(currentCount);
 
@@ -116,7 +127,7 @@ export function CodeTyper({
 
   const displayedText = snippet.slice(0, displayedLength);
   const highlightedContent = useMemo(
-    () => highlightHTML(displayedText),
+    () => highlightCPP(displayedText),
     [displayedText]
   );
 
