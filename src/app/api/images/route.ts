@@ -1,14 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import path from "path";
 
-// Cloudinary Configuration
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Supported image extensions
+const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".JPG", ".PNG", ".JPEG"];
 
-// POST: Upload an image
+// GET: Fetch images from the public folder
+export async function GET() {
+    try {
+        const publicDir = path.join(process.cwd(), "public");
+
+        if (!fs.existsSync(publicDir)) {
+            return NextResponse.json({ error: "Public directory not found" }, { status: 404 });
+        }
+
+        const files = fs.readdirSync(publicDir);
+
+        const images = files
+            .filter((file) => {
+                const ext = path.extname(file);
+                return IMAGE_EXTENSIONS.includes(ext);
+            })
+            .map((file) => ({
+                id: path.basename(file, path.extname(file)),
+                url: `/${file}`,
+                filename: file,
+            }));
+
+        return NextResponse.json(images);
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
+
+// POST: Upload an image to the public folder
 export async function POST(req: NextRequest) {
     try {
         const formData = await req.formData();
@@ -21,42 +46,24 @@ export async function POST(req: NextRequest) {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        // Upload to Cloudinary via stream
-        const result = await new Promise<any>((resolve, reject) => {
-            cloudinary.uploader.upload_stream(
-                { folder: "core-images" },
-                (error, result) => {
-                    if (error) reject(error);
-                    else resolve(result);
-                }
-            ).end(buffer);
-        });
+        const publicDir = path.join(process.cwd(), "public");
+        const filename = file.name;
+        const filePath = path.join(publicDir, filename);
+
+        // Ensure public directory exists
+        if (!fs.existsSync(publicDir)) {
+            fs.mkdirSync(publicDir, { recursive: true });
+        }
+
+        // Write file to public folder
+        fs.writeFileSync(filePath, buffer);
 
         return NextResponse.json({
-            id: result.public_id,
-            url: result.secure_url,
+            id: path.basename(filename, path.extname(filename)),
+            url: `/${filename}`,
+            filename: filename,
         }, { status: 201 });
 
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-// GET: Fetch images from Cloudinary
-export async function GET() {
-    try {
-        const result = await cloudinary.search
-            .expression("folder:core-images")
-            .sort_by("created_at", "desc")
-            .max_results(50)
-            .execute();
-
-        const images = result.resources.map((img: any) => ({
-            id: img.public_id,
-            url: img.secure_url,
-        }));
-
-        return NextResponse.json(images);
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
