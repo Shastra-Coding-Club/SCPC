@@ -73,9 +73,9 @@ export function Navbar() {
         {/* Right Section - CTA */}
         <div className="flex items-center gap-2">
           {/* Register Button */}
-          <a 
-            id="site-register" 
-            href="/" 
+          <a
+            id="site-register"
+            href="/"
             onClick={(e) => handleNavClick(e, 'contact')}
           >
             <Button size="sm" className="rounded-lg bg-[#f97316] px-5 text-white shadow-md hover:bg-[#e55f10] active:scale-[0.98] transition-all duration-200">
@@ -110,19 +110,9 @@ export function Navbar() {
                 </a>
               ))}
               <hr className="border-gray-200 my-2" />
-              
-              <a 
-                href="/" 
-                onClick={(e) => handleNavClick(e, 'contact')}
-                className="block"
-              >
-                <Button variant="ghost" className="w-full justify-start text-gray-700 hover:text-black">
-                  Contact
-                </Button>
-              </a>
-              
-              <a 
-                href="/" 
+
+              <a
+                href="/"
                 onClick={(e) => handleNavClick(e, 'contact')}
                 className="block"
               >
