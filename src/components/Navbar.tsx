@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { SCPC_LOGO_URL } from "@/lib/constants"
 
 // We use 'id' to find the section, but 'label' for the text.
 const navLinks = [
@@ -52,7 +53,7 @@ export function Navbar() {
       >
         {/* Logo */}
         <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer">
-          <img id="site-header-logo" src="/scpc.png" alt="SCPC logo" width={44} height={44} />
+          <img id="site-header-logo" src={SCPC_LOGO_URL} alt="SCPC logo" width={44} height={44} />
           <span className="sr-only">SCPC</span>
         </a>
 
