@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
+import { MEMBER_IMAGE_URLS } from "@/lib/constants"
 
 // Premium Animated Organizational Graph with Beautiful Edges
 
@@ -10,6 +11,7 @@ interface TeamMember {
   name: string
   role: string
   tier: "leadership" | "core" | "subcore" | "advisory"
+  image?: string
 }
 
 // Animated Node Component
@@ -46,8 +48,12 @@ function AnimatedNode({
     advisory: "0 0 15px rgba(156, 163, 175, 0.3)"
   }
 
-  const avatar = (name: string, bg: string) =>
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=ffffff&rounded=true&size=256`
+  // Use local image if available, otherwise fallback to avatar API
+  const getImageSrc = (name: string, bg: string) => {
+    const localImage = member.image || MEMBER_IMAGE_URLS[name]
+    if (localImage) return localImage
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=ffffff&rounded=true&size=256`
+  }
 
   return (
     <motion.div
@@ -64,7 +70,7 @@ function AnimatedNode({
         className={`${sizeClasses[size]} rounded-full overflow-hidden ${ringColors[member.tier]} bg-white`}
       >
         <motion.img
-          src={avatar(member.name, avatarBg)}
+          src={getImageSrc(member.name, avatarBg)}
           alt={member.name}
           className="w-full h-full object-cover"
           initial={{ filter: "blur(10px)" }}
