@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { CodeTyper } from "./CodeTyper";
 import "../styles/loader.css";
+import { SCPC_LOGO_URL } from "@/lib/constants";
 
 // C++ Competitive Programming Template
 const CPP_SNIPPET = `#include <bits/stdc++.h>
@@ -357,7 +358,7 @@ export function Loader({
       >
         <img
           ref={logoImgRef}
-          src="/scpc.png"
+          src={SCPC_LOGO_URL}
           alt="SCPC Logo"
           className="loader-logo"
           draggable={false}
