@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 import { Copy, Check } from "lucide-react"
+import { SCPC_LOGO_URL } from "@/lib/constants"
 
 export function Hero() {
   const [copied, setCopied] = useState(false)
@@ -56,7 +57,7 @@ export function Hero() {
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "url('/scpc.png')",
+          backgroundImage: `url('${SCPC_LOGO_URL}')`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: '35%',
