@@ -1,514 +1,403 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { MEMBER_IMAGE_URLS } from "@/lib/constants"
 
-// Premium Animated Organizational Graph with Beautiful Edges
+// Binary Tree - Clean Alignment
 
 interface TeamMember {
   id: string
   name: string
   role: string
   tier: "leadership" | "core" | "subcore" | "advisory"
-  image?: string
+  index: number
 }
 
-// Animated Node Component
-function AnimatedNode({
-  member,
-  delay,
-  avatarBg,
-  size = "md",
-  shouldAnimate
+// Node with separate avatar ref for edge connections
+function TreeNode({
+  member, delay, size, isVisible, onAvatarRef
 }: {
   member: TeamMember
   delay: number
-  avatarBg: string
-  size?: "lg" | "md" | "sm"
-  shouldAnimate: boolean
+  size: "lg" | "md" | "sm"
+  isVisible: boolean
+  onAvatarRef?: (el: HTMLDivElement | null) => void
 }) {
-  const sizeClasses = {
-    lg: "w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32",
-    md: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
-    sm: "w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18"
+  const sizes = {
+    lg: { avatar: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24", text: "w-24 sm:w-28 md:w-32" },
+    md: { avatar: "w-12 h-12 sm:w-16 sm:h-16 md:w-18 md:h-18", text: "w-20 sm:w-24 md:w-28" },
+    sm: { avatar: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14", text: "w-16 sm:w-20 md:w-24" }
+  }
+  const rings = {
+    leadership: "ring-amber-400",
+    core: "ring-blue-500",
+    subcore: "ring-green-500",
+    advisory: "ring-purple-500"
+  }
+  const badges = {
+    leadership: "bg-amber-500",
+    core: "bg-blue-500",
+    subcore: "bg-green-500",
+    advisory: "bg-purple-500"
   }
 
-  const ringColors = {
-    leadership: "ring-4 ring-amber-400",
-    core: "ring-[3px] ring-blue-500",
-    subcore: "ring-2 ring-orange-400",
-    advisory: "ring-2 ring-gray-400"
+  const getImg = (name: string) => {
+    const local = MEMBER_IMAGE_URLS[name]
+    return local || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f1f5f9&color=334155&rounded=true&size=200`
   }
 
-  const glowColors = {
-    leadership: "0 0 30px rgba(251, 191, 36, 0.5)",
-    core: "0 0 20px rgba(59, 130, 246, 0.4)",
-    subcore: "0 0 15px rgba(251, 146, 60, 0.3)",
-    advisory: "0 0 15px rgba(156, 163, 175, 0.3)"
-  }
-
-  // Use local image if available, otherwise fallback to avatar API
-  const getImageSrc = (name: string, bg: string) => {
-    const localImage = member.image || MEMBER_IMAGE_URLS[name]
-    if (localImage) return localImage
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${bg}&color=ffffff&rounded=true&size=256`
-  }
+  const cfg = sizes[size]
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0, y: 20 }}
-      animate={shouldAnimate ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0, y: 20 }}
-      transition={{ type: "spring", stiffness: 100, damping: 15, delay }}
-      whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
-      className="flex flex-col items-center gap-2 cursor-pointer group"
+      initial={{ opacity: 0, scale: 0.5, y: 10 }}
+      animate={isVisible ? { opacity: 1, scale: 1, y: 0 } : {}}
+      transition={{ type: "spring", stiffness: 200, damping: 20, delay }}
+      className="flex flex-col items-center relative z-10"
     >
-      <motion.div
-        initial={{ boxShadow: "0 0 0px rgba(0,0,0,0)" }}
-        animate={shouldAnimate ? { boxShadow: glowColors[member.tier] } : {}}
-        transition={{ delay: delay + 0.3, duration: 0.5 }}
-        className={`${sizeClasses[size]} rounded-full overflow-hidden ${ringColors[member.tier]} bg-white`}
-      >
-        <motion.img
-          src={getImageSrc(member.name, avatarBg)}
-          alt={member.name}
-          className="w-full h-full object-cover"
-          initial={{ filter: "blur(10px)" }}
-          animate={shouldAnimate ? { filter: "blur(0px)" } : {}}
-          transition={{ delay: delay + 0.1, duration: 0.4 }}
-        />
-      </motion.div>
-      <motion.div
-        className="text-center"
-        initial={{ opacity: 0, y: 10 }}
-        animate={shouldAnimate ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: delay + 0.2, duration: 0.4 }}
-      >
-        <div className="font-bold text-black text-sm sm:text-base group-hover:text-blue-600 transition-colors">
-          {member.name}
-        </div>
-        <div className="text-xs text-gray-500 font-medium">{member.role}</div>
-      </motion.div>
+      {/* Avatar container - this is what edges connect to */}
+      <div ref={onAvatarRef} className="relative mb-2">
+        <motion.div
+          initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
+          animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
+          transition={{ delay: delay + 0.2 }}
+          className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100`}
+        >
+          <img src={getImg(member.name)} alt={member.name} className="w-full h-full object-cover" loading="lazy" />
+        </motion.div>
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={isVisible ? { scale: 1 } : {}}
+          transition={{ type: "spring", delay: delay + 0.15 }}
+          className={`absolute -top-1 -right-1 w-5 h-5 ${badges[member.tier]} text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md`}
+        >
+          {member.index}
+        </motion.span>
+      </div>
+      {/* Text - wider container for proper centering */}
+      <div className={`text-center ${cfg.text}`}>
+        <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight truncate">{member.name}</div>
+        <div className="text-gray-500 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
+      </div>
     </motion.div>
   )
 }
 
-// Premium Animated Edge with Glow and Flow Effect
-function PremiumEdge({
-  from,
-  to,
-  delay,
-  gradientId,
-  glowColor,
-  strokeWidth = 2,
-  shouldAnimate
+// Edge with proper path
+function AnimatedEdge({
+  x1, y1, x2, y2, delay, color, isVisible
 }: {
-  from: { x: number; y: number } | null
-  to: { x: number; y: number } | null
-  delay: number
-  gradientId: string
-  glowColor: string
-  strokeWidth?: number
-  shouldAnimate: boolean
+  x1: number; y1: number; x2: number; y2: number
+  delay: number; color: string; isVisible: boolean
 }) {
-  if (!from || !to) return null
-
-  // Calculate smooth S-curve path
-  const dx = to.x - from.x
-  const dy = to.y - from.y
-  const isVertical = Math.abs(dy) > Math.abs(dx)
-
-  let path: string
-
-  if (isVertical) {
-    // Vertical connection - smooth S-curve
-    const midY = from.y + dy * 0.5
-    const curveStrength = Math.min(Math.abs(dx) * 0.5, 50)
-    path = `M ${from.x} ${from.y} 
-            C ${from.x} ${from.y + dy * 0.3}, 
-              ${from.x + (dx > 0 ? curveStrength : -curveStrength)} ${midY},
-              ${from.x + dx * 0.5} ${midY}
-            S ${to.x} ${to.y - dy * 0.3},
-              ${to.x} ${to.y}`
-  } else {
-    // Horizontal connection - gentle arc
-    const midX = from.x + dx * 0.5
-    const arcHeight = Math.min(Math.abs(dy) * 0.3, 30)
-    path = `M ${from.x} ${from.y} 
-            Q ${midX} ${from.y + (dy > 0 ? arcHeight : -arcHeight)}, 
-              ${to.x} ${to.y}`
-  }
-
-  const uniqueId = `edge-${from.x}-${from.y}-${to.x}-${to.y}`.replace(/\./g, '-')
+  const midY = y1 + (y2 - y1) * 0.5
+  const path = `M ${x1} ${y1} V ${midY} H ${x2} V ${y2}`
 
   return (
     <g>
-      {/* Glow layer */}
       <motion.path
         d={path}
-        stroke={glowColor}
-        strokeWidth={strokeWidth * 4}
+        stroke={color}
+        strokeWidth={8}
         fill="none"
         strokeLinecap="round"
-        opacity={0.3}
-        filter="blur(8px)"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={shouldAnimate ? { pathLength: 1, opacity: 0.3 } : { pathLength: 0, opacity: 0 }}
-        transition={{ pathLength: { duration: 1.5, delay, ease: "easeInOut" }, opacity: { duration: 0.5, delay } }}
+        strokeLinejoin="round"
+        opacity={0.08}
+        initial={{ pathLength: 0 }}
+        animate={isVisible ? { pathLength: 1 } : {}}
+        transition={{ duration: 0.7, delay, ease: "easeOut" }}
       />
-
-      {/* Main edge line */}
       <motion.path
         d={path}
-        stroke={`url(#${gradientId})`}
-        strokeWidth={strokeWidth}
+        stroke={color}
+        strokeWidth={2}
         fill="none"
         strokeLinecap="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={shouldAnimate ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-        transition={{ pathLength: { duration: 1.5, delay, ease: "easeInOut" }, opacity: { duration: 0.3, delay } }}
+        strokeLinejoin="round"
+        opacity={0.6}
+        initial={{ pathLength: 0 }}
+        animate={isVisible ? { pathLength: 1 } : {}}
+        transition={{ duration: 0.7, delay, ease: "easeOut" }}
       />
-
-      {/* Animated flowing dot */}
       <motion.circle
         r={3}
-        fill={glowColor}
-        filter={`drop-shadow(0 0 4px ${glowColor})`}
+        fill={color}
         initial={{ opacity: 0 }}
-        animate={shouldAnimate ? { opacity: [0, 1, 1, 0] } : { opacity: 0 }}
-        transition={{ duration: 2, delay: delay + 1.5, repeat: Infinity, repeatDelay: 3 }}
+        animate={isVisible ? { opacity: [0, 0.8, 0.8, 0] } : {}}
+        transition={{ duration: 2, delay: delay + 1.2, repeat: Infinity, repeatDelay: 4 }}
       >
-        <animateMotion
-          dur="2s"
-          repeatCount="indefinite"
-          begin={`${delay + 1.5}s`}
-          path={path}
-        />
+        <animateMotion dur="2s" repeatCount="indefinite" path={path} />
       </motion.circle>
     </g>
   )
 }
 
+// Glass Label
+function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colorClass: string; delay: number; isVisible: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10, scale: 0.85 }}
+      animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      className={`relative z-30 inline-block px-5 py-2 rounded-2xl text-[10px] sm:text-xs font-bold uppercase tracking-wider
+        backdrop-blur-xl bg-gradient-to-br from-white/80 via-white/60 to-white/40
+        border border-white/60 shadow-lg shadow-black/5 ${colorClass}`}
+    >
+      {text}
+    </motion.div>
+  )
+}
+
 export function TeamTree() {
-  const coreTable = `
+  const parse = (txt: string, tier: TeamMember["tier"], start: number): TeamMember[] =>
+    txt.trim().split('\n').map((line, i) => {
+      const p = line.split('\t')
+      return { id: `${tier}-${i}`, name: p[6] || '', role: p[7] || '', tier, index: start + i }
+    })
+
+  const advisory = parse(`
+1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Representative
+2	BE/BT	22-E&CS10-26	E&CS	NA	10	Rohan Dol	Advisory
+3	BE/BT	23-AI&ML67-26	AI&ML	NA	67	Adnan Qureshi	Advisory`, 'advisory', 0)
+
+  const leadership = parse(`
 1	TE/TT	23-COMPSA35-27	COMP	A	35	Aayush Dubey	Chairperson
-2	TE/TT	23-AI&DSB62-27	AI&DS	B	62	Swamini Yesade	Vice Chairperson
+2	TE/TT	23-AI&DSB62-27	AI&DS	B	62	Swamini Yesade	Vice Chairperson`, 'leadership', advisory.length)
+
+  const core = parse(`
 3	TE/TT	23-E&CS48-27	E&CS	N/A	48	Chetan Sharma	Technical Lead
 4	TE/TT	23-COMPSA36-27	COMP	A	36	Ayush Dubey	Documentation Lead
 5	TE/TT	23-COMPSA21-27	COMP	A	21	Pranjal Chavan	Creative Lead
 6	TE/TT	23-AI&MLA42-27	AI&ML	A	42	Rudra Sharma	Research Lead
-7	TE/TT	23-AI&DSB12-27	AI&DS	B	12	Kanchan Saini	PR & Marketing Lead
-`
+7	TE/TT	23-AI&DSB12-27	AI&DS	B	12	Kanchan Saini	PR & Marketing Lead`, 'core', advisory.length + leadership.length)
 
-  const subCoreTable = `
+  const subCore = parse(`
 1	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kshitij Yadav	Problem Setters Head
 2	TE/TT	23-ITC30-27	IT	C	30	Shreyansh Singh	Editorialists Head
 3	SE/ST	24-COMPSA32-28	COMP	A	32	Purva Gade	Documentation Head
 4	TE/TT	23-E&CS30-27	E&CS	N/A	30	Shivam Pandey	Research Head
-5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	Creative Head
-`
+5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	Creative Head`, 'subcore', advisory.length + leadership.length + core.length)
 
-  const advisoryTable = `
-1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Representative
-2	BE/BT	22-E&CS10-26	E&CS	NA	10	Rohan Dol	Advisory
-3	BE/BT	23-AI&ML67-26	AI&ML	NA	67	Adnan Qureshi	Advisory
-`
-
-  const parseTable = (txt: string, prefix: string, tier: TeamMember["tier"]): TeamMember[] => {
-    return txt.trim().split('\n').map((line, idx) => {
-      const parts = line.split('\t').map((s) => s.trim())
-      return { id: `${prefix}${idx + 1}`, name: parts[6] || `Member ${idx + 1}`, role: parts[7] || '', tier }
-    })
-  }
-
-  const leadership = parseTable(coreTable, 'l', 'leadership').slice(0, 2)
-  const core = parseTable(coreTable, 'c', 'core').slice(2)
-  const subCore = parseTable(subCoreTable, 's', 'subcore')
-  const advisory = parseTable(advisoryTable, 'a', 'advisory')
-
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({})
+  const containerRef = useRef<HTMLDivElement>(null)
+  const avatarRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const [positions, setPositions] = useState<Record<string, { x: number; y: number; bottom: number }>>({})
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.1 }
-    )
-    if (containerRef.current) observer.observe(containerRef.current)
-    return () => observer.disconnect()
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setIsVisible(true); obs.disconnect() }
+    }, { threshold: 0.1 })
+    if (containerRef.current) obs.observe(containerRef.current)
+    return () => obs.disconnect()
   }, [])
+
+  const calcPos = useCallback(() => {
+    const c = containerRef.current
+    if (!c) return
+    const cRect = c.getBoundingClientRect()
+
+    const pos: typeof positions = {}
+    ;[...advisory, ...leadership, ...core, ...subCore].forEach(m => {
+      const el = avatarRefs.current[m.id]
+      if (el) {
+        const r = el.getBoundingClientRect()
+        // Track avatar center for edge connections
+        pos[m.id] = { 
+          x: r.left + r.width / 2 - cRect.left, 
+          y: r.top - cRect.top, 
+          bottom: r.bottom - cRect.top 
+        }
+      }
+    })
+    setPositions(pos)
+  }, [advisory, leadership, core, subCore])
 
   useEffect(() => {
     if (!isVisible) return
+    const t = [150, 500, 1000, 1800].map(d => setTimeout(calcPos, d))
+    window.addEventListener('resize', calcPos)
+    return () => { t.forEach(clearTimeout); window.removeEventListener('resize', calcPos) }
+  }, [isVisible, calcPos])
 
-    const calculate = () => {
-      const container = containerRef.current
-      if (!container) return
-      const rect = container.getBoundingClientRect()
-      const pos: Record<string, { x: number; y: number }> = {}
-        ;[...leadership, ...core, ...subCore, ...advisory].forEach((n) => {
-          const el = nodeRefs.current[n.id]
-          if (el) {
-            const r = el.getBoundingClientRect()
-            pos[n.id] = { x: r.left + r.width / 2 - rect.left, y: r.top + r.height / 2 - rect.top }
-          }
-        })
-      setPositions(pos)
+  const D = { ADV: 0, LEAD: 0.3, CORE: 0.65, SUB: 1.0 }
+  const hasPos = Object.keys(positions).length >= advisory.length + leadership.length + core.length + subCore.length
+
+  // Get center X and bottom Y for a tier (for edge starting points)
+  const getTierCenter = (members: TeamMember[]) => {
+    const ps = members.map(m => positions[m.id]).filter(Boolean)
+    if (ps.length === 0) return null
+    return {
+      x: ps.reduce((s, p) => s + p.x, 0) / ps.length,
+      bottom: Math.max(...ps.map(p => p.bottom))
     }
-
-    const timeouts = [500, 1500, 3000, 5000].map(t => setTimeout(calculate, t))
-    window.addEventListener('resize', calculate)
-    return () => {
-      timeouts.forEach(clearTimeout)
-      window.removeEventListener('resize', calculate)
-    }
-  }, [isVisible])
-
-  const PHASE = {
-    LEADERSHIP: 0.2,
-    LEADERSHIP_EDGES: 0.9,
-    CORE: 1.3,
-    CORE_EDGES: 2.2,
-    SUBCORE: 3.0,
-    SUBCORE_EDGES: 3.8,
-    ADVISORY: 4.4,
-    ADVISORY_EDGES: 5.0,
   }
 
   return (
     <section className="py-16 bg-gradient-to-b from-white via-gray-50/30 to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4">
         <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 15 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-black mb-2">Organising Committee</h2>
-          <p className="text-gray-600">The brilliant minds behind SCPC 2026</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Organising Committee</h2>
+          <p className="text-gray-500 text-sm">The team behind SCPC 2026</p>
         </motion.div>
 
-        <div
-          ref={containerRef}
-          className="relative bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 lg:p-12 shadow-lg overflow-visible"
-        >
-          {/* Subtle background pattern */}
-          <div className="absolute inset-0 opacity-[0.02] pointer-events-none rounded-2xl overflow-hidden">
-            <svg width="100%" height="100%">
-              <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#000" strokeWidth="1" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
+        <div ref={containerRef} className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-4 sm:p-8 shadow-sm overflow-hidden">
+          
+          {/* SVG Edges */}
+          {hasPos && (
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+              {/* Advisory → Leadership */}
+              {(() => {
+                const adv = getTierCenter(advisory)
+                const lead = getTierCenter(leadership)
+                if (!adv || !lead) return null
+                
+                // Draw from advisory center to center between leadership, then split
+                return leadership.map((l, i) => {
+                  const lp = positions[l.id]
+                  if (!lp) return null
+                  return (
+                    <AnimatedEdge
+                      key={`a-l-${i}`}
+                      x1={adv.x}
+                      y1={adv.bottom + 8}
+                      x2={lp.x}
+                      y2={lp.y - 5}
+                      delay={D.LEAD + 0.15 + i * 0.06}
+                      color="#a78bfa"
+                      isVisible={isVisible}
+                    />
+                  )
+                })
+              })()}
 
-          {/* Advisory Row */}
-          <div className="relative z-10 mb-10">
-            <motion.div
-              className="text-center mb-4"
-              initial={{ opacity: 0 }}
-              animate={isVisible ? { opacity: 1 } : {}}
-              transition={{ delay: PHASE.ADVISORY }}
-            >
-              <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Advisory Board
-              </span>
-            </motion.div>
-            <div className="flex items-center justify-center gap-8 sm:gap-12 md:gap-16">
-              {advisory.map((m, idx) => (
-                <div key={m.id} ref={(el) => { nodeRefs.current[m.id] = el }}>
-                  <AnimatedNode member={m} delay={PHASE.ADVISORY + idx * 0.15} avatarBg="6b7280" size="sm" shouldAnimate={isVisible} />
-                </div>
-              ))}
-            </div>
-          </div>
+              {/* Leadership → Core - from CENTER between both leaders */}
+              {(() => {
+                const lead = getTierCenter(leadership)
+                if (!lead) return null
+                
+                return core.map((c, i) => {
+                  const cp = positions[c.id]
+                  if (!cp) return null
+                  return (
+                    <AnimatedEdge
+                      key={`l-c-${i}`}
+                      x1={lead.x}
+                      y1={lead.bottom + 8}
+                      x2={cp.x}
+                      y2={cp.y - 5}
+                      delay={D.CORE + 0.15 + i * 0.05}
+                      color="#fbbf24"
+                      isVisible={isVisible}
+                    />
+                  )
+                })
+              })()}
 
-          {/* Divider */}
-          <motion.div
-            className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-10"
-            initial={{ scaleX: 0 }}
-            animate={isVisible ? { scaleX: 1 } : {}}
-            transition={{ delay: PHASE.ADVISORY + 0.4, duration: 1 }}
-          />
-
-          {/* Leadership Row */}
-          <div className="relative z-10 mb-10">
-            <motion.div
-              className="text-center mb-5"
-              initial={{ opacity: 0 }}
-              animate={isVisible ? { opacity: 1 } : {}}
-              transition={{ delay: PHASE.LEADERSHIP - 0.1 }}
-            >
-              <span className="inline-block px-3 py-1 bg-amber-100 rounded-full text-xs font-semibold text-amber-600 uppercase tracking-wider">
-                Leadership
-              </span>
-            </motion.div>
-            <div className="flex items-center justify-center gap-16 sm:gap-20 md:gap-28">
-              {leadership.map((m, idx) => (
-                <div key={m.id} ref={(el) => { nodeRefs.current[m.id] = el }}>
-                  <AnimatedNode member={m} delay={PHASE.LEADERSHIP + idx * 0.3} avatarBg="f59e0b" size="lg" shouldAnimate={isVisible} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Core Team Row */}
-          <div className="relative z-10 mb-10">
-            <motion.div
-              className="text-center mb-5"
-              initial={{ opacity: 0 }}
-              animate={isVisible ? { opacity: 1 } : {}}
-              transition={{ delay: PHASE.CORE - 0.1 }}
-            >
-              <span className="inline-block px-3 py-1 bg-blue-100 rounded-full text-xs font-semibold text-blue-600 uppercase tracking-wider">
-                Core Team
-              </span>
-            </motion.div>
-            <div className="flex items-center justify-center flex-wrap gap-6 sm:gap-8 md:gap-10">
-              {core.map((m, idx) => (
-                <div key={m.id} ref={(el) => { nodeRefs.current[m.id] = el }}>
-                  <AnimatedNode member={m} delay={PHASE.CORE + idx * 0.1} avatarBg="3b82f6" size="md" shouldAnimate={isVisible} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* SubCore Team Row */}
-          <div className="relative z-10">
-            <motion.div
-              className="text-center mb-5"
-              initial={{ opacity: 0 }}
-              animate={isVisible ? { opacity: 1 } : {}}
-              transition={{ delay: PHASE.SUBCORE - 0.1 }}
-            >
-              <span className="inline-block px-3 py-1 bg-orange-100 rounded-full text-xs font-semibold text-orange-600 uppercase tracking-wider">
-                Sub-Core Team
-              </span>
-            </motion.div>
-            <div className="flex items-center justify-center flex-wrap gap-6 sm:gap-8 md:gap-10">
-              {subCore.map((m, idx) => (
-                <div key={m.id} ref={(el) => { nodeRefs.current[m.id] = el }}>
-                  <AnimatedNode member={m} delay={PHASE.SUBCORE + idx * 0.1} avatarBg="f97316" size="md" shouldAnimate={isVisible} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Premium SVG Edges */}
-          {Object.keys(positions).length > 0 && (
-            <svg className="absolute inset-0 pointer-events-none z-[1]" width="100%" height="100%" style={{ overflow: 'visible' }}>
-              <defs>
-                {/* Premium gradients */}
-                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#fbbf24" />
-                  <stop offset="50%" stopColor="#f59e0b" />
-                  <stop offset="100%" stopColor="#fbbf24" />
-                </linearGradient>
-                <linearGradient id="blueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#60a5fa" />
-                  <stop offset="50%" stopColor="#3b82f6" />
-                  <stop offset="100%" stopColor="#60a5fa" />
-                </linearGradient>
-                <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#fb923c" />
-                  <stop offset="50%" stopColor="#f97316" />
-                  <stop offset="100%" stopColor="#fb923c" />
-                </linearGradient>
-                <linearGradient id="grayGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="#d1d5db" />
-                  <stop offset="50%" stopColor="#9ca3af" />
-                  <stop offset="100%" stopColor="#d1d5db" />
-                </linearGradient>
-
-                {/* Glow filters */}
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                  <feMerge>
-                    <feMergeNode in="coloredBlur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-
-              {/* Leadership connection */}
-              {leadership.length >= 2 && (
-                <PremiumEdge
-                  from={positions[leadership[0].id]}
-                  to={positions[leadership[1].id]}
-                  delay={PHASE.LEADERSHIP_EDGES}
-                  gradientId="goldGradient"
-                  glowColor="#fbbf24"
-                  strokeWidth={3}
-                  shouldAnimate={isVisible}
-                />
-              )}
-
-              {/* Leadership to Core */}
-              {core.map((c, idx) => (
-                <PremiumEdge
-                  key={`lc-${c.id}`}
-                  from={positions[leadership[0]?.id]}
-                  to={positions[c.id]}
-                  delay={PHASE.CORE_EDGES + idx * 0.08}
-                  gradientId="blueGradient"
-                  glowColor="#3b82f6"
-                  strokeWidth={2}
-                  shouldAnimate={isVisible}
-                />
-              ))}
-
-              {/* VCP to some core */}
-              {core.slice(0, 2).map((c, idx) => (
-                <PremiumEdge
-                  key={`vc-${c.id}`}
-                  from={positions[leadership[1]?.id]}
-                  to={positions[c.id]}
-                  delay={PHASE.CORE_EDGES + 0.3 + idx * 0.08}
-                  gradientId="blueGradient"
-                  glowColor="#3b82f6"
-                  strokeWidth={1.5}
-                  shouldAnimate={isVisible}
-                />
-              ))}
-
-              {/* Core to SubCore */}
-              {subCore.map((s, idx) => (
-                <PremiumEdge
-                  key={`cs-${s.id}`}
-                  from={positions[core[idx % core.length]?.id]}
-                  to={positions[s.id]}
-                  delay={PHASE.SUBCORE_EDGES + idx * 0.1}
-                  gradientId="orangeGradient"
-                  glowColor="#f97316"
-                  strokeWidth={1.5}
-                  shouldAnimate={isVisible}
-                />
-              ))}
-
-              {/* Advisory to Leadership */}
-              {advisory.map((a, idx) => (
-                <PremiumEdge
-                  key={`al-${a.id}`}
-                  from={positions[a.id]}
-                  to={positions[leadership[idx % leadership.length]?.id]}
-                  delay={PHASE.ADVISORY_EDGES + idx * 0.12}
-                  gradientId="grayGradient"
-                  glowColor="#9ca3af"
-                  strokeWidth={1.5}
-                  shouldAnimate={isVisible}
-                />
-              ))}
+              {/* Core → SubCore */}
+              {(() => {
+                const coreCenter = getTierCenter(core)
+                if (!coreCenter) return null
+                
+                return subCore.map((s, i) => {
+                  const sp = positions[s.id]
+                  if (!sp) return null
+                  return (
+                    <AnimatedEdge
+                      key={`c-s-${i}`}
+                      x1={coreCenter.x}
+                      y1={coreCenter.bottom + 8}
+                      x2={sp.x}
+                      y2={sp.y - 5}
+                      delay={D.SUB + 0.15 + i * 0.05}
+                      color="#3b82f6"
+                      isVisible={isVisible}
+                    />
+                  )
+                })
+              })()}
             </svg>
           )}
+
+          {/* Level 0: Advisory */}
+          <div className="relative z-10 mb-10 sm:mb-12">
+            <div className="text-center mb-4">
+              <GlassLabel text="Root — Advisory" colorClass="text-purple-600" delay={D.ADV} isVisible={isVisible} />
+            </div>
+            <div className="flex justify-center gap-4 sm:gap-6 md:gap-10">
+              {advisory.map((m, i) => (
+                <TreeNode 
+                  key={m.id} 
+                  member={m} 
+                  delay={D.ADV + 0.08 + i * 0.1} 
+                  size="sm" 
+                  isVisible={isVisible}
+                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Level 1: Leadership */}
+          <div className="relative z-10 mb-10 sm:mb-12">
+            <div className="text-center mb-4">
+              <GlassLabel text="Level 1 — Leadership" colorClass="text-amber-600" delay={D.LEAD} isVisible={isVisible} />
+            </div>
+            <div className="flex justify-center gap-8 sm:gap-12 md:gap-20">
+              {leadership.map((m, i) => (
+                <TreeNode 
+                  key={m.id} 
+                  member={m} 
+                  delay={D.LEAD + 0.08 + i * 0.12} 
+                  size="lg" 
+                  isVisible={isVisible}
+                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Level 2: Core */}
+          <div className="relative z-10 mb-10 sm:mb-12">
+            <div className="text-center mb-4">
+              <GlassLabel text="Level 2 — Core" colorClass="text-blue-600" delay={D.CORE} isVisible={isVisible} />
+            </div>
+            <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
+              {core.map((m, i) => (
+                <TreeNode 
+                  key={m.id} 
+                  member={m} 
+                  delay={D.CORE + 0.08 + i * 0.07} 
+                  size="md" 
+                  isVisible={isVisible}
+                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Level 3: SubCore */}
+          <div className="relative z-10">
+            <div className="text-center mb-4">
+              <GlassLabel text="Level 3 — SubCore" colorClass="text-green-600" delay={D.SUB} isVisible={isVisible} />
+            </div>
+            <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
+              {subCore.map((m, i) => (
+                <TreeNode 
+                  key={m.id} 
+                  member={m} 
+                  delay={D.SUB + 0.08 + i * 0.07} 
+                  size="md" 
+                  isVisible={isVisible}
+                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

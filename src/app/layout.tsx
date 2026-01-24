@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href={SCPC_LOGO_URL} type="image/png" sizes="32x32" />
         <link rel="icon" href={SCPC_LOGO_URL} type="image/png" sizes="any" />
@@ -45,6 +45,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <script dangerouslySetInnerHTML={{
           __html: `
