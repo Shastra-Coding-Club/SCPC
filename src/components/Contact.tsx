@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
@@ -46,8 +46,8 @@ export function Contact() {
     name: "",
     email: "",
     subject: "",
-    message: ""
-  })
+    message: "",
+  });
 
   const [visibleNodes, setVisibleNodes] = useState<number[]>([])
   const [currentNode, setCurrentNode] = useState(-1)
@@ -424,13 +424,22 @@ export function Contact() {
             <div className="bg-gray-50 border-2 border-black rounded-lg p-6">
               <h3 className="text-xl font-bold text-black mb-4">Follow Us</h3>
               <div className="flex gap-4">
-                <a href="#" className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+                <a
+                  href="#"
+                  className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+                >
                   <Linkedin className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+                <a
+                  href="#"
+                  className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+                >
                   <Twitter className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+                <a
+                  href="#"
+                  className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+                >
                   <Mail className="w-5 h-5" />
                 </a>
               </div>
@@ -439,5 +448,5 @@ export function Contact() {
         </div>
       </div>
     </section>
-  )
+  );
 }
