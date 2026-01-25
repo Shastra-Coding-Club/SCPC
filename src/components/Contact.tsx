@@ -49,6 +49,9 @@ export function Contact() {
     message: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ success: boolean; message: string } | null>(null);
+
   const [visibleNodes, setVisibleNodes] = useState<number[]>([])
   const [currentNode, setCurrentNode] = useState(-1)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -125,9 +128,40 @@ export function Contact() {
     return () => observer.disconnect()
   }, [startAnimation])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      // Use local proxy to avoid CORS
+      const response = await fetch("/api/query", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Name: formData.name,
+          Email: formData.email,
+          Subject: formData.subject,
+          Message: formData.message,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        setSubmitStatus({ success: true, message: result.message || "Query submitted successfully" })
+        setFormData({ name: "", email: "", subject: "", message: "" })
+        // Optionally reset visible nodes or show a success state in the UI
+      } else {
+        setSubmitStatus({ success: false, message: result.message || "Something went wrong" })
+      }
+    } catch (error) {
+      setSubmitStatus({ success: false, message: "Network error. Please try again." })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleInputChange = (id: string, value: string) => {
@@ -256,8 +290,8 @@ export function Contact() {
                               onChange={(e) => handleInputChange(node.id, e.target.value)}
                               placeholder={node.placeholder}
                               rows={3}
-                              disabled={!isVisible}
-                              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
+                              disabled={!isVisible || isSubmitting}
+                              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
                               required={node.required}
                             />
                           ) : (
@@ -266,8 +300,8 @@ export function Contact() {
                               value={formData[node.id as keyof typeof formData]}
                               onChange={(e) => handleInputChange(node.id, e.target.value)}
                               placeholder={node.placeholder}
-                              disabled={!isVisible}
-                              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
+                              disabled={!isVisible || isSubmitting}
+                              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
                               required={node.required}
                             />
                           )}
@@ -316,12 +350,28 @@ export function Contact() {
               >
                 <Button
                   type="submit"
-                  disabled={!isComplete}
+                  disabled={!isComplete || isSubmitting}
                   className="w-full bg-orange-500 text-white hover:bg-orange-600 py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  <Send className="w-4 h-4" />
-                  list.submit()
+                  {isSubmitting ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      list.submit()
+                    </>
+                  )}
                 </Button>
+                {submitStatus && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`mt-4 p-3 rounded-lg text-center font-mono text-sm ${submitStatus.success ? "bg-green-100 text-green-700 border border-green-200" : "bg-red-100 text-red-700 border border-red-200"
+                      }`}
+                  >
+                    // {submitStatus.message}
+                  </motion.div>
+                )}
               </motion.div>
             </form>
           </div>
