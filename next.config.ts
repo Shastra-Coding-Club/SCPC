@@ -27,6 +27,16 @@ const nextConfig: NextConfig = {
 
   // Strict mode for better debugging
   reactStrictMode: true,
+
+  // Proxy API requests to avoid CORS
+  async rewrites() {
+    return [
+      {
+        source: '/api/query',
+        destination: 'http://13.232.213.189:5000/api/query',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
