@@ -324,7 +324,7 @@ export function TeamTree() {
           {/* Level 0: Advisory */}
           <div className="relative z-10 mb-12 sm:mb-14">
             <div className="text-center mb-6">
-              <GlassLabel text="Root — Advisory" colorClass="text-purple-600" delay={D.ADV} isVisible={isVisible} />
+              <GlassLabel text="Advisory" colorClass="text-purple-600" delay={D.ADV} isVisible={isVisible} />
             </div>
             <div className="flex justify-center gap-5 sm:gap-8 md:gap-12">
               {advisory.map((m, i) => (
@@ -343,7 +343,7 @@ export function TeamTree() {
           {/* Level 1: Leadership */}
           <div className="relative z-10 mb-12 sm:mb-14">
             <div className="text-center mb-6">
-              <GlassLabel text="Level 1 — Leadership" colorClass="text-amber-600" delay={D.LEAD} isVisible={isVisible} />
+              <GlassLabel text="Leadership" colorClass="text-amber-600" delay={D.LEAD} isVisible={isVisible} />
             </div>
             <div className="flex justify-center gap-10 sm:gap-16 md:gap-24">
               {leadership.map((m, i) => (
@@ -362,7 +362,7 @@ export function TeamTree() {
           {/* Level 2: Core */}
           <div className="relative z-10 mb-12 sm:mb-14">
             <div className="text-center mb-6">
-              <GlassLabel text="Level 2 — Core" colorClass="text-blue-600" delay={D.CORE} isVisible={isVisible} />
+              <GlassLabel text="Core" colorClass="text-blue-600" delay={D.CORE} isVisible={isVisible} />
             </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
               {core.map((m, i) => (
@@ -381,7 +381,7 @@ export function TeamTree() {
           {/* Level 3: SubCore */}
           <div className="relative z-10">
             <div className="text-center mb-6">
-              <GlassLabel text="Level 3 — SubCore" colorClass="text-green-600" delay={D.SUB} isVisible={isVisible} />
+              <GlassLabel text="SubCore" colorClass="text-green-600" delay={D.SUB} isVisible={isVisible} />
             </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
               {subCore.map((m, i) => (
