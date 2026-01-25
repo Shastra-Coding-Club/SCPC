@@ -203,9 +203,10 @@ export function TeamTree() {
   const subCoreTable = `
 1	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kshitij Yadav	Problem Setters Head
 2	TE/TT	23-ITC30-27	IT	C	30	Shreyansh Singh	Editorialists Head
-3	SE/ST	24-COMPSA32-28	COMP	A	32	Purva Gade	Documentation Head
-4	TE/TT	23-E&CS30-27	E&CS	N/A	30	Shivam Pandey	Research Head
-5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	Creative Head
+3	TE/TT	23-UNKNOWN-27	COMP	A	00	Kashish	Creative Head
+4	SE/ST	24-COMPSA32-28	COMP	A	32	Purva Gade	Documentation Head
+5	TE/TT	23-E&CS30-27	E&CS	N/A	30	Shivam Pandey	Research Head
+6	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	PR Head
 `
 
   const advisoryTable = `
@@ -312,7 +313,7 @@ export function TeamTree() {
           </div>
 
           {/* Advisory Row */}
-          <div className="relative z-10 mb-10">
+          <div className="relative z-30 mb-10">
             <motion.div
               className="text-center mb-4"
               initial={{ opacity: 0 }}
@@ -341,7 +342,7 @@ export function TeamTree() {
           />
 
           {/* Leadership Row */}
-          <div className="relative z-10 mb-10">
+          <div className="relative z-30 mb-10">
             <motion.div
               className="text-center mb-5"
               initial={{ opacity: 0 }}
@@ -362,7 +363,7 @@ export function TeamTree() {
           </div>
 
           {/* Core Team Row */}
-          <div className="relative z-10 mb-10">
+          <div className="relative z-30 mb-10">
             <motion.div
               className="text-center mb-5"
               initial={{ opacity: 0 }}
@@ -383,7 +384,7 @@ export function TeamTree() {
           </div>
 
           {/* SubCore Team Row */}
-          <div className="relative z-10">
+          <div className="relative z-30">
             <motion.div
               className="text-center mb-5"
               initial={{ opacity: 0 }}
@@ -424,9 +425,9 @@ export function TeamTree() {
                   <stop offset="100%" stopColor="#fb923c" />
                 </linearGradient>
                 <linearGradient id="grayGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="#d1d5db" />
-                  <stop offset="50%" stopColor="#9ca3af" />
-                  <stop offset="100%" stopColor="#d1d5db" />
+                  <stop offset="0%" stopColor="#9ca3af" />
+                  <stop offset="50%" stopColor="#4b5563" />
+                  <stop offset="100%" stopColor="#9ca3af" />
                 </linearGradient>
 
                 {/* Glow filters */}
@@ -439,74 +440,107 @@ export function TeamTree() {
                 </filter>
               </defs>
 
-              {/* Leadership connection */}
+              {/* Leadership connection - Thicker & Darker */}
               {leadership.length >= 2 && (
                 <PremiumEdge
                   from={positions[leadership[0].id]}
                   to={positions[leadership[1].id]}
                   delay={PHASE.LEADERSHIP_EDGES}
                   gradientId="goldGradient"
-                  glowColor="#fbbf24"
-                  strokeWidth={3}
+                  glowColor="#b45309" // Dark amber
+                  strokeWidth={6} // Thicker
                   shouldAnimate={isVisible}
                 />
               )}
 
-              {/* Leadership to Core */}
-              {core.map((c, idx) => (
-                <PremiumEdge
-                  key={`lc-${c.id}`}
-                  from={positions[leadership[0]?.id]}
-                  to={positions[c.id]}
-                  delay={PHASE.CORE_EDGES + idx * 0.08}
-                  gradientId="blueGradient"
-                  glowColor="#3b82f6"
-                  strokeWidth={2}
-                  shouldAnimate={isVisible}
-                />
-              ))}
+              {/* Leadership Pair to Core - Unified Connection */}
+              {core.map((c, idx) => {
+                const l1 = positions[leadership[0]?.id]
+                const l2 = positions[leadership[1]?.id]
 
-              {/* VCP to some core */}
-              {core.slice(0, 2).map((c, idx) => (
-                <PremiumEdge
-                  key={`vc-${c.id}`}
-                  from={positions[leadership[1]?.id]}
-                  to={positions[c.id]}
-                  delay={PHASE.CORE_EDGES + 0.3 + idx * 0.08}
-                  gradientId="blueGradient"
-                  glowColor="#3b82f6"
-                  strokeWidth={1.5}
-                  shouldAnimate={isVisible}
-                />
-              ))}
+                if (!l1 || !l2) return null
 
-              {/* Core to SubCore */}
-              {subCore.map((s, idx) => (
-                <PremiumEdge
-                  key={`cs-${s.id}`}
-                  from={positions[core[idx % core.length]?.id]}
-                  to={positions[s.id]}
-                  delay={PHASE.SUBCORE_EDGES + idx * 0.1}
-                  gradientId="orangeGradient"
-                  glowColor="#f97316"
-                  strokeWidth={1.5}
-                  shouldAnimate={isVisible}
-                />
-              ))}
+                // Calculate midpoint between Chairperson and VCP
+                const midX = (l1.x + l2.x) / 2
+                const midY = (l1.y + l2.y) / 2 + 25 // Shifted down slightly
+
+                return (
+                  <PremiumEdge
+                    key={`lc-${c.id}`}
+                    from={{ x: midX, y: midY }}
+                    to={positions[c.id]}
+                    delay={PHASE.CORE_EDGES + idx * 0.08}
+                    gradientId="blueGradient"
+                    glowColor="#3b82f6"
+                    strokeWidth={2}
+                    shouldAnimate={isVisible}
+                  />
+                )
+              })}
+
+              {/* Core to SubCore - Custom Specific Connections */}
+              {/* Chetan (c3) -> Kshitij (s1) & Shreyansh (s2) */}
+              <PremiumEdge from={positions['c3']} to={positions['s1']} delay={PHASE.SUBCORE_EDGES} gradientId="orangeGradient" glowColor="#f97316" strokeWidth={1.5} shouldAnimate={isVisible} />
+              <PremiumEdge from={positions['c3']} to={positions['s2']} delay={PHASE.SUBCORE_EDGES + 0.1} gradientId="orangeGradient" glowColor="#f97316" strokeWidth={1.5} shouldAnimate={isVisible} />
+
+              {/* Pranjal (c5) -> Kashish (s3) */}
+              <PremiumEdge from={positions['c5']} to={positions['s3']} delay={PHASE.SUBCORE_EDGES + 0.2} gradientId="orangeGradient" glowColor="#f97316" strokeWidth={1.5} shouldAnimate={isVisible} />
+
+              {/* Ayush (c4) -> Purva (s4) */}
+              <PremiumEdge from={positions['c4']} to={positions['s4']} delay={PHASE.SUBCORE_EDGES + 0.3} gradientId="orangeGradient" glowColor="#f97316" strokeWidth={1.5} shouldAnimate={isVisible} />
+
+              {/* Rudra (c6) -> Shivam (s5) */}
+              <PremiumEdge from={positions['c6']} to={positions['s5']} delay={PHASE.SUBCORE_EDGES + 0.4} gradientId="orangeGradient" glowColor="#f97316" strokeWidth={1.5} shouldAnimate={isVisible} />
+
+              {/* Kanchan (c7) -> Pragnesh (s6) */}
+              <PremiumEdge from={positions['c7']} to={positions['s6']} delay={PHASE.SUBCORE_EDGES + 0.5} gradientId="orangeGradient" glowColor="#f97316" strokeWidth={1.5} shouldAnimate={isVisible} />
 
               {/* Advisory to Leadership */}
-              {advisory.map((a, idx) => (
+              {/* Advisory Peer Connections - Thicker & Darker */}
+              {advisory.slice(0, -1).map((a, idx) => (
                 <PremiumEdge
-                  key={`al-${a.id}`}
+                  key={`aa-${a.id}`}
                   from={positions[a.id]}
-                  to={positions[leadership[idx % leadership.length]?.id]}
-                  delay={PHASE.ADVISORY_EDGES + idx * 0.12}
+                  to={positions[advisory[idx + 1].id]}
+                  delay={PHASE.ADVISORY_EDGES}
                   gradientId="grayGradient"
-                  glowColor="#9ca3af"
-                  strokeWidth={1.5}
+                  glowColor="#4b5563" // Dark gray
+                  strokeWidth={5}
                   shouldAnimate={isVisible}
                 />
               ))}
+
+              {/* Advisory Group to Leadership Group - Unified Connection */}
+              {(() => {
+                if (leadership.length < 2 || advisory.length === 0) return null
+
+                const l1 = positions[leadership[0].id]
+                const l2 = positions[leadership[1].id]
+                const aFirst = positions[advisory[0].id]
+                const aLast = positions[advisory[advisory.length - 1].id]
+
+                if (!l1 || !l2 || !aFirst || !aLast) return null
+
+                // Leadership Midpoint (Target)
+                const lMidX = (l1.x + l2.x) / 2
+                const lMidY = (l1.y + l2.y) / 2
+
+                // Advisory Midpoint (Source)
+                const aMidX = (aFirst.x + aLast.x) / 2
+                const aMidY = (aFirst.y + aLast.y) / 2
+
+                return (
+                  <PremiumEdge
+                    from={{ x: aMidX, y: aMidY }}
+                    to={{ x: lMidX, y: lMidY }}
+                    delay={PHASE.ADVISORY_EDGES + 0.5}
+                    gradientId="grayGradient"
+                    glowColor="#4b5563" // Darker gray glow
+                    strokeWidth={4} // Thicker
+                    shouldAnimate={isVisible}
+                  />
+                )
+              })()}
             </svg>
           )}
         </div>
