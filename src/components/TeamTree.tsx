@@ -4,8 +4,6 @@ import { motion } from "framer-motion"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { MEMBER_IMAGE_URLS } from "@/lib/constants"
 
-// Binary Tree - Clean Alignment
-
 interface TeamMember {
   id: string
   name: string
@@ -14,7 +12,6 @@ interface TeamMember {
   index: number
 }
 
-// Node with ref for edge connections (tracks entire node)
 function TreeNode({
   member, delay, size, isVisible, onNodeRef
 }: {
@@ -134,7 +131,6 @@ function AnimatedEdge({
   )
 }
 
-// Glass Label with enhanced glassmorphism
 function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colorClass: string; delay: number; isVisible: boolean }) {
   return (
     <motion.div
@@ -259,7 +255,6 @@ export function TeamTree() {
                 const lead = getTierCenter(leadership)
                 if (!adv || !lead) return null
                 
-                // Draw from advisory center to center between leadership, then split
                 return leadership.map((l, i) => {
                   const lp = positions[l.id]
                   if (!lp) return null
