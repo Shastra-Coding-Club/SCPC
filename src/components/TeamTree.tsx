@@ -14,15 +14,15 @@ interface TeamMember {
   index: number
 }
 
-// Node with separate avatar ref for edge connections
+// Node with ref for edge connections (tracks entire node)
 function TreeNode({
-  member, delay, size, isVisible, onAvatarRef
+  member, delay, size, isVisible, onNodeRef
 }: {
   member: TeamMember
   delay: number
   size: "lg" | "md" | "sm"
   isVisible: boolean
-  onAvatarRef?: (el: HTMLDivElement | null) => void
+  onNodeRef?: (el: HTMLDivElement | null) => void
 }) {
   const sizes = {
     lg: { avatar: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24", text: "w-24 sm:w-28 md:w-32" },
@@ -51,13 +51,14 @@ function TreeNode({
 
   return (
     <motion.div
+      ref={onNodeRef}
       initial={{ opacity: 0, scale: 0.5, y: 10 }}
       animate={isVisible ? { opacity: 1, scale: 1, y: 0 } : {}}
       transition={{ type: "spring", stiffness: 200, damping: 20, delay }}
       className="flex flex-col items-center relative z-10"
     >
-      {/* Avatar container - this is what edges connect to */}
-      <div ref={onAvatarRef} className="relative mb-2">
+      {/* Avatar container */}
+      <div className="relative mb-2">
         <motion.div
           initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
           animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
@@ -133,18 +134,20 @@ function AnimatedEdge({
   )
 }
 
-// Glass Label
+// Glass Label with enhanced glassmorphism
 function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colorClass: string; delay: number; isVisible: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -10, scale: 0.85 }}
       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={`relative z-30 inline-block px-5 py-2 rounded-2xl text-[10px] sm:text-xs font-bold uppercase tracking-wider
-        backdrop-blur-xl bg-gradient-to-br from-white/80 via-white/60 to-white/40
-        border border-white/60 shadow-lg shadow-black/5 ${colorClass}`}
+      className={`relative z-30 inline-block px-6 py-2.5 rounded-2xl text-[10px] sm:text-xs font-bold uppercase tracking-wider
+        backdrop-blur-2xl bg-gradient-to-br from-white/90 via-white/70 to-white/50
+        border border-white/80 shadow-xl shadow-black/10
+        before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/40 before:to-transparent before:pointer-events-none
+        ${colorClass}`}
     >
-      {text}
+      <span className="relative z-10">{text}</span>
     </motion.div>
   )
 }
@@ -180,7 +183,7 @@ export function TeamTree() {
 5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	Creative Head`, 'subcore', advisory.length + leadership.length + core.length)
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const avatarRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const [positions, setPositions] = useState<Record<string, { x: number; y: number; bottom: number }>>({})
   const [isVisible, setIsVisible] = useState(false)
 
@@ -199,10 +202,10 @@ export function TeamTree() {
 
     const pos: typeof positions = {}
     ;[...advisory, ...leadership, ...core, ...subCore].forEach(m => {
-      const el = avatarRefs.current[m.id]
+      const el = nodeRefs.current[m.id]
       if (el) {
         const r = el.getBoundingClientRect()
-        // Track avatar center for edge connections
+        // Track entire node - center X, bottom Y for edge connections
         pos[m.id] = { 
           x: r.left + r.width / 2 - cRect.left, 
           y: r.top - cRect.top, 
@@ -245,7 +248,7 @@ export function TeamTree() {
           <p className="text-gray-500 text-sm">The team behind SCPC 2026</p>
         </motion.div>
 
-        <div ref={containerRef} className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-4 sm:p-8 shadow-sm overflow-hidden">
+        <div ref={containerRef} className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 sm:p-10 shadow-sm overflow-hidden">
           
           {/* SVG Edges */}
           {hasPos && (
@@ -324,11 +327,11 @@ export function TeamTree() {
           )}
 
           {/* Level 0: Advisory */}
-          <div className="relative z-10 mb-10 sm:mb-12">
-            <div className="text-center mb-4">
+          <div className="relative z-10 mb-12 sm:mb-14">
+            <div className="text-center mb-6">
               <GlassLabel text="Root — Advisory" colorClass="text-purple-600" delay={D.ADV} isVisible={isVisible} />
             </div>
-            <div className="flex justify-center gap-4 sm:gap-6 md:gap-10">
+            <div className="flex justify-center gap-5 sm:gap-8 md:gap-12">
               {advisory.map((m, i) => (
                 <TreeNode 
                   key={m.id} 
@@ -336,18 +339,18 @@ export function TeamTree() {
                   delay={D.ADV + 0.08 + i * 0.1} 
                   size="sm" 
                   isVisible={isVisible}
-                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                  onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
               ))}
             </div>
           </div>
 
           {/* Level 1: Leadership */}
-          <div className="relative z-10 mb-10 sm:mb-12">
-            <div className="text-center mb-4">
+          <div className="relative z-10 mb-12 sm:mb-14">
+            <div className="text-center mb-6">
               <GlassLabel text="Level 1 — Leadership" colorClass="text-amber-600" delay={D.LEAD} isVisible={isVisible} />
             </div>
-            <div className="flex justify-center gap-8 sm:gap-12 md:gap-20">
+            <div className="flex justify-center gap-10 sm:gap-16 md:gap-24">
               {leadership.map((m, i) => (
                 <TreeNode 
                   key={m.id} 
@@ -355,15 +358,15 @@ export function TeamTree() {
                   delay={D.LEAD + 0.08 + i * 0.12} 
                   size="lg" 
                   isVisible={isVisible}
-                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                  onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
               ))}
             </div>
           </div>
 
           {/* Level 2: Core */}
-          <div className="relative z-10 mb-10 sm:mb-12">
-            <div className="text-center mb-4">
+          <div className="relative z-10 mb-12 sm:mb-14">
+            <div className="text-center mb-6">
               <GlassLabel text="Level 2 — Core" colorClass="text-blue-600" delay={D.CORE} isVisible={isVisible} />
             </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
@@ -374,7 +377,7 @@ export function TeamTree() {
                   delay={D.CORE + 0.08 + i * 0.07} 
                   size="md" 
                   isVisible={isVisible}
-                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                  onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
               ))}
             </div>
@@ -382,7 +385,7 @@ export function TeamTree() {
 
           {/* Level 3: SubCore */}
           <div className="relative z-10">
-            <div className="text-center mb-4">
+            <div className="text-center mb-6">
               <GlassLabel text="Level 3 — SubCore" colorClass="text-green-600" delay={D.SUB} isVisible={isVisible} />
             </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
@@ -393,7 +396,7 @@ export function TeamTree() {
                   delay={D.SUB + 0.08 + i * 0.07} 
                   size="md" 
                   isVisible={isVisible}
-                  onAvatarRef={el => { avatarRefs.current[m.id] = el }}
+                  onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
               ))}
             </div>
