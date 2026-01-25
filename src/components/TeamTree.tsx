@@ -174,9 +174,10 @@ export function TeamTree() {
   const subCore = parse(`
 1	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kshitij Yadav	Problem Setters Head
 2	TE/TT	23-ITC30-27	IT	C	30	Shreyansh Singh	Editorialists Head
+3	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kashish	Creative Head
 3	SE/ST	24-COMPSA32-28	COMP	A	32	Purva Gade	Documentation Head
 4	TE/TT	23-E&CS30-27	E&CS	N/A	30	Shivam Pandey	Research Head
-5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	Creative Head`, 'subcore', advisory.length + leadership.length + core.length)
+5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	PR Head`, 'subcore', advisory.length + leadership.length + core.length)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -197,18 +198,18 @@ export function TeamTree() {
     const cRect = c.getBoundingClientRect()
 
     const pos: typeof positions = {}
-    ;[...advisory, ...leadership, ...core, ...subCore].forEach(m => {
-      const el = nodeRefs.current[m.id]
-      if (el) {
-        const r = el.getBoundingClientRect()
-        // Track entire node - center X, bottom Y for edge connections
-        pos[m.id] = { 
-          x: r.left + r.width / 2 - cRect.left, 
-          y: r.top - cRect.top, 
-          bottom: r.bottom - cRect.top 
+      ;[...advisory, ...leadership, ...core, ...subCore].forEach(m => {
+        const el = nodeRefs.current[m.id]
+        if (el) {
+          const r = el.getBoundingClientRect()
+          // Track entire node - center X, bottom Y for edge connections
+          pos[m.id] = {
+            x: r.left + r.width / 2 - cRect.left,
+            y: r.top - cRect.top,
+            bottom: r.bottom - cRect.top
+          }
         }
-      }
-    })
+      })
     setPositions(pos)
   }, [advisory, leadership, core, subCore])
 
@@ -245,7 +246,7 @@ export function TeamTree() {
         </motion.div>
 
         <div ref={containerRef} className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 sm:p-10 shadow-sm overflow-hidden">
-          
+
           {/* SVG Edges */}
           {hasPos && (
             <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
@@ -254,7 +255,7 @@ export function TeamTree() {
                 const adv = getTierCenter(advisory)
                 const lead = getTierCenter(leadership)
                 if (!adv || !lead) return null
-                
+
                 return leadership.map((l, i) => {
                   const lp = positions[l.id]
                   if (!lp) return null
@@ -277,7 +278,7 @@ export function TeamTree() {
               {(() => {
                 const lead = getTierCenter(leadership)
                 if (!lead) return null
-                
+
                 return core.map((c, i) => {
                   const cp = positions[c.id]
                   if (!cp) return null
@@ -300,7 +301,7 @@ export function TeamTree() {
               {(() => {
                 const coreCenter = getTierCenter(core)
                 if (!coreCenter) return null
-                
+
                 return subCore.map((s, i) => {
                   const sp = positions[s.id]
                   if (!sp) return null
@@ -328,11 +329,11 @@ export function TeamTree() {
             </div>
             <div className="flex justify-center gap-5 sm:gap-8 md:gap-12">
               {advisory.map((m, i) => (
-                <TreeNode 
-                  key={m.id} 
-                  member={m} 
-                  delay={D.ADV + 0.08 + i * 0.1} 
-                  size="sm" 
+                <TreeNode
+                  key={m.id}
+                  member={m}
+                  delay={D.ADV + 0.08 + i * 0.1}
+                  size="sm"
                   isVisible={isVisible}
                   onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
@@ -347,11 +348,11 @@ export function TeamTree() {
             </div>
             <div className="flex justify-center gap-10 sm:gap-16 md:gap-24">
               {leadership.map((m, i) => (
-                <TreeNode 
-                  key={m.id} 
-                  member={m} 
-                  delay={D.LEAD + 0.08 + i * 0.12} 
-                  size="lg" 
+                <TreeNode
+                  key={m.id}
+                  member={m}
+                  delay={D.LEAD + 0.08 + i * 0.12}
+                  size="lg"
                   isVisible={isVisible}
                   onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
@@ -366,11 +367,11 @@ export function TeamTree() {
             </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
               {core.map((m, i) => (
-                <TreeNode 
-                  key={m.id} 
-                  member={m} 
-                  delay={D.CORE + 0.08 + i * 0.07} 
-                  size="md" 
+                <TreeNode
+                  key={m.id}
+                  member={m}
+                  delay={D.CORE + 0.08 + i * 0.07}
+                  size="md"
                   isVisible={isVisible}
                   onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
@@ -385,11 +386,11 @@ export function TeamTree() {
             </div>
             <div className="flex justify-center flex-wrap gap-3 sm:gap-5 md:gap-8">
               {subCore.map((m, i) => (
-                <TreeNode 
-                  key={m.id} 
-                  member={m} 
-                  delay={D.SUB + 0.08 + i * 0.07} 
-                  size="md" 
+                <TreeNode
+                  key={m.id}
+                  member={m}
+                  delay={D.SUB + 0.08 + i * 0.07}
+                  size="md"
                   isVisible={isVisible}
                   onNodeRef={el => { nodeRefs.current[m.id] = el }}
                 />
