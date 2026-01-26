@@ -2,56 +2,254 @@
 
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import Image from "next/image"
+import React from 'react';
+import { ArrowRight, Terminal, Layers, Cpu } from 'lucide-react';
 
-// Code templates for the moving strip
+// --- DATA & ASSETS ---
 const codeTemplates = [
   {
     name: "two_sum.py",
     language: "Python",
-    code: `def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        if target - num in seen:\n            return [seen[target-num], i]\n        seen[num] = i`,
+    code: `def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        if target - num in seen:\n            return [seen[target-num], i]`,
     status: "Accepted",
     runtime: "4ms",
+    color: "text-blue-600"
   },
   {
     name: "binary_search.cpp",
     language: "C++",
-    code: `int binarySearch(vector<int>& arr, int target) {\n    int left = 0, right = arr.size() - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        if (arr[mid] == target) return mid;\n        arr[mid] < target ? left = mid + 1 : right = mid - 1;\n    }\n    return -1;\n}`,
+    code: `int binarySearch(vector<int>& arr, int target) {\n    int left = 0, right = arr.size() - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;`,
     status: "Accepted",
     runtime: "2ms",
+    color: "text-blue-600"
   },
   {
     name: "merge_sort.java",
     language: "Java",
-    code: `void mergeSort(int[] arr, int l, int r) {\n    if (l < r) {\n        int m = l + (r - l) / 2;\n        mergeSort(arr, l, m);\n        mergeSort(arr, m + 1, r);\n        merge(arr, l, m, r);\n    }\n}`,
+    code: `void mergeSort(int[] arr, int l, int r) {\n    if (l < r) {\n        int m = l + (r - l) / 2;\n        mergeSort(arr, l, m);`,
     status: "Accepted",
     runtime: "8ms",
+    color: "text-blue-600"
   },
   {
     name: "dfs.js",
     language: "JavaScript",
-    code: `function dfs(graph, node, visited = new Set()) {\n    if (visited.has(node)) return;\n    visited.add(node);\n    console.log(node);\n    for (const neighbor of graph[node]) {\n        dfs(graph, neighbor, visited);\n    }\n}`,
+    code: `function dfs(graph, node, visited = new Set()) {\n    if (visited.has(node)) return;\n    visited.add(node);\n    console.log(node);`,
     status: "Accepted",
     runtime: "5ms",
-  },
-  {
-    name: "dp_fibonacci.rs",
-    language: "Rust",
-    code: `fn fibonacci(n: usize) -> u64 {\n    let mut dp = vec![0u64; n + 1];\n    dp[1] = 1;\n    for i in 2..=n {\n        dp[i] = dp[i-1] + dp[i-2];\n    }\n    dp[n]\n}`,
-    status: "Accepted",
-    runtime: "1ms",
-  },
-  {
-    name: "quick_sort.go",
-    language: "Go",
-    code: `func quickSort(arr []int, low, high int) {\n    if low < high {\n        pi := partition(arr, low, high)\n        quickSort(arr, low, pi-1)\n        quickSort(arr, pi+1, high)\n    }\n}`,
-    status: "Accepted",
-    runtime: "3ms",
+    color: "text-blue-600"
   },
 ]
 
-// Duplicate for seamless loop
-const duplicatedTemplates = [...codeTemplates, ...codeTemplates]
+const duplicatedTemplates = [...codeTemplates, ...codeTemplates, ...codeTemplates]
+
+// --- SUB-COMPONENTS ---
+
+// 1. CAROUSEL
+function CarouselStrip() {
+  return (
+    <div className="w-full max-w-7xl mx-auto mb-20 overflow-hidden">
+      {/* The Retro Container */}
+      <div className="overflow-hidden rounded-lg border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+
+        {/* Header */}
+        <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 border-b border-black">
+          <div className="text-sm font-semibold text-black">Live Submissions</div>
+        </div>
+
+        {/* Scrolling Content */}
+        <div className="relative bg-white">
+          <div className="absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-white to-transparent"></div>
+          <div className="absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-white to-transparent"></div>
+
+          <div className="flex py-4">
+            <div className="flex gap-6 whitespace-nowrap will-change-transform carousel-scroll">
+              {duplicatedTemplates.map((t, i) => (
+                <div key={i} className="inline-block w-[300px] shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-transform hover:-translate-y-1">
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span className="font-mono text-xs font-medium text-gray-600">{t.name}</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400">{t.language}</span>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="bg-white p-3">
+                    <pre className="font-mono text-[10px] leading-relaxed text-gray-600 opacity-80">
+                      {t.code}
+                    </pre>
+                    <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2">
+                      <span className="rounded bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase text-green-700">
+                        {t.status}
+                      </span>
+                      <span className="font-mono text-[10px] text-gray-400">
+                        Runtime: {t.runtime}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 2. COUNTDOWN TIMER
+function CountdownTimer() {
+  const targetDate = new Date('2026-02-27T09:00:00+05:30').getTime()
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  })
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime()
+      const difference = targetDate - now
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000)
+        })
+      }
+    }
+
+    calculateTimeLeft()
+    const timer = setInterval(calculateTimeLeft, 1000)
+    return () => clearInterval(timer)
+  }, [targetDate])
+
+  const TimeUnit = ({ value, label }: { value: number; label: string }) => (
+    <div className="flex flex-col items-center">
+      <div className="relative">
+        <motion.div
+          key={value}
+          initial={{ rotateX: -90, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="bg-white rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-3 py-2 md:px-5 md:py-3 min-w-[55px] md:min-w-[80px]"
+        >
+          <span className="text-xl md:text-4xl font-black text-gray-900 font-mono tabular-nums">
+            {String(value).padStart(2, '0')}
+          </span>
+        </motion.div>
+      </div>
+      <span className="mt-1.5 text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wider">
+        {label}
+      </span>
+    </div>
+  )
+
+  const Separator = () => (
+    <div className="flex flex-col justify-center gap-1.5 px-0.5 md:px-1.5 pb-5">
+      <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-600 animate-pulse" />
+      <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-600 animate-pulse" />
+    </div>
+  )
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="w-full max-w-3xl mx-auto mb-12"
+    >
+      <div className="text-center mb-4">
+        <span className="font-mono text-xs md:text-sm text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+          countdown_to_event()
+        </span>
+      </div>
+
+      <div className="flex items-center justify-center gap-1 md:gap-3">
+        <TimeUnit value={timeLeft.days} label="Days" />
+        <Separator />
+        <TimeUnit value={timeLeft.hours} label="Hours" />
+        <Separator />
+        <TimeUnit value={timeLeft.minutes} label="Mins" />
+        <Separator />
+        <TimeUnit value={timeLeft.seconds} label="Secs" />
+      </div>
+    </motion.div>
+  )
+}
+
+// 3. CLEAN PIPELINE
+function ExecutionPipeline() {
+  const steps = [
+    {
+      title: "Qualifier",
+      type: "Online Round",
+      desc: "HackerRank filtering based on AC count & penalty time.",
+      icon: <Terminal className="w-6 h-6" />
+    },
+    {
+      title: "The Hackathon",
+      type: "Offline Main",
+      desc: "12-hour sprint solving real-world algo challenges.",
+      icon: <Cpu className="w-6 h-6" />
+    },
+    {
+      title: "Judgment",
+      type: "Final Viva",
+      desc: "Code review by experts from product-based companies.",
+      icon: <Layers className="w-6 h-6" />
+    }
+  ];
+
+  return (
+    <div className="w-full max-w-7xl mx-auto">
+      <div className="rounded-xl border border-blue-200 bg-white shadow-xl overflow-hidden">
+        <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-100">
+          {steps.map((step, i) => (
+            <div key={i} className="group relative p-10 min-h-[280px] transition-colors hover:bg-blue-50/30 flex flex-col h-full">
+
+              {/* Index Marker */}
+              <div className="absolute top-6 right-6 font-mono text-sm text-blue-300 group-hover:text-blue-500 transition-colors">
+                [{i}]
+              </div>
+
+              {/* Connection Arrow */}
+              {i < steps.length - 1 && (
+                <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-8 z-10 text-blue-200 transform -translate-y-1/2 translate-x-1/2">
+                  <ArrowRight className="w-8 h-8 bg-white rounded-full p-1" />
+                </div>
+              )}
+
+              {/* Content */}
+              <div className="flex flex-col h-full justify-center">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    {step.icon}
+                  </div>
+                  <div className="font-mono text-sm text-blue-500 font-medium px-3 py-1.5 rounded-md bg-blue-50/50 border border-blue-100">
+                    void step_{i + 1}()
+                  </div>
+                </div>
+
+                {/* Bigger Fonts */}
+                <h4 className="text-3xl font-bold text-gray-900 mb-4">{step.title}</h4>
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function About() {
   const [mounted, setMounted] = useState(false)
@@ -60,153 +258,188 @@ export function About() {
     setMounted(true)
   }, [])
 
-  function CarouselStrip() {
-    if (!mounted) return null
-
-    return (
-      <div className="mb-8 overflow-hidden rounded-lg border-2 border-black bg-white">
-        <div className="relative">
-          <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 border-b border-black">
-            <div className="text-sm font-semibold text-black">Live Submissions</div>
-          </div>
-
-          <div className="overflow-hidden">
-            <div className="whitespace-nowrap will-change-transform" style={{ display: 'flex', gap: '1rem', padding: '12px', animation: 'scroll 30s linear infinite' }}>
-              {duplicatedTemplates.map((t, i) => (
-                <div key={i} className="inline-block w-80 bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="text-sm font-semibold text-black">{t.name}</div>
-                    <div className="text-xs text-gray-500">{t.language}</div>
-                  </div>
-                  <pre className="text-xs font-mono text-gray-700 max-h-20 overflow-hidden">{t.code.split('\n').slice(0,4).join('\n')}</pre>
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="text-xs text-green-600 font-semibold">{t.status}</div>
-                    <div className="text-xs text-gray-500">{t.runtime}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-        `}</style>
-      </div>
-    )
-  }
+  if (!mounted) return null
 
   return (
-    <section id="about" className="py-16 bg-gray-50 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Carousel strip */}
+    <section id="about" className="relative overflow-hidden bg-gray-50 py-24">
+
+      {/* Background Grid */}
+      <div className="absolute inset-0 z-0 opacity-40"
+        style={{
+          backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
+          backgroundSize: '24px 24px'
+        }}>
+      </div>
+
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8">
+
+        {/* 1. Live Submissions (AT TOP) */}
         <CarouselStrip />
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold text-black mb-4">About SCPC 2026</h2>
-          <p className="text-lg text-gray-600">Caliber Isn't Claimed; It's Conquered</p>
-        </motion.div>
 
-        {/* Mission & Vision */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="bg-white border-2 border-black rounded-lg p-6"
+        {/* 2. Header */}
+        <div className="mb-20 text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            viewport={{ once: true }}
+            className="mb-6 text-6xl font-extrabold tracking-tight text-gray-900 sm:text-7xl"
           >
-            <h3 className="text-2xl font-bold text-black mb-4">Our Mission</h3>
-            <p className="text-gray-700 leading-relaxed">
-              To foster innovation and competitive excellence among the next generation of programmers and developers. TCET SHASTRA is a platform where talent meets opportunity, ideas transform into solutions, and dreams turn into achievements.
-            </p>
-          </motion.div>
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">SCPC 2026</span>
+          </motion.h2>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="bg-white border-2 border-black rounded-lg p-6"
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            viewport={{ once: true }}
+            className="font-mono text-xl text-gray-500"
           >
-            <h3 className="text-2xl font-bold text-black mb-4">Why Participate?</h3>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start gap-3">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span>Showcase your coding skills on a competitive platform</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span>Win ₹90,000 in prizes</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span>Network with 500+ participants from 15+ colleges</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-blue-600 font-bold">✓</span>
-                <span>Gain recognition and internship opportunities</span>
-              </li>
-            </ul>
-          </motion.div>
+            &lt;Caliber Isn't Claimed; It's Conquered /&gt;
+          </motion.p>
         </div>
 
-        {/* Event Highlights */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="bg-white border-2 border-black rounded-lg p-8"
-        >
-          <h3 className="text-2xl font-bold text-black mb-6 text-center">Event Highlights</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-5xl font-bold text-blue-600 mb-2">500+</div>
-              <p className="text-gray-700 font-semibold">Participants Expected</p>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-bold text-blue-600 mb-2">15+</div>
-              <p className="text-gray-700 font-semibold">Colleges</p>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-bold text-blue-600 mb-2">12</div>
-              <p className="text-gray-700 font-semibold">Hours Duration</p>
-            </div>
-          </div>
-        </motion.div>
+        {/* Countdown Timer */}
+        <CountdownTimer />
 
-        {/* Competition Structure */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-12 bg-gray-100 border-2 border-black rounded-lg p-8"
-        >
-          <h3 className="text-2xl font-bold text-black mb-6 text-center">Competition Structure</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white border-2 border-black rounded-lg p-6">
-              <div className="text-4xl font-bold text-blue-600 mb-3">Round 1</div>
-              <p className="text-gray-700 font-semibold mb-2">Online Qualifier</p>
-              <p className="text-sm text-gray-600">Competitive programming challenges to filter top teams</p>
-            </div>
-            <div className="bg-white border-2 border-black rounded-lg p-6">
-              <div className="text-4xl font-bold text-blue-600 mb-3">Round 2</div>
-              <p className="text-gray-700 font-semibold mb-2">Main Event</p>
-              <p className="text-sm text-gray-600">12-hour hackathon with real-world problem statements</p>
-            </div>
-            <div className="bg-white border-2 border-black rounded-lg p-6">
-              <div className="text-4xl font-bold text-blue-600 mb-3">Round 3</div>
-              <p className="text-gray-700 font-semibold mb-2">Presentation</p>
-              <p className="text-sm text-gray-600">Final presentations and judging by industry experts</p>
-            </div>
+        <div className="mx-auto max-w-7xl">
+
+          {/* Mission & STICKER STATS */}
+          <div className="mb-32 grid gap-12 lg:grid-cols-2">
+
+            {/* LEFT COLUMN: Mission Text */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col justify-center rounded-2xl border border-gray-200 bg-white p-10 shadow-sm"
+            >
+              <h3 className="mb-8 font-mono text-3xl font-bold text-gray-900">
+                <span className="text-blue-600">#</span> define MISSION
+              </h3>
+              <p className="text-xl leading-8 text-gray-600">
+                To foster innovation and competitive excellence among the next generation of programmers.
+                <span className="font-semibold text-gray-900"> TCET SHASTRA</span> is where talent meets runtime constraints, and ideas transform into O(1) solutions.
+              </p>
+
+              <div className="mt-10 grid grid-cols-2 gap-6">
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-6 text-center hover:bg-blue-50 transition-colors">
+                  <div className="text-4xl font-bold text-blue-600 mb-1">₹90k</div>
+                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Prize Pool</div>
+                </div>
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-6 text-center hover:bg-blue-50 transition-colors">
+                  <div className="text-4xl font-bold text-blue-600 mb-1">500+</div>
+                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Coders</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* RIGHT COLUMN: Blue/White Stickers with ORANGE TAPE */}
+            <motion.div
+              className="grid grid-cols-2 gap-6"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              {/* Sticker 1: Colleges */}
+              <motion.div
+                className="relative group mt-6"
+                whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                initial={{ rotate: -2 }}
+              >
+                {/* Tape (Orange) */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] rotate-2 shadow-sm z-10 border border-orange-400/50 backdrop-blur-sm opacity-90"></div>
+
+                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                  <div className="relative z-10">
+                    <div className="font-mono text-xs text-blue-500 mb-1">var n_colleges</div>
+                    <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">15+</div>
+                    <div className="w-8 h-1 bg-blue-500 rounded-full"></div>
+                  </div>
+                  <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-blue-50 rounded-full"></div>
+                </div>
+              </motion.div>
+
+              {/* Sticker 2: Duration */}
+              <motion.div
+                className="relative group"
+                whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                initial={{ rotate: 3 }}
+              >
+                {/* Tape (Orange) */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] -rotate-1 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
+
+                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                  <div className="relative z-10">
+                    <div className="font-mono text-xs text-blue-500 mb-1">const duration</div>
+                    <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">12h</div>
+                    <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div className="h-full w-2/3 bg-blue-500 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Sticker 3: Problem Sets */}
+              <motion.div
+                className="relative group mt-6"
+                whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                initial={{ rotate: 2 }}
+              >
+                {/* Tape (Orange) */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] -rotate-2 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
+
+                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                  <div className="relative z-10">
+                    <div className="font-mono text-xs text-blue-500 mb-1">enum difficulty</div>
+                    <div className="text-3xl font-black text-slate-900 mb-2 tracking-tighter">HARD</div>
+                    <div className="inline-block px-2 py-0.5 bg-blue-50 rounded text-[10px] font-bold text-blue-600">
+                      O(N log N)
+                    </div>
+                  </div>
+                  <div className="absolute top-0 right-0 w-full h-full opacity-10" style={{ backgroundImage: 'radial-gradient(#3b82f6 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
+                </div>
+              </motion.div>
+
+              {/* Sticker 4: Internships */}
+              <motion.div
+                className="relative group"
+                whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
+                initial={{ rotate: -1 }}
+              >
+                {/* Tape (Orange) */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] rotate-1 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
+
+                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                  <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-blue-500 border border-white shadow-sm z-20"></div>
+
+                  <div className="relative z-10">
+                    <div className="font-mono text-xs text-blue-500 mb-1">bool hired</div>
+                    <div className="text-3xl font-black text-slate-900 mb-2 tracking-tighter">YES</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                      <span className="text-[10px] font-bold text-blue-600">INTERNSHIPS</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* Execution Stack */}
+          <div className="mb-12 text-center">
+            <h3 className="font-mono text-xl font-bold uppercase tracking-[0.2em] text-gray-400">Execution Stack</h3>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <ExecutionPipeline />
+          </motion.div>
+
+        </div>
       </div>
     </section>
   )

@@ -1,17 +1,17 @@
 "use client"
 
-import Link from "next/link"
-// using native img for public PNG/SVG to avoid Next Image SVG optimization issues
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { SCPC_LOGO_URL } from "@/lib/constants"
 
+// We use 'id' to find the section, but 'label' for the text.
 const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#timeline", label: "Timeline" },
-  { href: "#prizes", label: "Prizes" },
-  { href: "#contact", label: "Contact" },
+  { id: "about", label: "About" },
+  { id: "timeline", label: "Timeline" },
+  { id: "prizes", label: "Prizes" },
+  { id: "contact", label: "Contact" },
 ]
 
 export function Navbar() {
@@ -24,6 +24,23 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // --- THE SCROLL HANDLER ---
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault(); // 1. Stop the browser from changing the URL
+    setMobileOpen(false);
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      // 2. Manually scroll to the section
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   return (
     <header className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300", scrolled ? "py-3" : "py-5")}>
       <nav
@@ -35,31 +52,37 @@ export function Navbar() {
         )}
       >
         {/* Logo */}
-        <Link href="#home" className="flex items-center gap-2.5 group">
-          <img src="/scpc.png" alt="SCPC logo" width={44} height={44} className="rounded-md" />
+        <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer">
+          <img id="site-header-logo" src={SCPC_LOGO_URL} alt="SCPC logo" width={44} height={44} className="object-contain" />
           <span className="sr-only">SCPC</span>
-        </Link>
+        </a>
 
-        {/* Desktop Navigation - Centered */}
+        {/* Desktop Navigation */}
         <div className="hidden absolute left-1/2 -translate-x-1/2 items-center gap-6 lg:flex">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+            <a
+              key={link.id}
+              href="/" // Shows '/' on hover (clean), but we intercept the click below
+              onClick={(e) => handleNavClick(e, link.id)}
+              className="text-sm font-medium text-gray-700 hover:text-black transition-colors cursor-pointer"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
         </div>
 
         {/* Right Section - CTA */}
         <div className="flex items-center gap-2">
-          <Link id="site-register" href="#contact">
+          {/* Register Button */}
+          <a
+            id="site-register"
+            href="/"
+            onClick={(e) => handleNavClick(e, 'contact')}
+          >
             <Button size="sm" className="rounded-lg bg-[#f97316] px-5 text-white shadow-md hover:bg-[#e55f10] active:scale-[0.98] transition-all duration-200">
               Register
             </Button>
-          </Link>
+          </a>
 
           {/* Mobile menu button */}
           <button
@@ -78,26 +101,26 @@ export function Navbar() {
           <div className="mx-auto max-w-7xl px-4 py-4">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-black rounded-lg hover:bg-gray-100 transition-colors"
+                <a
+                  key={link.id}
+                  href="/"
+                  onClick={(e) => handleNavClick(e, link.id)}
+                  className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-black rounded-lg hover:bg-gray-100 transition-colors block"
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
               <hr className="border-gray-200 my-2" />
-              <Link href="#contact" onClick={() => setMobileOpen(false)}>
-                <Button variant="ghost" className="w-full justify-start text-gray-700 hover:text-black">
-                  Contact
-                </Button>
-              </Link>
-              <Link id="site-register" href="#contact" onClick={() => setMobileOpen(false)}>
+
+              <a
+                href="/"
+                onClick={(e) => handleNavClick(e, 'contact')}
+                className="block"
+              >
                 <Button className="w-full bg-[#f97316] text-white hover:bg-[#e55f10] active:scale-[0.98] transition-all duration-200">
                   Register
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

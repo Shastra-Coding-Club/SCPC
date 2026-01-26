@@ -1,0 +1,367 @@
+/* ==========================================================================
+   LOADER COMPONENT STYLES
+   Production-grade cinematic intro animation
+   ========================================================================== */
+
+:root {
+  --loader-bg: #ffffff;
+  --loader-code-color: #1a1a2e;
+  --loader-gold: #D4AF37;
+  --loader-gold-light: rgba(212, 175, 55, 0.25);
+  --loader-shadow: rgba(0, 0, 0, 0.12);
+  --loader-timing-flip: cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Fullscreen Overlay
+   -------------------------------------------------------------------------- */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--loader-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+.loader-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Code Wrapper - LARGE AND PROMINENT
+   -------------------------------------------------------------------------- */
+.loader-code-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 24px 24px;
+  opacity: 1;
+  transition: opacity 400ms ease-out;
+  overflow: hidden;
+}
+
+.loader-code-wrapper.fade-out {
+  opacity: 0;
+}
+
+.loader-code-container {
+  width: 100%;
+  max-width: 800px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.loader-code-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.loader-code-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.loader-code-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.loader-code {
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.7;
+  color: var(--loader-code-color);
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+/* Syntax highlighting - C++ competitive programming */
+.loader-code .preprocessor {
+  color: #8250df;
+  font-weight: 600;
+}
+
+.loader-code .keyword {
+  color: #0969da;
+  font-weight: 500;
+}
+
+.loader-code .type {
+  color: #cf222e;
+  font-weight: 500;
+}
+
+.loader-code .macro {
+  color: #953800;
+  font-weight: 600;
+}
+
+.loader-code .string {
+  color: #0a3069;
+}
+
+.loader-code .comment {
+  color: #6e7781;
+  font-style: italic;
+}
+
+.loader-code .number {
+  color: #0550ae;
+}
+
+.loader-code .operator {
+  color: #24292f;
+}
+
+/* Typing cursor */
+.loader-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.15em;
+  background: var(--loader-code-color);
+  margin-left: 2px;
+  animation: cursor-blink 530ms step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes cursor-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Logo Appearance - Slow and Cinematic (after code typing)
+   -------------------------------------------------------------------------- */
+.loader-logo-container.intro-phase {
+  z-index: 10;
+  /* Logo on top during intro phase */
+}
+
+.loader-logo-container.intro-phase.visible {
+  animation: logo-intro-entrance 1.8s ease-out forwards;
+}
+
+/* Main logo entrance - slow dramatic reveal */
+.loader-logo-container.visible {
+  animation: logo-appear 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes logo-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  70% {
+    transform: scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-intro-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Centered Logo
+   -------------------------------------------------------------------------- */
+.loader-logo-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+  z-index: 5;
+}
+
+.loader-logo-container.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* CRITICAL: When flipping, disable ALL transitions/animations and use will-change */
+.loader-logo-container.is-flipping {
+  transition: transform 450ms var(--loader-timing-flip) !important;
+  will-change: transform;
+}
+
+.loader-logo-container.is-flipping .loader-logo {
+  animation: none !important;
+}
+
+.loader-logo-container.is-flipping .loader-logo-sheen {
+  display: none !important;
+}
+
+.loader-logo {
+  max-width: 140px;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 32px var(--loader-shadow));
+}
+
+/* Idle pulse - only when NOT flipping */
+.loader-logo-container.visible:not(.is-flipping) .loader-logo {
+  animation: logo-idle-pulse 2000ms ease-in-out infinite;
+}
+
+/* Gold sheen overlay */
+.loader-logo-sheen {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.loader-logo-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--loader-gold-light),
+      transparent);
+  animation: sheen-sweep 2500ms ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Idle Animations
+   -------------------------------------------------------------------------- */
+@keyframes logo-idle-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes sheen-sweep {
+  0% {
+    left: -100%;
+  }
+
+  40%,
+  100% {
+    left: 200%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+
+  .loader-overlay,
+  .loader-code-wrapper,
+  .loader-logo-container,
+  .loader-skip-btn {
+    transition: none !important;
+  }
+
+  .loader-logo,
+  .loader-cursor,
+  .loader-logo-sheen::after {
+    animation: none !important;
+  }
+
+  .loader-logo-container.is-flipping {
+    transition: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .loader-code-wrapper {
+    padding: 70px 16px 16px;
+  }
+
+  .loader-code {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .loader-logo,
+  .loader-logo-sheen {
+    width: 100px;
+    height: 100px;
+  }
+
+  .loader-skip-btn {
+    top: 16px;
+    right: 16px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Large screens - even bigger code */
+@media (min-width: 1200px) {
+  .loader-code-container {
+    max-width: 900px;
+  }
+
+  .loader-code {
+    font-size: 20px;
+  }
+
+  .loader-logo,
+  .loader-logo-sheen {
+    width: 160px;
+    height: 160px;
+  }
+}
