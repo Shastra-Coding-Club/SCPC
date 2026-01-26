@@ -67,9 +67,9 @@ export function Hero() {
 
       {/* Main glassmorphic container with watermark visible behind */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-8">
+        <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-6 md:p-8">
           {/* Main Content */}
-          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+          <div className="grid xl:grid-cols-2 gap-8 xl:gap-12 items-stretch">
             {/* Left Section - Problem Description */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
