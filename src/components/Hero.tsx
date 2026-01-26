@@ -121,7 +121,7 @@ export function Hero() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="space-y-2 flex flex-col"
+              className="space-y-4 flex flex-col"
             >
               <h2 className="text-3xl font-bold text-black">Event Detail</h2>
 
@@ -154,7 +154,7 @@ export function Hero() {
                 </div>
 
                 {/* Code Content */}
-                <div className="bg-white/30 p-4 min-h-60 max-h-72 overflow-y-auto font-mono text-sm flex-1">
+                <div className="bg-white/30 p-4 min-h-80 max-h-96 overflow-y-auto font-mono text-sm flex-1">
                   {registrationCode.split('\n').map((line, idx) => (
                     <div key={idx} className="hover:bg-gray-50 px-2 py-1 transition-colors leading-relaxed">
                       <span className="text-gray-400 mr-3 inline-block w-8 text-right">{String(idx + 1).padStart(2, '0')}</span>
