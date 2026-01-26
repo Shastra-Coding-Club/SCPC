@@ -69,7 +69,7 @@ export function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-8">
           {/* Main Content */}
-          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+          <div className="flex flex-col gap-16">
             {/* Left Section - Problem Description */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
