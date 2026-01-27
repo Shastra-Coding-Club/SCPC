@@ -51,7 +51,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-white pt-24 pb-12 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-white pt-20 pb-12 overflow-hidden">
       {/* Decorative background logo (watermark - centered) */}
       <div
         aria-hidden
@@ -67,7 +67,7 @@ export function Hero() {
 
       {/* Main glassmorphic container with watermark visible behind */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-6 md:p-8">
+        <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-5 md:p-6">
           {/* Main Content */}
           <div className="grid xl:grid-cols-2 gap-8 xl:gap-12 items-stretch">
             {/* Left Section - Problem Description */}
@@ -154,7 +154,7 @@ export function Hero() {
                 </div>
 
                 {/* Code Content */}
-                <div className="bg-white/30 p-4 min-h-80 max-h-96 overflow-y-auto font-mono text-sm flex-1">
+                <div className="bg-white/30 p-4 min-h-64 max-h-80 overflow-y-auto font-mono text-sm flex-1">
                   {registrationCode.split('\n').map((line, idx) => (
                     <div key={idx} className="hover:bg-gray-50 px-2 py-1 transition-colors leading-relaxed">
                       <span className="text-gray-400 mr-3 inline-block w-8 text-right">{String(idx + 1).padStart(2, '0')}</span>
