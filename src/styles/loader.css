@@ -1,6 +1,5 @@
 /* ==========================================================================
-   LOADER COMPONENT STYLES
-   Production-grade cinematic intro animation
+   LOADER STYLES
    ========================================================================== */
 
 :root {
@@ -25,7 +24,7 @@
   justify-content: center;
   pointer-events: auto;
   opacity: 1;
-  transition: opacity 300ms ease-out;
+  transition: opacity 150ms ease-out;
 }
 
 .loader-overlay.fade-out {
@@ -34,7 +33,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Code Wrapper - LARGE AND PROMINENT
+   Code Wrapper
    -------------------------------------------------------------------------- */
 .loader-code-wrapper {
   position: absolute;
@@ -44,7 +43,7 @@
   justify-content: center;
   padding: 60px 24px 24px;
   opacity: 1;
-  transition: opacity 400ms ease-out;
+  transition: opacity 150ms ease-out;
   overflow: hidden;
 }
 
@@ -149,18 +148,17 @@
 }
 
 /* --------------------------------------------------------------------------
-   Logo Appearance - Slow and Cinematic (after code typing)
+   Logo Appearance
    -------------------------------------------------------------------------- */
 .loader-logo-container.intro-phase {
   z-index: 10;
-  /* Logo on top during intro phase */
 }
 
 .loader-logo-container.intro-phase.visible {
   animation: logo-intro-entrance 1.8s ease-out forwards;
 }
 
-/* Main logo entrance - slow dramatic reveal */
+/* Main logo entrance */
 .loader-logo-container.visible {
   animation: logo-appear 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -222,20 +220,6 @@
   transform: scale(1);
 }
 
-/* CRITICAL: When flipping, disable ALL transitions/animations and use will-change */
-.loader-logo-container.is-flipping {
-  transition: transform 450ms var(--loader-timing-flip) !important;
-  will-change: transform;
-}
-
-.loader-logo-container.is-flipping .loader-logo {
-  animation: none !important;
-}
-
-.loader-logo-container.is-flipping .loader-logo-sheen {
-  display: none !important;
-}
-
 .loader-logo {
   max-width: 140px;
   max-height: 140px;
@@ -245,32 +229,9 @@
   filter: drop-shadow(0 8px 32px var(--loader-shadow));
 }
 
-/* Idle pulse - only when NOT flipping */
-.loader-logo-container.visible:not(.is-flipping) .loader-logo {
+/* Idle pulse animation */
+.loader-logo-container.visible .loader-logo {
   animation: logo-idle-pulse 2000ms ease-in-out infinite;
-}
-
-/* Gold sheen overlay */
-.loader-logo-sheen {
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.loader-logo-sheen::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg,
-      transparent,
-      var(--loader-gold-light),
-      transparent);
-  animation: sheen-sweep 2500ms ease-in-out infinite;
 }
 
 /* --------------------------------------------------------------------------
@@ -285,17 +246,6 @@
 
   50% {
     transform: scale(1.02);
-  }
-}
-
-@keyframes sheen-sweep {
-  0% {
-    left: -100%;
-  }
-
-  40%,
-  100% {
-    left: 200%;
   }
 }
 
@@ -335,8 +285,7 @@
     line-height: 1.6;
   }
 
-  .loader-logo,
-  .loader-logo-sheen {
+  .loader-logo {
     width: 100px;
     height: 100px;
   }
@@ -349,7 +298,7 @@
   }
 }
 
-/* Large screens - even bigger code */
+/* Large screens */
 @media (min-width: 1200px) {
   .loader-code-container {
     max-width: 900px;
@@ -359,8 +308,7 @@
     font-size: 20px;
   }
 
-  .loader-logo,
-  .loader-logo-sheen {
+  .loader-logo {
     width: 160px;
     height: 160px;
   }

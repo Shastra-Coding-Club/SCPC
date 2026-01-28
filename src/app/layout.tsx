@@ -52,15 +52,29 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
+        style={{ backgroundColor: '#ffffff' }}
       >
-        {/* Critical CSS Loader - Removing the gap between load and React hydration */}
-        <div id="initial-loader" style={{
+        {/* Pre-loader */}
+        <div id="pre-loader" style={{
           position: 'fixed',
           inset: 0,
           zIndex: 9998,
           backgroundColor: '#ffffff',
-          transition: 'opacity 0.3s ease-out',
-        }}></div>
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: '60px 24px 24px',
+        }}>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes pre-cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+            #pre-loader-cursor { display:inline-block; width:3px; height:1.1em; background:#1a1a2e; animation:pre-cursor-blink 530ms step-end infinite; vertical-align:text-bottom; margin-left:2px; }
+            #pre-loader-container { width:100%; max-width:800px; }
+            #pre-loader-code { font-family:'Geist Mono','SF Mono','Fira Code',monospace; font-size:clamp(14px,2vw,18px); color:#1a1a2e; line-height:1.7; white-space:pre-wrap; text-align:left; }
+          `}} />
+          <div id="pre-loader-container">
+            <div id="pre-loader-code">#include &lt;bits/stdc++.h&gt;<span id="pre-loader-cursor"></span></div>
+          </div>
+        </div>
         <script dangerouslySetInnerHTML={{
           __html: `
           (function(){
@@ -73,7 +87,6 @@ export default function RootLayout({
               }catch(err){/* ignore */}
             }
             window.addEventListener('keydown', onKey);
-            // expose so React cleanup isn't required for this small script
           })();
         `}} />
         {children}

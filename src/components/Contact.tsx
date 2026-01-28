@@ -271,7 +271,7 @@ export function Contact() {
                               <Icon className={`w-4 h-4 ${isCurrent ? 'text-blue-600' : 'text-gray-600'}`} />
                             </div>
                             <div className="flex-1">
-                              <label className="block text-sm font-bold text-black">
+                              <label htmlFor={`contact-${node.id}`} className="block text-sm font-bold text-black">
                                 {node.label}
                                 {node.required && <span className="text-red-500 ml-1">*</span>}
                               </label>
@@ -286,6 +286,7 @@ export function Contact() {
                           {/* Input Field */}
                           {node.type === "textarea" ? (
                             <textarea
+                              id={`contact-${node.id}`}
                               value={formData[node.id as keyof typeof formData]}
                               onChange={(e) => handleInputChange(node.id, e.target.value)}
                               placeholder={node.placeholder}
@@ -296,6 +297,7 @@ export function Contact() {
                             />
                           ) : (
                             <input
+                              id={`contact-${node.id}`}
                               type={node.type}
                               value={formData[node.id as keyof typeof formData]}
                               onChange={(e) => handleInputChange(node.id, e.target.value)}
@@ -476,18 +478,21 @@ export function Contact() {
               <div className="flex gap-4">
                 <a
                   href="#"
+                  aria-label="LinkedIn"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
                 <a
                   href="#"
+                  aria-label="Twitter"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >
                   <Twitter className="w-5 h-5" />
                 </a>
                 <a
                   href="#"
+                  aria-label="Email"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >
                   <Mail className="w-5 h-5" />

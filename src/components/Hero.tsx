@@ -54,17 +54,17 @@ export function Hero() {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center bg-white pt-20 pb-12 overflow-hidden">
       {/* Decorative background logo (watermark - centered) */}
-      {/* Decorative background logo (watermark - centered) */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.22]">
-        <Image
-          src={SCPC_LOGO_URL}
-          alt=""
-          width={800}
-          height={800}
-          className="w-[35%] h-auto object-contain"
-          priority
-        />
-      </div>
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url('${SCPC_LOGO_URL}')`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: '35%',
+          opacity: 0.22,
+        }}
+      />
 
       {/* Main glassmorphic container with watermark visible behind */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

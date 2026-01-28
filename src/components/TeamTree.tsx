@@ -45,6 +45,9 @@ function TreeNode({
     return local || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f1f5f9&color=334155&rounded=true&size=200`
   }
 
+  // Check if using fallback avatar (ui-avatars.com returns SVG)
+  const isExternalFallback = !MEMBER_IMAGE_URLS[member.name]
+
   const cfg = sizes[size]
 
   return (
@@ -67,6 +70,7 @@ function TreeNode({
             src={getImg(member.name)}
             alt={member.name}
             fill
+            unoptimized={isExternalFallback}
             className="object-cover"
             sizes="(max-width: 640px) 64px, 96px"
             />
@@ -82,7 +86,7 @@ function TreeNode({
       </div>
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
-        <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight truncate">{member.name}</div>
+        <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
         <div className="text-gray-500 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
       </div>
     </motion.div>

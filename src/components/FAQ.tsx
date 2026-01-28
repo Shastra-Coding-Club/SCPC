@@ -220,6 +220,7 @@ export function FAQ() {
                             </button>
                             <button
                                 onClick={resetAnimation}
+                                aria-label="Reset animation"
                                 className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition-all"
                             >
                                 <RotateCcw className="w-4 h-4" />

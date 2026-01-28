@@ -5,25 +5,6 @@ export const SCPC_LOGO_URL = "https://res.cloudinary.com/divj3y2cp/image/upload/
 export const SCPC_FAVICON_URL = "https://res.cloudinary.com/divj3y2cp/image/upload/w_32,h_32,f_auto,q_auto/v1/scpc-team/scpc";
 export const SCPC_ICON_URL = "https://res.cloudinary.com/divj3y2cp/image/upload/w_192,h_192,f_auto,q_auto/v1/scpc-team/scpc";
 
-// Team member images (Cloudinary optimized)
-export const TEAM_IMAGES = {
-  AAYUSH: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/aayush_new?_a=BAMAOGRg0",
-  AYUSH: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/ayush_new?_a=BAMAOGRg0",
-  CHETAN: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/chetan_new?_a=BAMAOGRg0",
-  CORE: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/core_new?_a=BAMAOGRg0",
-  KANCHAN: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/kanchan_new?_a=BAMAOGRg0",
-  KASHISH: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/kashish_new?_a=BAMAOGRg0",
-  KSHTIJ: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/kshtij_new?_a=BAMAOGRg0",
-  PRAGNESH: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/Pragnesh_new?_a=BAMAOGRg0",
-  PRANJAL: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/pranjal_new?_a=BAMAOGRg0",
-  PURVA: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/purva_new?_a=BAMAOGRg0",
-  ROHAN: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/rohan_new?_a=BAMAOGRg0",
-  RUDRA: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/rudra_new?_a=BAMAOGRg0",
-  SHIVAM: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/shivam_new?_a=BAMAOGRg0",
-  SHREYANSH: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/shreyansh_new?_a=BAMAOGRg0",
-  SWAMINI: "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/swamini_new?_a=BAMAOGRg0",
-} as const;
-
 // Name to image URL mapping for TeamTree component
 export const MEMBER_IMAGE_URLS: Record<string, string> = {
   "Aayush Dubey": "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/aayush_new?_a=BAMAOGRg0",

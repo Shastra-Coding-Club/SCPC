@@ -6,6 +6,7 @@ interface CodeTyperProps {
   snippet: string;
   onComplete: () => void;
   typingDuration?: number; // Target duration in ms (default: 1500)
+  initialLength?: number;
 }
 
 // Syntax highlighting for C++
@@ -65,8 +66,9 @@ export function CodeTyper({
   snippet,
   onComplete,
   typingDuration = 1500,
+  initialLength = 0,
 }: CodeTyperProps) {
-  const [displayedLength, setDisplayedLength] = useState(0);
+  const [displayedLength, setDisplayedLength] = useState(initialLength);
   const [isComplete, setIsComplete] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useRef(false);
@@ -90,6 +92,7 @@ export function CodeTyper({
     if (prefersReducedMotion.current || isComplete) return;
 
     const totalChars = snippet.length;
+    const remainingChars = totalChars - initialLength;
     const startTime = Date.now();
     let animationFrameId: number;
 
@@ -98,12 +101,11 @@ export function CodeTyper({
       const elapsed = now - startTime;
       let progress = Math.min(elapsed / typingDuration, 1);
 
-      // Acceleration: Quadratic easing (starts slow, speeds up properly)
-      // curve: y = x^2
-      // We want characters to appear slowly at first, then faster.
+      // Acceleration: Quadratic easing (y = x^2)
       const easedProgress = Math.pow(progress, 2);
 
-      const currentCount = Math.floor(easedProgress * totalChars);
+      // Start from initialLength and animate remaining characters
+      const currentCount = initialLength + Math.floor(easedProgress * remainingChars);
       setDisplayedLength(currentCount);
 
       // Auto-scroll to keep current line visible
@@ -123,7 +125,7 @@ export function CodeTyper({
     animationFrameId = requestAnimationFrame(update);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [snippet, typingDuration, onComplete, isComplete]);
+  }, [snippet, typingDuration, onComplete, isComplete, initialLength]);
 
   const displayedText = snippet.slice(0, displayedLength);
   const highlightedContent = useMemo(
