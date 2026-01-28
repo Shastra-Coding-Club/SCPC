@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { MEMBER_IMAGE_URLS } from "@/lib/constants"
 
@@ -55,14 +56,20 @@ function TreeNode({
       className="flex flex-col items-center relative z-10"
     >
       {/* Avatar container */}
-      <div className="relative mb-2">
+        <div className="relative mb-2">
         <motion.div
-          initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
-          animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
-          transition={{ delay: delay + 0.2 }}
-          className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100`}
+            initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
+            animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
+            transition={{ delay: delay + 0.2 }}
+            className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100 relative`}
         >
-          <img src={getImg(member.name)} alt={member.name} className="w-full h-full object-cover" loading="lazy" />
+            <Image
+            src={getImg(member.name)}
+            alt={member.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 64px, 96px"
+            />
         </motion.div>
         <motion.span
           initial={{ scale: 0 }}

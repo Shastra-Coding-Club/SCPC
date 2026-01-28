@@ -86,6 +86,13 @@ export function Loader({
       setTypingDuration(800);
       setEffectiveMinDuration(1500);
     }
+
+    // Remove the critical CSS loader from layout.tsx once this component mounts
+    const initialLoader = document.getElementById('initial-loader');
+    if (initialLoader) {
+      initialLoader.style.opacity = '0';
+      setTimeout(() => initialLoader.remove(), 500);
+    }
   }, [minDurationMs]);
 
   useEffect(() => {

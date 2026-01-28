@@ -12,14 +12,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import { SCPC_LOGO_URL } from "@/lib/constants";
+import { SCPC_LOGO_URL, SCPC_FAVICON_URL, SCPC_ICON_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "SCPC — Shastra Competitive Programming Competition",
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
-    icon: SCPC_LOGO_URL,
-    apple: SCPC_LOGO_URL,
+    icon: SCPC_FAVICON_URL,
+    shortcut: SCPC_FAVICON_URL,
+    apple: SCPC_ICON_URL,
+    other: {
+      rel: "apple-touch-icon-precomposed",
+      url: SCPC_ICON_URL,
+    },
   },
 };
 
@@ -31,12 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href={SCPC_LOGO_URL} type="image/png" sizes="32x32" />
-        <link rel="icon" href={SCPC_LOGO_URL} type="image/png" sizes="any" />
-        <link rel="shortcut icon" href={SCPC_LOGO_URL} />
-        <link rel="apple-touch-icon" href={SCPC_LOGO_URL} />
-        <meta name="msapplication-TileImage" content={SCPC_LOGO_URL} />
-        <meta name="theme-color" content="#0f172a" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="icon" href={SCPC_FAVICON_URL} sizes="32x32" />
+        <link rel="icon" href={SCPC_ICON_URL} sizes="192x192" />
+        <link rel="apple-touch-icon" href={SCPC_ICON_URL} />
+        <meta name="msapplication-TileImage" content={SCPC_ICON_URL} />
+        <meta name="theme-color" content="#ffffff" />
         <meta property="og:title" content="SCPC — Shastra Competitive Programming Competition" />
         <meta property="og:description" content="SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details." />
         <meta property="og:image" content={SCPC_LOGO_URL} />
@@ -47,6 +53,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        {/* Critical CSS Loader - Removing the gap between load and React hydration */}
+        <div id="initial-loader" style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9998,
+          backgroundColor: '#ffffff',
+          transition: 'opacity 0.3s ease-out',
+        }}></div>
         <script dangerouslySetInnerHTML={{
           __html: `
           (function(){
