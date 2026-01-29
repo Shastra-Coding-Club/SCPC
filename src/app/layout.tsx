@@ -5,11 +5,13 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 import { SCPC_LOGO_URL, SCPC_FAVICON_URL, SCPC_ICON_URL } from "@/lib/constants";
@@ -19,12 +21,7 @@ export const metadata: Metadata = {
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
     icon: SCPC_FAVICON_URL,
-    shortcut: SCPC_FAVICON_URL,
     apple: SCPC_ICON_URL,
-    other: {
-      rel: "apple-touch-icon-precomposed",
-      url: SCPC_ICON_URL,
-    },
   },
 };
 
@@ -36,11 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preload" href={SCPC_LOGO_URL} as="image" fetchPriority="high" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        <link rel="icon" href={SCPC_FAVICON_URL} sizes="32x32" />
-        <link rel="icon" href={SCPC_ICON_URL} sizes="192x192" />
-        <link rel="apple-touch-icon" href={SCPC_ICON_URL} />
         <meta name="msapplication-TileImage" content={SCPC_ICON_URL} />
         <meta name="theme-color" content="#ffffff" />
         <meta property="og:title" content="SCPC — Shastra Competitive Programming Competition" />

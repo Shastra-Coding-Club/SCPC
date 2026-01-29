@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Play, RotateCcw, GitBranch, Layers, ChevronDown, HelpCircle, MessageCircle } from "lucide-react"
 
@@ -151,7 +151,7 @@ export function FAQ() {
         <section id="faq" ref={sectionRef} className="py-20 bg-gray-50">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -227,7 +227,7 @@ export function FAQ() {
                             </button>
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
 
                 {/* FAQ Cards */}
                 <div className="space-y-4">
@@ -244,7 +244,7 @@ export function FAQ() {
                             : aVisited
 
                         return (
-                            <motion.div
+                            <m.div
                                 key={item.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -278,7 +278,7 @@ export function FAQ() {
                                                 <HelpCircle className="w-5 h-5" />
                                             </div>
                                             {qOrder !== null && (
-                                                <motion.div
+                                                <m.div
                                                     initial={{ scale: 0 }}
                                                     animate={{ scale: 1 }}
                                                     className={`absolute -top-2 -right-2 w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center text-white ${
@@ -286,7 +286,7 @@ export function FAQ() {
                                                     }`}
                                                 >
                                                     {qOrder}
-                                                </motion.div>
+                                                </m.div>
                                             )}
                                         </div>
 
@@ -307,20 +307,20 @@ export function FAQ() {
 
                                         {/* Expand indicator after animation */}
                                         {animationComplete && (
-                                            <motion.div
+                                            <m.div
                                                 initial={{ opacity: 0 }}
                                                 animate={{ opacity: 1 }}
                                                 className="shrink-0"
                                             >
                                                 <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${expandedIdx === idx ? 'rotate-180' : ''}`} />
-                                            </motion.div>
+                                            </m.div>
                                         )}
                                     </div>
 
                                     {/* Answer Row (Child Node) */}
                                     <AnimatePresence>
                                         {showAnswer && (
-                                            <motion.div
+                                            <m.div
                                                 initial={{ height: 0, opacity: 0 }}
                                                 animate={{ height: "auto", opacity: 1 }}
                                                 exit={{ height: 0, opacity: 0 }}
@@ -342,7 +342,7 @@ export function FAQ() {
                                                             <MessageCircle className="w-4 h-4" />
                                                         </div>
                                                         {aOrder !== null && (
-                                                            <motion.div
+                                                            <m.div
                                                                 initial={{ scale: 0 }}
                                                                 animate={{ scale: 1 }}
                                                                 className={`absolute -top-2 -right-2 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center text-white ${
@@ -350,7 +350,7 @@ export function FAQ() {
                                                                 }`}
                                                             >
                                                                 {aOrder}
-                                                            </motion.div>
+                                                            </m.div>
                                                         )}
                                                     </div>
 
@@ -364,17 +364,17 @@ export function FAQ() {
                                                         </p>
                                                     </div>
                                                 </div>
-                                            </motion.div>
+                                            </m.div>
                                         )}
                                     </AnimatePresence>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     })}
                 </div>
 
                 {/* Algorithm Info Footer */}
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -408,7 +408,7 @@ export function FAQ() {
                             Visited: <span className={mode === 'bfs' ? 'text-blue-600' : 'text-purple-600'}>{visitedNodes.length}</span> / {faqItems.length * 2} nodes
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
             </div>
         </section>
     )

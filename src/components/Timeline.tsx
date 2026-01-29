@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { Play, RotateCcw, Layers, ListOrdered } from "lucide-react"
 
@@ -171,7 +171,7 @@ export function Timeline() {
     <section id="timeline" ref={sectionRef} className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -228,7 +228,7 @@ export function Timeline() {
               Reset
             </button>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-3 gap-8">
@@ -245,7 +245,7 @@ export function Timeline() {
                   const isCurrent = currentStep === index
 
                   return (
-                    <motion.div
+                    <m.div
                       key={index}
                       initial={{ opacity: 0.3 }}
                       animate={{ 
@@ -257,7 +257,7 @@ export function Timeline() {
                     >
                       {/* Content */}
                       <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
-                        <motion.div
+                        <m.div
                           animate={{
                             borderColor: isInStructure ? (mode === 'stack' ? '#2563eb' : '#f97316') : '#000',
                             backgroundColor: isCurrent ? (mode === 'stack' ? '#eff6ff' : '#fff7ed') : '#fff',
@@ -273,7 +273,7 @@ export function Timeline() {
                           {/* Position indicator */}
                           <AnimatePresence>
                             {isInStructure && (
-                              <motion.div
+                              <m.div
                                 initial={{ scale: 0, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0, opacity: 0 }}
@@ -282,15 +282,15 @@ export function Timeline() {
                                 }`}
                               >
                                 #{structure.indexOf(index) + 1}
-                              </motion.div>
+                              </m.div>
                             )}
                           </AnimatePresence>
-                        </motion.div>
+                        </m.div>
                       </div>
 
                       {/* Timeline Dot */}
                       <div className="flex justify-center relative z-10">
-                        <motion.div
+                        <m.div
                           animate={{
                             scale: isCurrent ? 1.5 : isInStructure ? 1.2 : 1,
                             boxShadow: isCurrent ? '0 0 20px rgba(37, 99, 235, 0.5)' : 'none'
@@ -299,7 +299,7 @@ export function Timeline() {
                           className={`w-4 h-4 rounded-full border-4 border-white ${getTypeColor(item.type)}`}
                         />
                       </div>
-                    </motion.div>
+                    </m.div>
                   )
                 })}
               </div>
@@ -337,7 +337,7 @@ export function Timeline() {
                   
                   <AnimatePresence mode="popLayout">
                     {structure.length === 0 ? (
-                      <motion.div
+                      <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="text-gray-400 text-sm font-mono py-8 text-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
@@ -345,10 +345,10 @@ export function Timeline() {
                         // Empty {mode}
                         <br />
                         // Waiting for push()...
-                      </motion.div>
+                      </m.div>
                     ) : (
                       structure.map((itemIndex, pos) => (
-                        <motion.div
+                        <m.div
                           key={itemIndex}
                           layout
                           initial={{ 
@@ -382,7 +382,7 @@ export function Timeline() {
                           <div className={`text-xs mt-1 ${mode === 'stack' ? 'text-blue-600' : 'text-orange-600'}`}>
                             {scheduleItems[itemIndex].time}
                           </div>
-                        </motion.div>
+                        </m.div>
                       ))
                     )}
                   </AnimatePresence>

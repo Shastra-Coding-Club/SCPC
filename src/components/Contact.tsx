@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { Mail, Linkedin, Twitter, Globe, User, AtSign, FileText, MessageSquare, Send, RotateCcw, Play } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 
@@ -172,7 +172,7 @@ export function Contact() {
     <section id="contact" ref={sectionRef} className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -202,13 +202,13 @@ export function Contact() {
               Reset
             </button>
           </div>
-        </motion.div>
+        </m.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Linked List Form */}
           <div className="relative">
             {/* Head pointer */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: visibleNodes.length > 0 ? 1 : 0.3, x: 0 }}
               className="mb-4 flex items-center gap-2"
@@ -218,7 +218,7 @@ export function Contact() {
               </span>
               <div className="w-8 h-0.5 bg-blue-400"></div>
               <div className="w-0 h-0 border-t-4 border-b-4 border-l-8 border-transparent border-l-blue-400"></div>
-            </motion.div>
+            </m.div>
 
             {/* Form as Linked List */}
             <form onSubmit={handleSubmit} className="space-y-0">
@@ -230,7 +230,7 @@ export function Contact() {
                   const isLast = index === formNodes.length - 1
 
                   return (
-                    <motion.div
+                    <m.div
                       key={node.id}
                       initial={{ opacity: 0, x: -50, scale: 0.9 }}
                       animate={{
@@ -246,7 +246,7 @@ export function Contact() {
                         {/* Current pointer */}
                         <AnimatePresence>
                           {isCurrent && (
-                            <motion.div
+                            <m.div
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
                               exit={{ opacity: 0, x: -20 }}
@@ -257,7 +257,7 @@ export function Contact() {
                               </span>
                               <div className="w-3 h-0.5 bg-orange-400"></div>
                               <div className="w-0 h-0 border-t-2 border-b-2 border-l-4 border-transparent border-l-orange-400"></div>
-                            </motion.div>
+                            </m.div>
                           )}
                         </AnimatePresence>
 
@@ -311,7 +311,7 @@ export function Contact() {
 
                         {/* Link to next node (pointer arrow) */}
                         {!isLast && (
-                          <motion.div
+                          <m.div
                             className="flex justify-center py-2"
                             animate={{ opacity: isVisible ? 1 : 0.2 }}
                           >
@@ -322,16 +322,16 @@ export function Contact() {
                               </div>
                               <div className="w-0 h-0 border-l-4 border-r-4 border-t-6 border-transparent border-t-gray-400"></div>
                             </div>
-                          </motion.div>
+                          </m.div>
                         )}
                       </div>
-                    </motion.div>
+                    </m.div>
                   )
                 })}
               </AnimatePresence>
 
               {/* NULL terminator */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: isComplete ? 1 : 0.2 }}
                 className="flex justify-center pt-4"
@@ -342,10 +342,10 @@ export function Contact() {
                     NULL
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Submit Button */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: isComplete ? 1 : 0.3, y: isComplete ? 0 : 10 }}
                 className="pt-6"
@@ -365,21 +365,21 @@ export function Contact() {
                   )}
                 </Button>
                 {submitStatus && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className={`mt-4 p-3 rounded-lg text-center font-mono text-sm ${submitStatus.success ? "bg-green-100 text-green-700 border border-green-200" : "bg-red-100 text-red-700 border border-red-200"
                       }`}
                   >
                     // {submitStatus.message}
-                  </motion.div>
+                  </m.div>
                 )}
-              </motion.div>
+              </m.div>
             </form>
           </div>
 
           {/* Right Side - Contact Info */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -400,7 +400,7 @@ export function Contact() {
               <div className="space-y-2 min-h-[200px]">
                 <AnimatePresence mode="popLayout">
                   {visibleNodes.length === 0 ? (
-                    <motion.div
+                    <m.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-gray-400 text-sm font-mono py-8 text-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
@@ -408,10 +408,10 @@ export function Contact() {
                       // Empty list
                       <br />
                       // Waiting for append()...
-                    </motion.div>
+                    </m.div>
                   ) : (
                     visibleNodes.map((nodeIndex, pos) => (
-                      <motion.div
+                      <m.div
                         key={nodeIndex}
                         layout
                         initial={{ opacity: 0, x: 50, scale: 0.8 }}
@@ -426,7 +426,7 @@ export function Contact() {
                           <span className="font-bold">{formNodes[nodeIndex].label}</span>
                           <span className="text-xs text-blue-400">→</span>
                         </div>
-                      </motion.div>
+                      </m.div>
                     ))
                   )}
                 </AnimatePresence>
@@ -499,7 +499,7 @@ export function Contact() {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
