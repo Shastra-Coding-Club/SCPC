@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import Image from "next/image"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { MEMBER_IMAGE_URLS } from "@/lib/constants"
@@ -50,7 +50,7 @@ function TreeNode({
   const cfg = sizes[size]
 
   return (
-    <motion.div
+    <m.div
       ref={onNodeRef}
       initial={{ opacity: 0, scale: 0.5, y: 10 }}
       animate={isVisible ? { opacity: 1, scale: 1, y: 0 } : {}}
@@ -59,7 +59,7 @@ function TreeNode({
     >
       {/* Avatar container */}
         <div className="relative mb-2">
-        <motion.div
+        <m.div
             initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
             animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
             transition={{ delay: delay + 0.2 }}
@@ -72,22 +72,22 @@ function TreeNode({
             unoptimized 
             className="object-cover"
             />
-        </motion.div>
-        <motion.span
+        </m.div>
+        <m.span
           initial={{ scale: 0 }}
           animate={isVisible ? { scale: 1 } : {}}
           transition={{ type: "spring", delay: delay + 0.15 }}
           className={`absolute -top-1 -right-1 w-5 h-5 ${badges[member.tier]} text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md`}
         >
           {member.index}
-        </motion.span>
+        </m.span>
       </div>
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
         <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
         <div className="text-gray-500 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -103,7 +103,7 @@ function AnimatedEdge({
 
   return (
     <g>
-      <motion.path
+      <m.path
         d={path}
         stroke={color}
         strokeWidth={8}
@@ -115,7 +115,7 @@ function AnimatedEdge({
         animate={isVisible ? { pathLength: 1 } : {}}
         transition={{ duration: 0.7, delay, ease: "easeOut" }}
       />
-      <motion.path
+      <m.path
         d={path}
         stroke={color}
         strokeWidth={2}
@@ -127,7 +127,7 @@ function AnimatedEdge({
         animate={isVisible ? { pathLength: 1 } : {}}
         transition={{ duration: 0.7, delay, ease: "easeOut" }}
       />
-      <motion.circle
+      <m.circle
         r={3}
         fill={color}
         initial={{ opacity: 0 }}
@@ -135,14 +135,14 @@ function AnimatedEdge({
         transition={{ duration: 2, delay: delay + 1.2, repeat: Infinity, repeatDelay: 4 }}
       >
         <animateMotion dur="2s" repeatCount="indefinite" path={path} />
-      </motion.circle>
+      </m.circle>
     </g>
   )
 }
 
 function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colorClass: string; delay: number; isVisible: boolean }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: -10, scale: 0.85 }}
       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
@@ -153,7 +153,7 @@ function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colo
         ${colorClass}`}
     >
       <span className="relative z-10">{text}</span>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -245,14 +245,14 @@ export function TeamTree() {
   return (
     <section className="py-16 bg-gradient-to-b from-white via-gray-50/30 to-white overflow-hidden">
       <div className="max-w-5xl mx-auto px-4">
-        <motion.div
+        <m.div
           className="text-center mb-10"
           initial={{ opacity: 0, y: 15 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Organising Committee</h2>
           <p className="text-gray-500 text-sm">The team behind SCPC 2026</p>
-        </motion.div>
+        </m.div>
 
         <div ref={containerRef} className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 sm:p-10 shadow-sm overflow-hidden">
 

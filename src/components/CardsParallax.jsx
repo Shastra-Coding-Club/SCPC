@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const prizes = [
     {
@@ -54,7 +53,7 @@ const PrizeCard = ({ data, index }) => {
     const { position, title, amount, description, perks, accent, filename } = data;
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -136,7 +135,7 @@ const PrizeCard = ({ data, index }) => {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -158,7 +157,7 @@ export function CardsParallax() {
             <div className="relative z-10">
                 {/* Section Header */}
                 <div className="text-center mb-12 px-4">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
@@ -168,9 +167,9 @@ export function CardsParallax() {
                         <span className="font-mono text-sm text-gray-500 bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-sm">
                             // prizes.total = ₹90,000+
                         </span>
-                    </motion.div>
+                    </m.div>
 
-                    <motion.h2
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
@@ -181,9 +180,9 @@ export function CardsParallax() {
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">
                             Glory
                         </span>
-                    </motion.h2>
+                    </m.h2>
 
-                    <motion.p
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
@@ -191,11 +190,11 @@ export function CardsParallax() {
                         className="text-gray-500 text-lg max-w-xl mx-auto"
                     >
                         Win exciting prizes and recognition for your innovative solutions
-                    </motion.p>
+                    </m.p>
                 </div>
 
                 {/* Stats Bar */}
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -216,7 +215,7 @@ export function CardsParallax() {
                             ))}
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
 
                 {/* Horizontal Scrolling Cards */}
                 <div className="relative">
@@ -242,7 +241,7 @@ export function CardsParallax() {
                 </div>
 
                 {/* Special Recognition Footer */}
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -267,7 +266,7 @@ export function CardsParallax() {
                             </a>
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
             </div>
         </section>
     );

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 
 // Sponsor data - replace with actual sponsors
 const sponsors = [
@@ -31,7 +31,7 @@ export function SponsorsStrip() {
 
             <div className="relative z-10">
                 {/* Header - IDE style */}
-                <motion.div
+                <m.div
                     className="text-center mb-12 px-4"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export function SponsorsStrip() {
                     <p className="text-gray-500 font-mono text-sm">
                         &lt;Partners powering innovation /&gt;
                     </p>
-                </motion.div>
+                </m.div>
 
                 {/* Scrolling sponsors container - retro card style like About */}
                 <div className="w-full max-w-7xl mx-auto px-4">
@@ -102,7 +102,7 @@ export function SponsorsStrip() {
                 </div>
 
                 {/* Bottom CTA */}
-                <motion.div
+                <m.div
                     className="text-center mt-8 px-4"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -118,7 +118,7 @@ export function SponsorsStrip() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                     </a>
-                </motion.div>
+                </m.div>
             </div>
         </section>
     )

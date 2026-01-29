@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react"
 import dynamic from "next/dynamic"
+import { LazyMotion, domAnimation } from "framer-motion"
 import { Navbar } from "@/components/Navbar"
 import { Hero } from "@/components/Hero"
 import { Loader } from "@/components/Loader"
@@ -82,52 +83,54 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-      {showLoader && (
-        <Loader
-          appReadyPromise={appReadyPromiseRef.current}
-          timeout={10000}
-          minDurationMs={3000}
-          onFinish={handleLoaderFinish}
-        />
-      )}
+    <LazyMotion features={domAnimation}>
+      <div className="min-h-screen bg-white font-sans overflow-x-hidden">
+        {showLoader && (
+          <Loader
+            appReadyPromise={appReadyPromiseRef.current}
+            timeout={10000}
+            minDurationMs={3000}
+            onFinish={handleLoaderFinish}
+          />
+        )}
 
 
-      <Navbar />
-      <Hero />
+        <Navbar />
+        <Hero />
 
 
-      <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
-        <About />
-      </Suspense>
+        <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
+          <About />
+        </Suspense>
 
-      <Suspense fallback={<div className="h-48 bg-white animate-pulse" />}>
-        <SponsorsStrip />
-      </Suspense>
+        <Suspense fallback={<div className="h-48 bg-white animate-pulse" />}>
+          <SponsorsStrip />
+        </Suspense>
 
-      <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
-        <TeamTree />
-      </Suspense>
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+          <TeamTree />
+        </Suspense>
 
-      <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
-        <Timeline />
-      </Suspense>
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+          <Timeline />
+        </Suspense>
 
-      <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
-        <CardsParallax />
-      </Suspense>
+        <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
+          <CardsParallax />
+        </Suspense>
 
-      <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
-        <FAQ />
-      </Suspense>
+        <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
+          <FAQ />
+        </Suspense>
 
-      <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
-        <Contact />
-      </Suspense>
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+          <Contact />
+        </Suspense>
 
-      <Suspense fallback={<div className="h-20 bg-gray-100 animate-pulse" />}>
-        <Footer />
-      </Suspense>
-    </div>
+        <Suspense fallback={<div className="h-20 bg-gray-100 animate-pulse" />}>
+          <Footer />
+        </Suspense>
+      </div>
+    </LazyMotion>
   )
 }

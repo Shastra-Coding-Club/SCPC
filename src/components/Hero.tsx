@@ -1,9 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useState, useEffect } from "react"
 import { Copy, Check } from "lucide-react"
 import { SCPC_LOGO_URL } from "@/lib/constants"
@@ -72,7 +70,7 @@ export function Hero() {
           {/* Main Content */}
           <div className="grid xl:grid-cols-2 gap-8 xl:gap-12 items-stretch">
             {/* Left Section - Problem Description */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -115,10 +113,10 @@ export function Hero() {
                   </ul>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Right Section - Event Detail */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -134,7 +132,7 @@ export function Hero() {
                     <span className="text-sm text-gray-600 font-semibold">Language:</span>
                     <span className="text-sm font-semibold text-black">eventDetails.cpp</span>
                   </div>
-                  <motion.button
+                  <m.button
                     onClick={handleCopy}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -151,7 +149,7 @@ export function Hero() {
                         <span className="text-xs text-black font-semibold">Copy</span>
                       </>
                     )}
-                  </motion.button>
+                  </m.button>
                 </div>
 
                 {/* Code Content */}
@@ -181,7 +179,7 @@ export function Hero() {
               </div>
 
               <p className="text-xs text-gray-500 text-center">Press Ctrl + Enter to submit</p>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>
