@@ -6,7 +6,7 @@ import { Navbar } from "@/components/Navbar"
 import { Hero } from "@/components/Hero"
 import { Loader } from "@/components/Loader"
 
-// Lazy load below-the-fold components for faster initial load
+
 const About = dynamic(() => import("@/components/About").then(mod => ({ default: mod.About })), {
   loading: () => <div className="min-h-screen bg-gray-50 animate-pulse" />,
   ssr: true
@@ -52,16 +52,16 @@ export default function Home() {
   const appReadyPromiseRef = useRef<Promise<void> | null>(null)
   const resolveReadyRef = useRef<(() => void) | null>(null)
 
-  // Create appReadyPromise on mount
+
   useEffect(() => {
     appReadyPromiseRef.current = new Promise<void>((resolve) => {
       resolveReadyRef.current = resolve
     })
 
-    // Signal ready after fonts and critical resources load
+
     const signalReady = async () => {
       try {
-        // Wait for fonts to load (with fallback timeout)
+
         await Promise.race([
           document.fonts.ready,
           new Promise(resolve => setTimeout(resolve, 1500))
@@ -73,12 +73,10 @@ export default function Home() {
 
     signalReady()
 
-    return () => {
-      // Cleanup if needed
-    }
+
   }, [])
 
-  // Handler when loader finishes
+
   const handleLoaderFinish = () => {
     setShowLoader(false)
   }
@@ -94,11 +92,11 @@ export default function Home() {
         />
       )}
 
-      {/* Critical above-the-fold content - loaded immediately */}
+
       <Navbar />
       <Hero />
 
-      {/* Lazy loaded content - loaded as user scrolls */}
+
       <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
         <About />
       </Suspense>

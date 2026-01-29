@@ -12,14 +12,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import { SCPC_LOGO_URL } from "@/lib/constants";
+import { SCPC_LOGO_URL, SCPC_FAVICON_URL, SCPC_ICON_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "SCPC — Shastra Competitive Programming Competition",
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
-    icon: SCPC_LOGO_URL,
-    apple: SCPC_LOGO_URL,
+    icon: SCPC_FAVICON_URL,
+    shortcut: SCPC_FAVICON_URL,
+    apple: SCPC_ICON_URL,
+    other: {
+      rel: "apple-touch-icon-precomposed",
+      url: SCPC_ICON_URL,
+    },
   },
 };
 
@@ -31,12 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href={SCPC_LOGO_URL} type="image/png" sizes="32x32" />
-        <link rel="icon" href={SCPC_LOGO_URL} type="image/png" sizes="any" />
-        <link rel="shortcut icon" href={SCPC_LOGO_URL} />
-        <link rel="apple-touch-icon" href={SCPC_LOGO_URL} />
-        <meta name="msapplication-TileImage" content={SCPC_LOGO_URL} />
-        <meta name="theme-color" content="#0f172a" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="icon" href={SCPC_FAVICON_URL} sizes="32x32" />
+        <link rel="icon" href={SCPC_ICON_URL} sizes="192x192" />
+        <link rel="apple-touch-icon" href={SCPC_ICON_URL} />
+        <meta name="msapplication-TileImage" content={SCPC_ICON_URL} />
+        <meta name="theme-color" content="#ffffff" />
         <meta property="og:title" content="SCPC — Shastra Competitive Programming Competition" />
         <meta property="og:description" content="SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details." />
         <meta property="og:image" content={SCPC_LOGO_URL} />
@@ -46,7 +52,29 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
+        style={{ backgroundColor: '#ffffff' }}
       >
+        {/* Pre-loader */}
+        <div id="pre-loader" style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9998,
+          backgroundColor: '#ffffff',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: '60px 24px 24px',
+        }}>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes pre-cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+            #pre-loader-cursor { display:inline-block; width:3px; height:1.1em; background:#1a1a2e; animation:pre-cursor-blink 530ms step-end infinite; vertical-align:text-bottom; margin-left:2px; }
+            #pre-loader-container { width:100%; max-width:800px; }
+            #pre-loader-code { font-family:'Geist Mono','SF Mono','Fira Code',monospace; font-size:clamp(14px,2vw,18px); color:#1a1a2e; line-height:1.7; white-space:pre-wrap; text-align:left; }
+          `}} />
+          <div id="pre-loader-container">
+            <div id="pre-loader-code">#include &lt;bits/stdc++.h&gt;<span id="pre-loader-cursor"></span></div>
+          </div>
+        </div>
         <script dangerouslySetInnerHTML={{
           __html: `
           (function(){
@@ -59,7 +87,6 @@ export default function RootLayout({
               }catch(err){/* ignore */}
             }
             window.addEventListener('keydown', onKey);
-            // expose so React cleanup isn't required for this small script
           })();
         `}} />
         {children}

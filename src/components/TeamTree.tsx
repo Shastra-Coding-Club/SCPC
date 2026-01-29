@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { MEMBER_IMAGE_URLS } from "@/lib/constants"
 
@@ -44,6 +45,9 @@ function TreeNode({
     return local || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f1f5f9&color=334155&rounded=true&size=200`
   }
 
+  // Check if using fallback avatar (ui-avatars.com returns SVG)
+  const isExternalFallback = !MEMBER_IMAGE_URLS[member.name]
+
   const cfg = sizes[size]
 
   return (
@@ -55,14 +59,21 @@ function TreeNode({
       className="flex flex-col items-center relative z-10"
     >
       {/* Avatar container */}
-      <div className="relative mb-2">
+        <div className="relative mb-2">
         <motion.div
-          initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
-          animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
-          transition={{ delay: delay + 0.2 }}
-          className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100`}
+            initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
+            animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
+            transition={{ delay: delay + 0.2 }}
+            className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100 relative`}
         >
-          <img src={getImg(member.name)} alt={member.name} className="w-full h-full object-cover" loading="lazy" />
+            <Image
+            src={getImg(member.name)}
+            alt={member.name}
+            fill
+            unoptimized={isExternalFallback}
+            className="object-cover"
+            sizes="(max-width: 640px) 64px, 96px"
+            />
         </motion.div>
         <motion.span
           initial={{ scale: 0 }}
@@ -75,7 +86,7 @@ function TreeNode({
       </div>
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
-        <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight truncate">{member.name}</div>
+        <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
         <div className="text-gray-500 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
       </div>
     </motion.div>
