@@ -16,7 +16,7 @@ int main() {
     // TCET SHASTRA 2026 - Event Details
     string eventName = "TCET SHASTRA";
     string tagline = "Caliber Isn't Claimed; It's Conquered";
-    string date = "15 January 2026";
+    string date = "27 February 2026";
     string startTime = "8:30 AM";
     int durationHours = 12;
     string location = "TCET, Kandivali (E), Mumbai";
