@@ -7,7 +7,7 @@ import { Play, RotateCcw, Layers, ListOrdered } from "lucide-react"
 export function Timeline() {
   const scheduleItems = [
     {
-      time: "9:00 AM",
+      time: "8:30 AM",
       title: "Registration Opens",
       description: "Team registration and welcome breakfast",
       type: "start"
@@ -178,7 +178,7 @@ export function Timeline() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-black mb-4">Event Timeline</h2>
-          <p className="text-lg text-gray-600 mb-6">15 January 2026 - A Day of Innovation</p>
+          <p className="text-lg text-gray-600 mb-6">27 February 2026 - A Day of Conquest</p>
           
           {/* Data Structure Controls */}
           <div className="inline-flex items-center gap-2 p-2 bg-gray-100 rounded-xl">

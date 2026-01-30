@@ -1,9 +1,22 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
-import { m, AnimatePresence } from "framer-motion"
-import { Mail, Linkedin, Twitter, Globe, User, AtSign, FileText, MessageSquare, Send, RotateCcw, Play } from "lucide-react"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { Button } from "@/components/ui/button";
+import { motion as m, AnimatePresence } from "framer-motion";
+import {
+  Mail,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Globe,
+  User,
+  AtSign,
+  FileText,
+  MessageSquare,
+  Send,
+  RotateCcw,
+  Play,
+} from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 // Form fields as linked list nodes
 const formNodes = [
@@ -13,7 +26,7 @@ const formNodes = [
     type: "text",
     placeholder: "Enter your name",
     icon: User,
-    required: true
+    required: true,
   },
   {
     id: "email",
@@ -21,7 +34,7 @@ const formNodes = [
     type: "email",
     placeholder: "your@email.com",
     icon: AtSign,
-    required: true
+    required: true,
   },
   {
     id: "subject",
@@ -29,7 +42,7 @@ const formNodes = [
     type: "text",
     placeholder: "What's this about?",
     icon: FileText,
-    required: true
+    required: true,
   },
   {
     id: "message",
@@ -37,9 +50,9 @@ const formNodes = [
     type: "textarea",
     placeholder: "Your message here...",
     icon: MessageSquare,
-    required: true
-  }
-]
+    required: true,
+  },
+];
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -50,88 +63,97 @@ export function Contact() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{ success: boolean; message: string } | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
-  const [visibleNodes, setVisibleNodes] = useState<number[]>([])
-  const [currentNode, setCurrentNode] = useState(-1)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [isComplete, setIsComplete] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-  const hasStartedRef = useRef(false)
+  const [visibleNodes, setVisibleNodes] = useState<number[]>([]);
+  const [currentNode, setCurrentNode] = useState(-1);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const hasStartedRef = useRef(false);
 
   // Start animation
   const startAnimation = useCallback(() => {
-    setVisibleNodes([])
-    setCurrentNode(-1)
-    setIsAnimating(true)
-    setIsComplete(false)
-    hasStartedRef.current = true
-  }, [])
+    setVisibleNodes([]);
+    setCurrentNode(-1);
+    setIsAnimating(true);
+    setIsComplete(false);
+    hasStartedRef.current = true;
+  }, []);
 
   // Reset animation
   const resetAnimation = useCallback(() => {
-    setVisibleNodes([])
-    setCurrentNode(-1)
-    setIsAnimating(false)
-    setIsComplete(false)
-    hasStartedRef.current = false
-  }, [])
+    setVisibleNodes([]);
+    setCurrentNode(-1);
+    setIsAnimating(false);
+    setIsComplete(false);
+    hasStartedRef.current = false;
+  }, []);
 
   // Animation logic - reveal nodes one by one
   useEffect(() => {
-    if (!isAnimating) return
+    if (!isAnimating) return;
 
-    let running = true
-    const timers: number[] = []
+    let running = true;
+    const timers: number[] = [];
 
     formNodes.forEach((_, i) => {
-      const t = window.setTimeout(() => {
-        if (!running) return
+      const t = window.setTimeout(
+        () => {
+          if (!running) return;
 
-        setCurrentNode(i)
-        setVisibleNodes(prev => [...prev, i])
-      }, i * 500 + 300)
+          setCurrentNode(i);
+          setVisibleNodes((prev) => [...prev, i]);
+        },
+        i * 500 + 300,
+      );
 
-      timers.push(t)
-    })
+      timers.push(t);
+    });
 
     // Mark complete
-    const completeTimer = window.setTimeout(() => {
-      if (running) {
-        setIsAnimating(false)
-        setIsComplete(true)
-      }
-    }, formNodes.length * 500 + 800)
-    timers.push(completeTimer)
+    const completeTimer = window.setTimeout(
+      () => {
+        if (running) {
+          setIsAnimating(false);
+          setIsComplete(true);
+        }
+      },
+      formNodes.length * 500 + 800,
+    );
+    timers.push(completeTimer);
 
     return () => {
-      running = false
-      timers.forEach(t => clearTimeout(t))
-    }
-  }, [isAnimating])
+      running = false;
+      timers.forEach((t) => clearTimeout(t));
+    };
+  }, [isAnimating]);
 
   // Auto-start on scroll into view
   useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
+    const section = sectionRef.current;
+    if (!section) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !hasStartedRef.current) {
-          startAnimation()
+          startAnimation();
         }
       },
-      { threshold: 0.2 }
-    )
+      { threshold: 0.2 },
+    );
 
-    observer.observe(section)
-    return () => observer.disconnect()
-  }, [startAnimation])
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [startAnimation]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus(null)
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
 
     try {
       // Use local proxy to avoid CORS
@@ -146,27 +168,36 @@ export function Contact() {
           Subject: formData.subject,
           Message: formData.message,
         }),
-      })
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (response.ok && result.success) {
-        setSubmitStatus({ success: true, message: result.message || "Query submitted successfully" })
-        setFormData({ name: "", email: "", subject: "", message: "" })
+        setSubmitStatus({
+          success: true,
+          message: result.message || "Query submitted successfully",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
         // Optionally reset visible nodes or show a success state in the UI
       } else {
-        setSubmitStatus({ success: false, message: result.message || "Something went wrong" })
+        setSubmitStatus({
+          success: false,
+          message: result.message || "Something went wrong",
+        });
       }
     } catch (error) {
-      setSubmitStatus({ success: false, message: "Network error. Please try again." })
+      setSubmitStatus({
+        success: false,
+        message: "Network error. Please try again.",
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleInputChange = (id: string, value: string) => {
-    setFormData(prev => ({ ...prev, [id]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
 
   return (
     <section id="contact" ref={sectionRef} className="py-16 bg-white">
@@ -178,21 +209,26 @@ export function Contact() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-black mb-4">Linked with Us!!</h2>
-          <p className="text-lg text-gray-600 mb-6">Have questions? Traverse our contact form!</p>
+          <h2 className="text-4xl font-bold text-black mb-4">
+            Linked with Us!!
+          </h2>
+          <p className="text-lg text-gray-600 mb-6">
+            Have questions? Traverse our contact form!
+          </p>
 
           {/* Playback Controls */}
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={startAnimation}
               disabled={isAnimating}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${isAnimating
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-black text-white hover:bg-gray-800'
-                }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                isAnimating
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-black text-white hover:bg-gray-800"
+              }`}
             >
               <Play className="w-4 h-4" />
-              {isAnimating ? 'Building List...' : 'Replay'}
+              {isAnimating ? "Building List..." : "Replay"}
             </button>
             <button
               onClick={resetAnimation}
@@ -224,10 +260,10 @@ export function Contact() {
             <form onSubmit={handleSubmit} className="space-y-0">
               <AnimatePresence mode="popLayout">
                 {formNodes.map((node, index) => {
-                  const isVisible = visibleNodes.includes(index)
-                  const isCurrent = currentNode === index
-                  const Icon = node.icon
-                  const isLast = index === formNodes.length - 1
+                  const isVisible = visibleNodes.includes(index);
+                  const isCurrent = currentNode === index;
+                  const Icon = node.icon;
+                  const isLast = index === formNodes.length - 1;
 
                   return (
                     <m.div
@@ -236,13 +272,19 @@ export function Contact() {
                       animate={{
                         opacity: isVisible ? 1 : 0.2,
                         x: isVisible ? 0 : -30,
-                        scale: isVisible ? 1 : 0.95
+                        scale: isVisible ? 1 : 0.95,
                       }}
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30,
+                      }}
                       className="relative"
                     >
                       {/* Node Container */}
-                      <div className={`relative transition-all duration-300 ${isCurrent ? 'transform -translate-y-1' : ''}`}>
+                      <div
+                        className={`relative transition-all duration-300 ${isCurrent ? "transform -translate-y-1" : ""}`}
+                      >
                         {/* Current pointer */}
                         <AnimatePresence>
                           {isCurrent && (
@@ -262,20 +304,37 @@ export function Contact() {
                         </AnimatePresence>
 
                         {/* Node Box */}
-                        <div className={`bg-white border-2 rounded-lg p-5 transition-all duration-300 ${isCurrent ? 'border-blue-500 shadow-lg ring-2 ring-blue-100' :
-                          isVisible ? 'border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]' : 'border-gray-200'
-                          }`}>
+                        <div
+                          className={`bg-white border-2 rounded-lg p-5 transition-all duration-300 ${
+                            isCurrent
+                              ? "border-blue-500 shadow-lg ring-2 ring-blue-100"
+                              : isVisible
+                                ? "border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                                : "border-gray-200"
+                          }`}
+                        >
                           {/* Node Header */}
                           <div className="flex items-center gap-3 mb-3">
-                            <div className={`p-2 rounded-lg ${isCurrent ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                              <Icon className={`w-4 h-4 ${isCurrent ? 'text-blue-600' : 'text-gray-600'}`} />
+                            <div
+                              className={`p-2 rounded-lg ${isCurrent ? "bg-blue-100" : "bg-gray-100"}`}
+                            >
+                              <Icon
+                                className={`w-4 h-4 ${isCurrent ? "text-blue-600" : "text-gray-600"}`}
+                              />
                             </div>
                             <div className="flex-1">
-                              <label htmlFor={`contact-${node.id}`} className="block text-sm font-bold text-black">
+                              <label
+                                htmlFor={`contact-${node.id}`}
+                                className="block text-sm font-bold text-black"
+                              >
                                 {node.label}
-                                {node.required && <span className="text-red-500 ml-1">*</span>}
+                                {node.required && (
+                                  <span className="text-red-500 ml-1">*</span>
+                                )}
                               </label>
-                              <span className="font-mono text-xs text-gray-400">node[{index}].data</span>
+                              <span className="font-mono text-xs text-gray-400">
+                                node[{index}].data
+                              </span>
                             </div>
                             {/* Node address */}
                             <span className="font-mono text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">
@@ -288,7 +347,9 @@ export function Contact() {
                             <textarea
                               id={`contact-${node.id}`}
                               value={formData[node.id as keyof typeof formData]}
-                              onChange={(e) => handleInputChange(node.id, e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange(node.id, e.target.value)
+                              }
                               placeholder={node.placeholder}
                               rows={3}
                               disabled={!isVisible || isSubmitting}
@@ -300,7 +361,9 @@ export function Contact() {
                               id={`contact-${node.id}`}
                               type={node.type}
                               value={formData[node.id as keyof typeof formData]}
-                              onChange={(e) => handleInputChange(node.id, e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange(node.id, e.target.value)
+                              }
                               placeholder={node.placeholder}
                               disabled={!isVisible || isSubmitting}
                               className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
@@ -318,7 +381,9 @@ export function Contact() {
                             <div className="flex flex-col items-center">
                               <div className="w-0.5 h-4 bg-gray-300"></div>
                               <div className="flex items-center gap-1">
-                                <span className="font-mono text-[10px] text-gray-400">next</span>
+                                <span className="font-mono text-[10px] text-gray-400">
+                                  next
+                                </span>
                               </div>
                               <div className="w-0 h-0 border-l-4 border-r-4 border-t-6 border-transparent border-t-gray-400"></div>
                             </div>
@@ -326,7 +391,7 @@ export function Contact() {
                         )}
                       </div>
                     </m.div>
-                  )
+                  );
                 })}
               </AnimatePresence>
 
@@ -347,7 +412,10 @@ export function Contact() {
               {/* Submit Button */}
               <m.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: isComplete ? 1 : 0.3, y: isComplete ? 0 : 10 }}
+                animate={{
+                  opacity: isComplete ? 1 : 0.3,
+                  y: isComplete ? 0 : 10,
+                }}
                 className="pt-6"
               >
                 <Button
@@ -368,8 +436,11 @@ export function Contact() {
                   <m.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`mt-4 p-3 rounded-lg text-center font-mono text-sm ${submitStatus.success ? "bg-green-100 text-green-700 border border-green-200" : "bg-red-100 text-red-700 border border-red-200"
-                      }`}
+                    className={`mt-4 p-3 rounded-lg text-center font-mono text-sm ${
+                      submitStatus.success
+                        ? "bg-green-100 text-green-700 border border-green-200"
+                        : "bg-red-100 text-red-700 border border-red-200"
+                    }`}
                   >
                     // {submitStatus.message}
                   </m.div>
@@ -417,13 +488,22 @@ export function Contact() {
                         initial={{ opacity: 0, x: 50, scale: 0.8 }}
                         animate={{ opacity: 1, x: 0, scale: 1 }}
                         exit={{ opacity: 0, x: -50, scale: 0.8 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                        className={`p-3 rounded-lg border-2 font-mono text-sm bg-blue-50 border-blue-300 text-blue-900 ${pos === visibleNodes.length - 1 ? 'ring-2 ring-offset-1 ring-blue-400' : ''
-                          }`}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30,
+                        }}
+                        className={`p-3 rounded-lg border-2 font-mono text-sm bg-blue-50 border-blue-300 text-blue-900 ${
+                          pos === visibleNodes.length - 1
+                            ? "ring-2 ring-offset-1 ring-blue-400"
+                            : ""
+                        }`}
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-blue-500">[{pos}]</span>
-                          <span className="font-bold">{formNodes[nodeIndex].label}</span>
+                          <span className="font-bold">
+                            {formNodes[nodeIndex].label}
+                          </span>
                           <span className="text-xs text-blue-400">→</span>
                         </div>
                       </m.div>
@@ -439,7 +519,9 @@ export function Contact() {
                   {currentNode >= 0 ? (
                     <div className="text-blue-300">
                       list.append(
-                      <span className="text-orange-300">"{formNodes[currentNode]?.label}"</span>
+                      <span className="text-orange-300">
+                        "{formNodes[currentNode]?.label}"
+                      </span>
                       )
                     </div>
                   ) : (
@@ -451,14 +533,21 @@ export function Contact() {
 
             {/* Contact Info */}
             <div className="bg-gray-50 border-2 border-black rounded-lg p-6">
-              <h3 className="text-2xl font-bold text-black mb-6">Contact Information</h3>
+              <h3 className="text-2xl font-bold text-black mb-6">
+                Contact Information
+              </h3>
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <Mail className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-black">Email</p>
-                    <p className="text-gray-600">shastra@tcet.edu.in</p>
+                    <a
+                      href="mailto:shastra@tcet.edu.in"
+                      className="text-gray-600 hover:underline"
+                    >
+                      shastra@tcet.edu.in
+                    </a>
                   </div>
                 </div>
 
@@ -466,7 +555,14 @@ export function Contact() {
                   <Globe className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-black">Website</p>
-                    <p className="text-gray-600">www.tcet.edu.in</p>
+                    <a
+                      href="https://tcet-shastra.online"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:underline"
+                    >
+                      tcet-shastra.online
+                    </a>
                   </div>
                 </div>
               </div>
@@ -477,21 +573,27 @@ export function Contact() {
               <h3 className="text-xl font-bold text-black mb-4">Follow Us</h3>
               <div className="flex gap-4">
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/tcet-shastra-coding-club-418687253/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="LinkedIn"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
+
                 <a
-                  href="#"
-                  aria-label="Twitter"
+                  href="https://www.instagram.com/tcet_shastra/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >
-                  <Twitter className="w-5 h-5" />
+                  <Instagram className="w-5 h-5" />
                 </a>
+
                 <a
-                  href="#"
+                  href="mailto:shastra@tcet.edu.in"
                   aria-label="Email"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >

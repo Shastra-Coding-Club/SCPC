@@ -9,25 +9,40 @@ import { SCPC_LOGO_URL } from "@/lib/constants"
 export function Hero() {
   const [copied, setCopied] = useState(false)
 
-  const registrationCode = `/*
- * TCET SHASTRA 2026 - Event Details
- * -------------------------------
- * name: "TCET SHASTRA"
- * tagline: "Caliber Isn't Claimed; It's Conquered"
- * date: "15 January 2026"
- * startTime: "9:00 AM"
- * duration: "12 Hours"
- * location: "TCET, Kandivali (E), Mumbai"
- * college: "Thakur College of Engineering & Technology"
- * prizePool: "₹90,000"
- */
+const registrationCode = `#include <bits/stdc++.h>
+using namespace std;
 
-// Registration template (for reference)
-// team_name = "YourTeam"
-// leader_email = "leader@email.com"
-// members = ["Name1", "Name2"]
-// track = "Web Dev"
-// college = "Your College"`
+int main() {
+    // TCET SHASTRA 2026 - Event Details
+    string eventName = "TCET SHASTRA";
+    string tagline = "Caliber Isn't Claimed; It's Conquered";
+    string date = "15 January 2026";
+    string startTime = "8:30 AM";
+    int durationHours = 12;
+    string location = "TCET, Kandivali (E), Mumbai";
+    string college = "Thakur College of Engineering & Technology";
+    int prizePool = 60000;
+
+    cout << "Event: " << eventName << '\\n'
+         << "Tagline: " << tagline << '\\n'
+         << "Date: " << date << '\\n'
+         << "Start Time: " << startTime << '\\n'
+         << "Duration: " << durationHours << " Hours" << '\\n'
+         << "Location: " << location << '\\n'
+         << "College: " << college << '\\n'
+         << "Prize Pool: ₹" << prizePool << '\\n';
+
+    // Registration input (example)
+    string teamName;
+    string leaderEmail;
+    int members;
+    string track;
+
+    // cin >> teamName >> leaderEmail >> members >> track;
+
+    return 0;
+}`;
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(registrationCode)
@@ -92,10 +107,10 @@ export function Hero() {
                       <span className="text-blue-600 font-semibold">Duration</span> – 12 Hours
                     </li>
                     <li className="text-gray-700">
-                      <span className="text-blue-600 font-semibold">Team Size</span> – 2–4 members
+                      <span className="text-blue-600 font-semibold">Team Size</span> – 1-3 members
                     </li>
                     <li className="text-gray-700">
-                      <span className="text-blue-600 font-semibold">Mode</span> – Online Hackathon
+                      <span className="text-blue-600 font-semibold">Mode</span> – Hybird
                     </li>
                   </ul>
                 </div>
@@ -106,10 +121,10 @@ export function Hero() {
                 <div className="bg-green-50 border border-green-200 rounded-md p-3">
                   <p className="text-sm font-semibold text-gray-800">Prizes</p>
                   <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                    <li>1st Prize: ₹45,000 + Trophy</li>
-                    <li>2nd Prize: ₹30,000 + Trophy</li>
-                    <li>3rd Prize: ₹15,000 + Trophy</li>
-                    <li className="pt-1 border-t border-green-100"><strong>Total:</strong> ₹90,000</li>
+                    <li>1st Prize: ₹30,000 + Trophy</li>
+                    <li>2nd Prize: ₹20,000 + Trophy</li>
+                    <li>3rd Prize: ₹10,000 + Trophy</li>
+                    <li className="pt-1 border-t border-green-100"><strong>Total:</strong> ₹60,000</li>
                   </ul>
                 </div>
               </div>
@@ -171,7 +186,7 @@ export function Hero() {
 
               {/* Action Button */}
               <div className="pt-2">
-                <a id="hero-register" href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer">
+                <a id="hero-register" href="https://unstop.com/p/tcet-shastras-competitive-programming-competition-2026-thakur-college-of-engineering-and-technology-tcet-mumbai-1631441" target="_blank" rel="noopener noreferrer">
                   <Button size="sm" className="w-full bg-[#f97316] text-white hover:bg-[#e55f10]">
                     Register Now
                   </Button>
