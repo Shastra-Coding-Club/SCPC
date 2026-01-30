@@ -76,8 +76,7 @@ export function Navbar() {
           {/* Register Button */}
           <a
             id="site-register"
-            href="/"
-            onClick={(e) => handleNavClick(e, 'contact')}
+            href="https://unstop.com/p/tcet-shastras-competitive-programming-competition-2026-thakur-college-of-engineering-and-technology-tcet-mumbai-1631441"
           >
             <Button size="sm" className="rounded-lg bg-[#f97316] px-5 text-white shadow-md hover:bg-[#e55f10] active:scale-[0.98] transition-all duration-200">
               Register
