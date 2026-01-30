@@ -1,171 +1,185 @@
-"use client"
+"use client";
 
-import { m, AnimatePresence } from "framer-motion"
-import { useEffect, useState, useRef, useCallback } from "react"
-import { Play, RotateCcw, Layers, ListOrdered } from "lucide-react"
+import { m, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { Play, RotateCcw, Layers, ListOrdered } from "lucide-react";
 
 export function Timeline() {
   const scheduleItems = [
     {
-      time: "8:30 AM",
-      title: "Registration Opens",
-      description: "Team registration and welcome breakfast",
-      type: "start"
+      time: "08:30 AM",
+      title: "Inauguration & Institute’s Note",
+      description: "Formal inauguration and welcome address",
+      type: "start",
     },
     {
-      time: "9:30 AM",
-      title: "Opening Ceremony",
-      description: "Keynote address and event briefing",
-      type: "event"
+      time: "08:50 AM",
+      title: "Breakfast",
+      description: "Breakfast for all participants",
+      type: "break",
+    },
+    {
+      time: "09:30 AM",
+      title: "Guidelines to Participants",
+      description: "Rules, judging criteria, and event flow briefing",
+      type: "event",
     },
     {
       time: "10:00 AM",
-      title: "Contest Begins",
-      description: "Problem statements released, coding starts",
-      type: "start"
+      title: "Round 1",
+      description: "Coding Round 1 (2 Hours)",
+      type: "event",
     },
     {
-      time: "1:00 PM",
+      time: "12:00 PM",
       title: "Lunch Break",
-      description: "Refreshments and team discussion time",
-      type: "break"
+      description: "Lunch and short rest break",
+      type: "break",
     },
     {
-      time: "2:00 PM",
-      title: "Mid-Event Check-in",
-      description: "Progress evaluation and mentoring",
-      type: "event"
+      time: "01:00 PM",
+      title: "Round 2",
+      description: "Coding Round 2 (1 Hour)",
+      type: "event",
     },
     {
-      time: "6:00 PM",
-      title: "Evening Snacks",
-      description: "Energy boost for the final stretch",
-      type: "break"
+      time: "02:00 PM",
+      title: "High Tea",
+      description: "Refreshments break",
+      type: "break",
     },
     {
-      time: "9:00 PM",
-      title: "Submission Deadline",
-      description: "Code submission and project demonstration",
-      type: "deadline"
+      time: "03:30 PM",
+      title: "Round 3",
+      description: "Final Coding Round (3 Hours)",
+      type: "event",
     },
     {
-      time: "9:30 PM",
-      title: "Judging Round",
-      description: "Teams present to industry experts",
-      type: "event"
+      time: "07:00 PM",
+      title: "Result Announcement",
+      description: "Declaration of results and winners",
+      type: "event",
     },
     {
-      time: "10:30 PM",
-      title: "Results & Awards",
-      description: "Winner announcement and prize distribution",
-      type: "end"
-    }
-  ]
+      time: "07:30 PM",
+      title: "Dispersal",
+      description: "Event conclusion and departure",
+      type: "end",
+    },
+  ];
 
-  const [mode, setMode] = useState<'stack' | 'queue'>('stack')
-  const [structure, setStructure] = useState<number[]>([])
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentStep, setCurrentStep] = useState(-1)
-  const sectionRef = useRef<HTMLElement>(null)
-  const hasStartedRef = useRef(false)
+  const [mode, setMode] = useState<"stack" | "queue">("stack");
+  const [structure, setStructure] = useState<number[]>([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentStep, setCurrentStep] = useState(-1);
+  const sectionRef = useRef<HTMLElement>(null);
+  const hasStartedRef = useRef(false);
 
   // Reset and start animation
   const startAnimation = useCallback(() => {
-    setStructure([])
-    setCurrentStep(-1)
-    setIsPlaying(true)
-    hasStartedRef.current = true
-  }, [])
+    setStructure([]);
+    setCurrentStep(-1);
+    setIsPlaying(true);
+    hasStartedRef.current = true;
+  }, []);
 
   // Reset animation
   const resetAnimation = useCallback(() => {
-    setStructure([])
-    setCurrentStep(-1)
-    setIsPlaying(false)
-    hasStartedRef.current = false
-  }, [])
+    setStructure([]);
+    setCurrentStep(-1);
+    setIsPlaying(false);
+    hasStartedRef.current = false;
+  }, []);
 
   // Switch mode and autoplay
-  const switchMode = useCallback((newMode: 'stack' | 'queue') => {
-    setMode(newMode)
-    setStructure([])
-    setCurrentStep(-1)
+  const switchMode = useCallback((newMode: "stack" | "queue") => {
+    setMode(newMode);
+    setStructure([]);
+    setCurrentStep(-1);
     // Auto-start the animation when switching modes
     setTimeout(() => {
-      setIsPlaying(true)
-      hasStartedRef.current = true
-    }, 100)
-  }, [])
+      setIsPlaying(true);
+      hasStartedRef.current = true;
+    }, 100);
+  }, []);
 
   // Animation logic
   useEffect(() => {
-    if (!isPlaying) return
+    if (!isPlaying) return;
 
-    let running = true
-    const timers: number[] = []
+    let running = true;
+    const timers: number[] = [];
 
     scheduleItems.forEach((_, i) => {
       const t = window.setTimeout(() => {
-        if (!running) return
-        
-        setCurrentStep(i)
-        
+        if (!running) return;
+
+        setCurrentStep(i);
+
         // Push to structure based on mode
         setStructure((prev) => {
-          if (mode === 'stack') {
+          if (mode === "stack") {
             // Stack: add to top (beginning of array for visual)
-            return [i, ...prev]
+            return [i, ...prev];
           } else {
             // Queue: add to back (end of array)
-            return [...prev, i]
+            return [...prev, i];
           }
-        })
-      }, i * 600)
+        });
+      }, i * 600);
 
-      timers.push(t)
-    })
+      timers.push(t);
+    });
 
     // Mark as complete after all items
-    const completeTimer = window.setTimeout(() => {
-      if (running) {
-        setIsPlaying(false)
-      }
-    }, scheduleItems.length * 600 + 500)
-    timers.push(completeTimer)
+    const completeTimer = window.setTimeout(
+      () => {
+        if (running) {
+          setIsPlaying(false);
+        }
+      },
+      scheduleItems.length * 600 + 500,
+    );
+    timers.push(completeTimer);
 
     return () => {
-      running = false
-      timers.forEach((tt) => clearTimeout(tt))
-    }
-  }, [isPlaying, mode, scheduleItems.length])
+      running = false;
+      timers.forEach((tt) => clearTimeout(tt));
+    };
+  }, [isPlaying, mode, scheduleItems.length]);
 
   // Intersection Observer to auto-start on first view
   useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
+    const section = sectionRef.current;
+    if (!section) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !hasStartedRef.current) {
-          startAnimation()
+          startAnimation();
         }
       },
-      { threshold: 0.3 }
-    )
+      { threshold: 0.3 },
+    );
 
-    observer.observe(section)
-    return () => observer.disconnect()
-  }, [startAnimation])
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [startAnimation]);
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'start': return 'bg-green-500'
-      case 'end': return 'bg-red-500'
-      case 'deadline': return 'bg-orange-500'
-      case 'break': return 'bg-gray-400'
-      default: return 'bg-blue-600'
+      case "start":
+        return "bg-green-500";
+      case "end":
+        return "bg-red-500";
+      case "deadline":
+        return "bg-orange-500";
+      case "break":
+        return "bg-gray-400";
+      default:
+        return "bg-blue-600";
     }
-  }
+  };
 
   return (
     <section id="timeline" ref={sectionRef} className="py-16 bg-white">
@@ -178,27 +192,29 @@ export function Timeline() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-black mb-4">Event Timeline</h2>
-          <p className="text-lg text-gray-600 mb-6">27 February 2026 - A Day of Conquest</p>
-          
+          <p className="text-lg text-gray-600 mb-6">
+            27 February 2026 - A Day of Conquest
+          </p>
+
           {/* Data Structure Controls */}
           <div className="inline-flex items-center gap-2 p-2 bg-gray-100 rounded-xl">
             <button
-              onClick={() => switchMode('stack')}
+              onClick={() => switchMode("stack")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-                mode === 'stack' 
-                  ? 'bg-blue-600 text-white shadow-md' 
-                  : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                mode === "stack"
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-transparent text-gray-600 hover:bg-gray-200"
               }`}
             >
               <Layers className="w-4 h-4" />
               Stack (LIFO)
             </button>
             <button
-              onClick={() => switchMode('queue')}
+              onClick={() => switchMode("queue")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-                mode === 'queue' 
-                  ? 'bg-orange-500 text-white shadow-md' 
-                  : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                mode === "queue"
+                  ? "bg-orange-500 text-white shadow-md"
+                  : "bg-transparent text-gray-600 hover:bg-gray-200"
               }`}
             >
               <ListOrdered className="w-4 h-4" />
@@ -212,13 +228,13 @@ export function Timeline() {
               onClick={startAnimation}
               disabled={isPlaying}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                isPlaying 
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                  : 'bg-black text-white hover:bg-gray-800'
+                isPlaying
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               <Play className="w-4 h-4" />
-              {isPlaying ? 'Playing...' : 'Play'}
+              {isPlaying ? "Playing..." : "Play"}
             </button>
             <button
               onClick={resetAnimation}
@@ -241,35 +257,51 @@ export function Timeline() {
               {/* Timeline Items */}
               <div className="space-y-8">
                 {scheduleItems.map((item, index) => {
-                  const isInStructure = structure.includes(index)
-                  const isCurrent = currentStep === index
+                  const isInStructure = structure.includes(index);
+                  const isCurrent = currentStep === index;
 
                   return (
                     <m.div
                       key={index}
                       initial={{ opacity: 0.3 }}
-                      animate={{ 
+                      animate={{
                         opacity: isInStructure ? 1 : 0.4,
-                        scale: isCurrent ? 1.02 : 1
+                        scale: isCurrent ? 1.02 : 1,
                       }}
                       transition={{ duration: 0.3 }}
-                      className={`flex items-center ${index % 2 === 0 ? 'flex-row-reverse' : ''}`}
+                      className={`flex items-center ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
                     >
                       {/* Content */}
-                      <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
+                      <div
+                        className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}
+                      >
                         <m.div
                           animate={{
-                            borderColor: isInStructure ? (mode === 'stack' ? '#2563eb' : '#f97316') : '#000',
-                            backgroundColor: isCurrent ? (mode === 'stack' ? '#eff6ff' : '#fff7ed') : '#fff',
-                            y: isCurrent ? -4 : 0
+                            borderColor: isInStructure
+                              ? mode === "stack"
+                                ? "#2563eb"
+                                : "#f97316"
+                              : "#000",
+                            backgroundColor: isCurrent
+                              ? mode === "stack"
+                                ? "#eff6ff"
+                                : "#fff7ed"
+                              : "#fff",
+                            y: isCurrent ? -4 : 0,
                           }}
                           transition={{ duration: 0.3 }}
                           className="relative bg-white border-2 border-black rounded-lg p-4 shadow-md"
                         >
-                          <div className="text-xs font-bold text-blue-600 uppercase tracking-wide">{item.time}</div>
-                          <h3 className="text-base font-bold text-black mt-1">{item.title}</h3>
-                          <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                          
+                          <div className="text-xs font-bold text-blue-600 uppercase tracking-wide">
+                            {item.time}
+                          </div>
+                          <h3 className="text-base font-bold text-black mt-1">
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm mt-1">
+                            {item.description}
+                          </p>
+
                           {/* Position indicator */}
                           <AnimatePresence>
                             {isInStructure && (
@@ -277,8 +309,10 @@ export function Timeline() {
                                 initial={{ scale: 0, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0, opacity: 0 }}
-                                className={`absolute -top-2 ${index % 2 === 0 ? 'left-3' : 'right-3'} px-2 py-0.5 rounded text-xs font-bold text-white ${
-                                  mode === 'stack' ? 'bg-blue-600' : 'bg-orange-500'
+                                className={`absolute -top-2 ${index % 2 === 0 ? "left-3" : "right-3"} px-2 py-0.5 rounded text-xs font-bold text-white ${
+                                  mode === "stack"
+                                    ? "bg-blue-600"
+                                    : "bg-orange-500"
                                 }`}
                               >
                                 #{structure.indexOf(index) + 1}
@@ -293,14 +327,16 @@ export function Timeline() {
                         <m.div
                           animate={{
                             scale: isCurrent ? 1.5 : isInStructure ? 1.2 : 1,
-                            boxShadow: isCurrent ? '0 0 20px rgba(37, 99, 235, 0.5)' : 'none'
+                            boxShadow: isCurrent
+                              ? "0 0 20px rgba(37, 99, 235, 0.5)"
+                              : "none",
                           }}
                           transition={{ duration: 0.3 }}
                           className={`w-4 h-4 rounded-full border-4 border-white ${getTypeColor(item.type)}`}
                         />
                       </div>
                     </m.div>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -313,13 +349,13 @@ export function Timeline() {
                 {/* Visualizer Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    {mode === 'stack' ? (
+                    {mode === "stack" ? (
                       <Layers className="w-5 h-5 text-blue-600" />
                     ) : (
                       <ListOrdered className="w-5 h-5 text-orange-500" />
                     )}
                     <span className="font-mono font-bold text-gray-900">
-                      {mode === 'stack' ? 'Stack' : 'Queue'}&lt;Event&gt;
+                      {mode === "stack" ? "Stack" : "Queue"}&lt;Event&gt;
                     </span>
                   </div>
                   <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
@@ -329,12 +365,12 @@ export function Timeline() {
 
                 {/* Visualizer Body */}
                 <div className="space-y-2 min-h-[300px]">
-                  {mode === 'stack' && (
+                  {mode === "stack" && (
                     <div className="text-xs text-gray-500 font-mono mb-2 flex items-center gap-2 bg-blue-50 px-2 py-1 rounded">
                       <span>↓ TOP (pop here)</span>
                     </div>
                   )}
-                  
+
                   <AnimatePresence mode="popLayout">
                     {structure.length === 0 ? (
                       <m.div
@@ -351,35 +387,45 @@ export function Timeline() {
                         <m.div
                           key={itemIndex}
                           layout
-                          initial={{ 
-                            opacity: 0, 
-                            x: mode === 'stack' ? -50 : 50,
-                            scale: 0.8 
+                          initial={{
+                            opacity: 0,
+                            x: mode === "stack" ? -50 : 50,
+                            scale: 0.8,
                           }}
-                          animate={{ 
-                            opacity: 1, 
+                          animate={{
+                            opacity: 1,
                             x: 0,
-                            scale: 1 
+                            scale: 1,
                           }}
-                          exit={{ 
-                            opacity: 0, 
-                            x: mode === 'stack' ? 50 : -50,
-                            scale: 0.8 
+                          exit={{
+                            opacity: 0,
+                            x: mode === "stack" ? 50 : -50,
+                            scale: 0.8,
                           }}
-                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 30,
+                          }}
                           className={`p-3 rounded-lg border-2 font-mono text-sm ${
-                            mode === 'stack' 
-                              ? 'bg-blue-50 border-blue-300 text-blue-900' 
-                              : 'bg-orange-50 border-orange-300 text-orange-900'
-                          } ${pos === 0 ? 'ring-2 ring-offset-1 ' + (mode === 'stack' ? 'ring-blue-400' : 'ring-orange-400') : ''}`}
+                            mode === "stack"
+                              ? "bg-blue-50 border-blue-300 text-blue-900"
+                              : "bg-orange-50 border-orange-300 text-orange-900"
+                          } ${pos === 0 ? "ring-2 ring-offset-1 " + (mode === "stack" ? "ring-blue-400" : "ring-orange-400") : ""}`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className={`text-xs ${mode === 'stack' ? 'text-blue-500' : 'text-orange-500'}`}>[{pos}]</span>
+                            <span
+                              className={`text-xs ${mode === "stack" ? "text-blue-500" : "text-orange-500"}`}
+                            >
+                              [{pos}]
+                            </span>
                             <span className="font-bold truncate ml-2">
                               {scheduleItems[itemIndex].title}
                             </span>
                           </div>
-                          <div className={`text-xs mt-1 ${mode === 'stack' ? 'text-blue-600' : 'text-orange-600'}`}>
+                          <div
+                            className={`text-xs mt-1 ${mode === "stack" ? "text-blue-600" : "text-orange-600"}`}
+                          >
                             {scheduleItems[itemIndex].time}
                           </div>
                         </m.div>
@@ -387,7 +433,7 @@ export function Timeline() {
                     )}
                   </AnimatePresence>
 
-                  {mode === 'queue' && structure.length > 0 && (
+                  {mode === "queue" && structure.length > 0 && (
                     <div className="text-xs text-gray-500 font-mono mt-2 flex items-center gap-2 bg-orange-50 px-2 py-1 rounded">
                       <span>↑ BACK (enqueue here)</span>
                     </div>
@@ -400,8 +446,10 @@ export function Timeline() {
                     <div className="text-green-400">// Last operation:</div>
                     {currentStep >= 0 ? (
                       <div className="text-blue-300">
-                        {mode}.{mode === 'stack' ? 'push' : 'enqueue'}(
-                        <span className="text-orange-300">"{scheduleItems[currentStep]?.title}"</span>
+                        {mode}.{mode === "stack" ? "push" : "enqueue"}(
+                        <span className="text-orange-300">
+                          "{scheduleItems[currentStep]?.title}"
+                        </span>
                         )
                       </div>
                     ) : (
@@ -413,27 +461,39 @@ export function Timeline() {
 
               {/* Legend */}
               <div className="mt-4 bg-white rounded-xl p-5 border-2 border-gray-200 shadow-sm">
-                <h4 className="text-base font-bold text-gray-900 mb-3">Legend</h4>
+                <h4 className="text-base font-bold text-gray-900 mb-3">
+                  Legend
+                </h4>
                 <div className="grid grid-cols-1 gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-green-500 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">Start</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      Start
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-blue-600 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">Event</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      Event
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-gray-400 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">Break</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      Break
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-orange-500 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">Deadline</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      Deadline
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-red-500 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">End</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      End
+                    </span>
                   </div>
                 </div>
               </div>
@@ -442,5 +502,5 @@ export function Timeline() {
         </div>
       </div>
     </section>
-  )
+  );
 }

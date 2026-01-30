@@ -543,10 +543,10 @@ export function Contact() {
                   <div>
                     <p className="font-semibold text-black">Email</p>
                     <a
-                      href="mailto:shastra@tcet.edu.in"
+                      href="mailto:tcetshastra@gmail.com"
                       className="text-gray-600 hover:underline"
                     >
-                      shastra@tcet.edu.in
+                      tcetshastra@gmail.com
                     </a>
                   </div>
                 </div>
@@ -593,7 +593,7 @@ export function Contact() {
                 </a>
 
                 <a
-                  href="mailto:shastra@tcet.edu.in"
+                  href="mailto:tcetshastra@gmail.com"
                   aria-label="Email"
                   className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
                 >
