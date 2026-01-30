@@ -7,7 +7,18 @@ import { motion } from 'framer-motion'
    Prize Data
 ======================= */
 
-const prizes = [
+interface Prize {
+  position: string
+  title: string
+  amount: string
+  description: string
+  perks: string[]
+  accent: string
+  filename: string
+  scale: string
+}
+
+const prizes: Prize[] = [
   {
     position: '2nd',
     title: 'Second Prize',
@@ -44,7 +55,12 @@ const prizes = [
    Prize Card
 ======================= */
 
-const PrizeCard = ({ data, index }) => {
+interface PrizeCardProps {
+  data: Prize
+  index: number
+}
+
+const PrizeCard: React.FC<PrizeCardProps> = ({ data, index }) => {
   const { position, title, amount, description, perks, accent, filename, scale } = data
 
   return (
