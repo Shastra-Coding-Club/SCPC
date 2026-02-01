@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Dancing_Script } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +10,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing-script",
   subsets: ["latin"],
   display: "swap",
 });
@@ -45,7 +51,7 @@ export default function RootLayout({
         <meta name="twitter:image" content={SCPC_LOGO_URL} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased`}
         suppressHydrationWarning
         style={{ backgroundColor: '#ffffff' }}
       >

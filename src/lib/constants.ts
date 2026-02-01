@@ -4,6 +4,7 @@
 export const SCPC_LOGO_URL = "https://res.cloudinary.com/divj3y2cp/image/upload/f_auto,q_auto/v1/scpc-team/scpc";
 export const SCPC_FAVICON_URL = "https://res.cloudinary.com/divj3y2cp/image/upload/w_32,h_32,f_auto,q_auto/v1/scpc-team/scpc";
 export const SCPC_ICON_URL = "https://res.cloudinary.com/divj3y2cp/image/upload/w_192,h_192,f_auto,q_auto/v1/scpc-team/scpc";
+export const BEHIND_EVENT_IMAGE = "/behind-event.jpg";
 
 // Name to image URL mapping for TeamTree component
 export const MEMBER_IMAGE_URLS: Record<string, string> = {
