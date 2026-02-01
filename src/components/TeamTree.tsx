@@ -58,20 +58,20 @@ function TreeNode({
       className="flex flex-col items-center relative z-10"
     >
       {/* Avatar container */}
-        <div className="relative mb-2">
+      <div className="relative mb-2">
         <m.div
-            initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
-            animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
-            transition={{ delay: delay + 0.2 }}
-            className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100 relative`}
+          initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
+          animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
+          transition={{ delay: delay + 0.2 }}
+          className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100 relative`}
         >
-            <Image
+          <Image
             src={getImg(member.name)}
             alt={member.name}
             fill
-            unoptimized 
+            unoptimized
             className="object-cover"
-            />
+          />
         </m.div>
         <m.span
           initial={{ scale: 0 }}
@@ -426,48 +426,48 @@ export function TeamTree() {
             >
               <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-50 border-2 border-indigo-300/60 shadow-2xl shadow-indigo-300/40 backdrop-blur-lg p-2">
                 {/* Animated gradient orbs */}
-                <m.div 
+                <m.div
                   className="absolute top-0 left-0 w-40 h-40 bg-indigo-400/30 rounded-full blur-3xl"
-                  animate={{ 
+                  animate={{
                     x: [0, 50, 0],
                     y: [0, 30, 0],
                     scale: [1, 1.2, 1]
                   }}
                   transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <m.div 
+                <m.div
                   className="absolute bottom-0 right-0 w-48 h-48 bg-purple-400/30 rounded-full blur-3xl"
-                  animate={{ 
+                  animate={{
                     x: [0, -40, 0],
                     y: [0, -20, 0],
                     scale: [1, 1.1, 1]
                   }}
                   transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 />
-                
+
                 {/* Decorative corner elements */}
                 <div className="absolute top-4 left-4 w-12 h-12 border-t-4 border-l-4 border-indigo-400/60 rounded-tl-2xl" />
                 <div className="absolute top-4 right-4 w-12 h-12 border-t-4 border-r-4 border-purple-400/60 rounded-tr-2xl" />
                 <div className="absolute bottom-4 left-4 w-12 h-12 border-b-4 border-l-4 border-purple-400/60 rounded-bl-2xl" />
                 <div className="absolute bottom-4 right-4 w-12 h-12 border-b-4 border-r-4 border-indigo-400/60 rounded-br-2xl" />
-                
+
                 {/* Sparkle dots */}
-                <m.div 
+                <m.div
                   className="absolute top-8 left-20 w-2 h-2 bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/50"
                   animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0 }}
                 />
-                <m.div 
+                <m.div
                   className="absolute top-16 right-24 w-2 h-2 bg-pink-400 rounded-full shadow-lg shadow-pink-400/50"
                   animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                 />
-                <m.div 
+                <m.div
                   className="absolute bottom-16 left-32 w-2 h-2 bg-indigo-400 rounded-full shadow-lg shadow-indigo-400/50"
                   animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                 />
-                
+
                 {/* Card content */}
                 <div className="relative bg-white/95 rounded-2xl overflow-hidden shadow-inner">
                   {/* Image container - auto height based on image */}
@@ -482,23 +482,23 @@ export function TeamTree() {
                       unoptimized
                     />
                     {/* Subtle shimmer effect */}
-                    <m.div 
+                    <m.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none"
                       initial={{ x: "-100%" }}
                       animate={{ x: "200%" }}
                       transition={{ duration: 3, repeat: Infinity, repeatDelay: 3 }}
                     />
                   </div>
-                  
+
                   {/* Team name text */}
-                  <m.div 
+                  <m.div
                     className="py-4 sm:py-5 md:py-6 px-4 text-center bg-gradient-to-r from-blue-50 via-white to-orange-50"
                     initial={{ opacity: 0, y: 10 }}
                     animate={isVisible ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6, delay: D.SUB + 2.2 }}
                   >
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent whitespace-nowrap" 
-                        style={{ fontFamily: 'var(--font-dancing-script), cursive' }}>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent leading-tight px-2"
+                      style={{ fontFamily: 'var(--font-dancing-script), cursive' }}>
                       Team TCET-Shastra 2025-26
                     </h2>
                   </m.div>
