@@ -98,31 +98,37 @@ export default function Home() {
         <Navbar />
         <Hero />
 
-
+        {/* About Section */}
         <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
           <About />
         </Suspense>
 
-        <Suspense fallback={<div className="h-48 bg-white animate-pulse" />}>
-          <SponsorsStrip />
-        </Suspense>
-
-        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
-          <TeamTree />
-        </Suspense>
-
-        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
-          <Timeline />
-        </Suspense>
-
+        {/* Prize Pool Section */}
         <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
           <CardsParallax />
         </Suspense>
 
+        {/* Sponsors Section */}
+        <Suspense fallback={<div className="h-48 bg-white animate-pulse" />}>
+          <SponsorsStrip />
+        </Suspense>
+
+        {/* Event Timeline Section */}
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+          <Timeline />
+        </Suspense>
+
+        {/* FAQs Section */}
         <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
           <FAQ />
         </Suspense>
 
+        {/* TeamTree Section */}
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+          <TeamTree />
+        </Suspense>
+
+        {/* Linked with us Section */}
         <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
           <Contact />
         </Suspense>

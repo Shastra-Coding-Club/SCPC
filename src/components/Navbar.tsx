@@ -9,8 +9,8 @@ import { SCPC_LOGO_URL } from "@/lib/constants"
 // We use 'id' to find the section, but 'label' for the text.
 const navLinks = [
   { id: "about", label: "About" },
-  { id: "timeline", label: "Timeline" },
   { id: "prizes", label: "Prizes" },
+  { id: "timeline", label: "Timeline" },
   { id: "contact", label: "Contact" },
 ]
 
