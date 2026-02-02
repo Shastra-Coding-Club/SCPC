@@ -11,6 +11,12 @@
   --loader-timing-flip: cubic-bezier(0.2, 0.9, 0.2, 1);
 }
 
+html.dark {
+  --loader-bg: #0f0f0f;
+  --loader-code-color: #e5e5e5;
+  --loader-shadow: rgba(255, 255, 255, 0.08);
+}
+
 /* --------------------------------------------------------------------------
    Fullscreen Overlay
    -------------------------------------------------------------------------- */
@@ -122,6 +128,39 @@
 
 .loader-code .operator {
   color: #24292f;
+}
+
+/* Dark mode syntax highlighting */
+html.dark .loader-code .preprocessor {
+  color: #d2a8ff;
+}
+
+html.dark .loader-code .keyword {
+  color: #79c0ff;
+}
+
+html.dark .loader-code .type {
+  color: #ff7b72;
+}
+
+html.dark .loader-code .macro {
+  color: #ffa657;
+}
+
+html.dark .loader-code .string {
+  color: #a5d6ff;
+}
+
+html.dark .loader-code .comment {
+  color: #8b949e;
+}
+
+html.dark .loader-code .number {
+  color: #79c0ff;
+}
+
+html.dark .loader-code .operator {
+  color: #c9d1d9;
 }
 
 /* Typing cursor */

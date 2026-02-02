@@ -200,7 +200,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="py-16 bg-white">
+    <section id="contact" ref={sectionRef} className="py-16 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <m.div
@@ -209,10 +209,10 @@ export function Contact() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-black mb-4">
+          <h2 className="text-4xl font-bold text-black dark:text-white mb-4">
             Linked with Us!!
           </h2>
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             Have questions? Traverse our contact form!
           </p>
 
@@ -223,8 +223,8 @@ export function Contact() {
               disabled={isAnimating}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
                 isAnimating
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-black text-white hover:bg-gray-800"
+                  ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
               }`}
             >
               <Play className="w-4 h-4" />
@@ -232,7 +232,7 @@ export function Contact() {
             </button>
             <button
               onClick={resetAnimation}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
             >
               <RotateCcw className="w-4 h-4" />
               Reset
@@ -249,7 +249,7 @@ export function Contact() {
               animate={{ opacity: visibleNodes.length > 0 ? 1 : 0.3, x: 0 }}
               className="mb-4 flex items-center gap-2"
             >
-              <span className="font-mono text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded border border-blue-200">
+              <span className="font-mono text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded border border-blue-200 dark:border-blue-700">
                 HEAD
               </span>
               <div className="w-8 h-0.5 bg-blue-400"></div>
@@ -294,7 +294,7 @@ export function Contact() {
                               exit={{ opacity: 0, x: -20 }}
                               className="absolute -left-20 top-1/2 -translate-y-1/2 flex items-center gap-1"
                             >
-                              <span className="font-mono text-xs text-orange-500 bg-orange-50 px-2 py-0.5 rounded border border-orange-200">
+                              <span className="font-mono text-xs text-orange-500 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-2 py-0.5 rounded border border-orange-200 dark:border-orange-700">
                                 curr
                               </span>
                               <div className="w-3 h-0.5 bg-orange-400"></div>
@@ -305,27 +305,27 @@ export function Contact() {
 
                         {/* Node Box */}
                         <div
-                          className={`bg-white border-2 rounded-lg p-5 transition-all duration-300 ${
+                          className={`bg-white dark:bg-[#1a1a1a] border-2 rounded-lg p-5 transition-all duration-300 ${
                             isCurrent
-                              ? "border-blue-500 shadow-lg ring-2 ring-blue-100"
+                              ? "border-blue-500 shadow-lg ring-2 ring-blue-100 dark:ring-blue-900"
                               : isVisible
-                                ? "border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                                : "border-gray-200"
+                                ? "border-gray-800 dark:border-gray-600 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)]"
+                                : "border-gray-200 dark:border-gray-700"
                           }`}
                         >
                           {/* Node Header */}
                           <div className="flex items-center gap-3 mb-3">
                             <div
-                              className={`p-2 rounded-lg ${isCurrent ? "bg-blue-100" : "bg-gray-100"}`}
+                              className={`p-2 rounded-lg ${isCurrent ? "bg-blue-100 dark:bg-blue-900/50" : "bg-gray-100 dark:bg-gray-800"}`}
                             >
                               <Icon
-                                className={`w-4 h-4 ${isCurrent ? "text-blue-600" : "text-gray-600"}`}
+                                className={`w-4 h-4 ${isCurrent ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-400"}`}
                               />
                             </div>
                             <div className="flex-1">
                               <label
                                 htmlFor={`contact-${node.id}`}
-                                className="block text-sm font-bold text-black"
+                                className="block text-sm font-bold text-black dark:text-white"
                               >
                                 {node.label}
                                 {node.required && (
@@ -337,7 +337,7 @@ export function Contact() {
                               </span>
                             </div>
                             {/* Node address */}
-                            <span className="font-mono text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">
+                            <span className="font-mono text-xs text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                               0x{(1000 + index * 4).toString(16)}
                             </span>
                           </div>
@@ -353,7 +353,7 @@ export function Contact() {
                               placeholder={node.placeholder}
                               rows={3}
                               disabled={!isVisible || isSubmitting}
-                              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
+                              className="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black dark:text-white bg-white dark:bg-[#1e1e1e] disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:cursor-not-allowed transition-colors placeholder:text-gray-400"
                               required={node.required}
                             />
                           ) : (
@@ -366,7 +366,7 @@ export function Contact() {
                               }
                               placeholder={node.placeholder}
                               disabled={!isVisible || isSubmitting}
-                              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
+                              className="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-black dark:text-white bg-white dark:bg-[#1e1e1e] disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:cursor-not-allowed transition-colors placeholder:text-gray-400"
                               required={node.required}
                             />
                           )}
@@ -379,13 +379,13 @@ export function Contact() {
                             animate={{ opacity: isVisible ? 1 : 0.2 }}
                           >
                             <div className="flex flex-col items-center">
-                              <div className="w-0.5 h-4 bg-gray-300"></div>
+                              <div className="w-0.5 h-4 bg-gray-300 dark:bg-gray-600"></div>
                               <div className="flex items-center gap-1">
                                 <span className="font-mono text-[10px] text-gray-400">
                                   next
                                 </span>
                               </div>
-                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-6 border-transparent border-t-gray-400"></div>
+                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-6 border-transparent border-t-gray-400 dark:border-t-gray-600"></div>
                             </div>
                           </m.div>
                         )}
@@ -402,8 +402,8 @@ export function Contact() {
                 className="flex justify-center pt-4"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-0.5 h-4 bg-gray-300"></div>
-                  <div className="font-mono text-sm text-red-500 bg-red-50 px-4 py-2 rounded border border-red-200">
+                  <div className="w-0.5 h-4 bg-gray-300 dark:bg-gray-600"></div>
+                  <div className="font-mono text-sm text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-4 py-2 rounded border border-red-200 dark:border-red-700">
                     NULL
                   </div>
                 </div>
@@ -457,12 +457,12 @@ export function Contact() {
             className="space-y-6"
           >
             {/* Linked List Visualizer */}
-            <div className="bg-white rounded-xl p-6 border-2 border-gray-200 shadow-lg">
+            <div className="bg-white dark:bg-[#1a1a1a] rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 shadow-lg">
               <div className="flex items-center justify-between mb-4">
-                <span className="font-mono font-bold text-gray-900">
+                <span className="font-mono font-bold text-gray-900 dark:text-white">
                   LinkedList&lt;FormField&gt;
                 </span>
-                <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-mono bg-gray-100 dark:bg-[#1e1e1e] px-2 py-1 rounded">
                   size: {visibleNodes.length}
                 </span>
               </div>
@@ -474,7 +474,7 @@ export function Contact() {
                     <m.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-gray-400 text-sm font-mono py-8 text-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                      className="text-gray-400 dark:text-gray-500 text-sm font-mono py-8 text-center bg-gray-50 dark:bg-[#1e1e1e] rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700"
                     >
                       // Empty list
                       <br />
@@ -493,18 +493,18 @@ export function Contact() {
                           stiffness: 500,
                           damping: 30,
                         }}
-                        className={`p-3 rounded-lg border-2 font-mono text-sm bg-blue-50 border-blue-300 text-blue-900 ${
+                        className={`p-3 rounded-lg border-2 font-mono text-sm bg-blue-50 dark:bg-blue-900/40 border-blue-300 dark:border-blue-600 text-blue-900 dark:text-blue-200 ${
                           pos === visibleNodes.length - 1
-                            ? "ring-2 ring-offset-1 ring-blue-400"
+                            ? "ring-2 ring-offset-1 dark:ring-offset-gray-900 ring-blue-400"
                             : ""
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-blue-500">[{pos}]</span>
+                          <span className="text-xs text-blue-500 dark:text-blue-400">[{pos}]</span>
                           <span className="font-bold">
                             {formNodes[nodeIndex].label}
                           </span>
-                          <span className="text-xs text-blue-400">→</span>
+                          <span className="text-xs text-blue-400 dark:text-blue-300">→</span>
                         </div>
                       </m.div>
                     ))
@@ -513,7 +513,7 @@ export function Contact() {
               </div>
 
               {/* Code Preview */}
-              <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div className="font-mono text-xs bg-gray-900 text-gray-300 p-3 rounded-lg">
                   <div className="text-green-400">// Last operation:</div>
                   {currentNode >= 0 ? (
@@ -532,19 +532,19 @@ export function Contact() {
             </div>
 
             {/* Contact Info */}
-            <div className="bg-gray-50 border-2 border-black rounded-lg p-6">
-              <h3 className="text-2xl font-bold text-black mb-6">
+            <div className="bg-gray-50 dark:bg-[#1a1a1a] border-2 border-black dark:border-gray-700 rounded-lg p-6">
+              <h3 className="text-2xl font-bold text-black dark:text-white mb-6">
                 Contact Information
               </h3>
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <Mail className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-black">Email</p>
+                    <p className="font-semibold text-black dark:text-white">Email</p>
                     <a
                       href="mailto:tcetshastra@gmail.com"
-                      className="text-gray-600 hover:underline"
+                      className="text-gray-600 dark:text-gray-400 hover:underline"
                     >
                       tcetshastra@gmail.com
                     </a>
@@ -552,14 +552,14 @@ export function Contact() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <Globe className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-black">Website</p>
+                    <p className="font-semibold text-black dark:text-white">Website</p>
                     <a
                       href="https://tcet-shastra.online"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-600 hover:underline"
+                      className="text-gray-600 dark:text-gray-400 hover:underline"
                     >
                       tcet-shastra.online
                     </a>
@@ -569,15 +569,15 @@ export function Contact() {
             </div>
 
             {/* Social Links */}
-            <div className="bg-gray-50 border-2 border-black rounded-lg p-6">
-              <h3 className="text-xl font-bold text-black mb-4">Follow Us</h3>
+            <div className="bg-gray-50 dark:bg-[#1a1a1a] border-2 border-black dark:border-gray-700 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-black dark:text-white mb-4">Follow Us</h3>
               <div className="flex gap-4">
                 <a
                   href="https://www.linkedin.com/in/tcet-shastra-coding-club-418687253/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+                  className="p-3 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition"
                 >
                   <Linkedin className="w-5 h-5" />
                 </a>
@@ -587,7 +587,7 @@ export function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+                  className="p-3 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition"
                 >
                   <Instagram className="w-5 h-5" />
                 </a>
@@ -595,7 +595,7 @@ export function Contact() {
                 <a
                   href="mailto:tcetshastra@gmail.com"
                   aria-label="Email"
-                  className="p-3 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+                  className="p-3 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition"
                 >
                   <Mail className="w-5 h-5" />
                 </a>

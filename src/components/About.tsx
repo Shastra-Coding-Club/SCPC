@@ -50,37 +50,38 @@ function CarouselStrip() {
   return (
     <div className="w-full max-w-7xl mx-auto mb-20 overflow-hidden">
       {/* The Retro Container */}
-      <div className="overflow-hidden rounded-lg border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="overflow-hidden rounded-lg border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
 
         {/* Header */}
-        <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 border-b border-black">
-          <div className="text-sm font-semibold text-black">Live Submissions</div>
+        <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-900/30 dark:to-orange-900/30 border-b border-gray-200 dark:border-gray-700">
+          <div className="text-sm font-semibold text-black dark:text-white">Live Submissions</div>
         </div>
 
         {/* Scrolling Content */}
-        <div className="relative bg-white">
-          <div className="absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-white to-transparent"></div>
-          <div className="absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-white to-transparent"></div>
+        <div className="relative bg-white dark:bg-[#1a1a1a]">
+          {/* Fade gradients */}
+          <div className="absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-white to-transparent dark:from-[#1a1a1a] pointer-events-none"></div>
+          <div className="absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-white to-transparent dark:from-[#1a1a1a] pointer-events-none"></div>
 
           <div className="flex py-4">
             <div className="flex gap-6 whitespace-nowrap will-change-transform carousel-scroll">
               {duplicatedTemplates.map((t, i) => (
-                <div key={i} className="inline-block w-[300px] shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-transform hover:-translate-y-1">
+                <div key={i} className="inline-block w-[300px] shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] shadow-sm transition-transform hover:-translate-y-1">
                   {/* Card Header */}
-                  <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-3 py-2">
+                  <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-[#141414] px-3 py-2">
                     <div className="flex items-center gap-2">
                       <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                      <span className="font-mono text-xs font-medium text-gray-600">{t.name}</span>
+                      <span className="font-mono text-xs font-medium text-gray-600 dark:text-gray-400">{t.name}</span>
                     </div>
                     <span className="text-[10px] font-bold text-gray-400">{t.language}</span>
                   </div>
 
                   {/* Card Body */}
-                  <div className="bg-white p-3">
-                    <pre className="font-mono text-[10px] leading-relaxed text-gray-600 opacity-80">
+                  <div className="bg-white dark:bg-[#1e1e1e] p-3">
+                    <pre className="font-mono text-[10px] leading-relaxed text-gray-600 dark:text-gray-400 opacity-80">
                       {t.code}
                     </pre>
-                    <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2">
+                    <div className="mt-3 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-2">
                       <span className="rounded bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase text-green-700">
                         {t.status}
                       </span>
@@ -138,14 +139,14 @@ function CountdownTimer() {
           initial={{ rotateX: -90, opacity: 0 }}
           animate={{ rotateX: 0, opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="bg-white rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-3 py-2 md:px-5 md:py-3 min-w-[55px] md:min-w-[80px]"
+          className="bg-white dark:bg-[#1e1e1e] rounded-lg border-2 border-black dark:border-gray-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] px-3 py-2 md:px-5 md:py-3 min-w-[55px] md:min-w-[80px]"
         >
-          <span className="text-xl md:text-4xl font-black text-gray-900 font-mono tabular-nums">
+          <span className="text-xl md:text-4xl font-black text-gray-900 dark:text-white font-mono tabular-nums">
             {String(value).padStart(2, '0')}
           </span>
         </motion.div>
       </div>
-      <span className="mt-1.5 text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wider">
+      <span className="mt-1.5 text-[10px] md:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
         {label}
       </span>
     </div>
@@ -166,7 +167,7 @@ function CountdownTimer() {
       className="w-full max-w-3xl mx-auto mb-12"
     >
       <div className="text-center mb-4">
-        <span className="font-mono text-xs md:text-sm text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+        <span className="font-mono text-xs md:text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 rounded-md border border-blue-200 dark:border-blue-800">
           countdown_to_event()
         </span>
       </div>
@@ -209,37 +210,37 @@ function ExecutionPipeline() {
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-      <div className="rounded-xl border border-blue-200 bg-white shadow-xl overflow-hidden">
-        <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-100">
+      <div className="rounded-xl border border-blue-200 dark:border-blue-900 bg-white dark:bg-[#1a1a1a] shadow-xl overflow-hidden">
+        <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-100 dark:divide-blue-900">
           {steps.map((step, i) => (
-            <div key={i} className="group relative p-10 min-h-[280px] transition-colors hover:bg-blue-50/30 flex flex-col h-full">
+            <div key={i} className="group relative p-10 min-h-[280px] transition-colors hover:bg-blue-50/30 dark:hover:bg-blue-900/20 flex flex-col h-full">
 
               {/* Index Marker */}
-              <div className="absolute top-6 right-6 font-mono text-sm text-blue-300 group-hover:text-blue-500 transition-colors">
+              <div className="absolute top-6 right-6 font-mono text-sm text-blue-300 dark:text-blue-600 group-hover:text-blue-500 transition-colors">
                 [{i}]
               </div>
 
               {/* Connection Arrow */}
               {i < steps.length - 1 && (
                 <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-8 z-10 text-blue-200 transform -translate-y-1/2 translate-x-1/2">
-                  <ArrowRight className="w-8 h-8 bg-white rounded-full p-1" />
+                  <ArrowRight className="w-8 h-8 bg-white dark:bg-[#1a1a1a] rounded-full p-1" />
                 </div>
               )}
 
               {/* Content */}
               <div className="flex flex-col h-full justify-center">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="p-3 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                     {step.icon}
                   </div>
-                  <div className="font-mono text-sm text-blue-500 font-medium px-3 py-1.5 rounded-md bg-blue-50/50 border border-blue-100">
+                  <div className="font-mono text-sm text-blue-500 font-medium px-3 py-1.5 rounded-md bg-blue-50/50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800">
                     void step_{i + 1}()
                   </div>
                 </div>
 
                 {/* Bigger Fonts */}
-                <h4 className="text-3xl font-bold text-gray-900 mb-4">{step.title}</h4>
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <h4 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{step.title}</h4>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                   {step.desc}
                 </p>
               </div>
@@ -261,10 +262,10 @@ export function About() {
   if (!mounted) return null
 
   return (
-    <section id="about" className="relative overflow-hidden bg-gray-50 py-24">
+    <section id="about" className="relative overflow-hidden bg-gray-50 dark:bg-[#0f0f0f] py-24 transition-colors duration-300">
 
       {/* Background Grid */}
-      <div className="absolute inset-0 z-0 opacity-40"
+      <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20"
         style={{
           backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
           backgroundSize: '24px 24px'
@@ -283,7 +284,7 @@ export function About() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             viewport={{ once: true }}
-            className="mb-6 text-6xl font-extrabold tracking-tight text-gray-900 sm:text-7xl"
+            className="mb-6 text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-7xl"
           >
             About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">SCPC 2026</span>
           </motion.h2>
@@ -293,7 +294,7 @@ export function About() {
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             viewport={{ once: true }}
-            className="font-mono text-xl text-gray-500"
+            className="font-mono text-xl text-gray-500 dark:text-gray-400"
           >
             &lt;Caliber Isn't Claimed; It's Conquered /&gt;
           </motion.p>
@@ -312,24 +313,24 @@ export function About() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="flex flex-col justify-center rounded-2xl border border-gray-200 bg-white p-10 shadow-sm"
+              className="flex flex-col justify-center rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] p-10 shadow-sm"
             >
-              <h3 className="mb-8 font-mono text-3xl font-bold text-gray-900">
+              <h3 className="mb-8 font-mono text-3xl font-bold text-gray-900 dark:text-white">
                 <span className="text-blue-600">#</span> define MISSION
               </h3>
-              <p className="text-xl leading-8 text-gray-600">
+              <p className="text-xl leading-8 text-gray-600 dark:text-gray-400">
                 To foster innovation and competitive excellence among the next generation of programmers.
-                <span className="font-semibold text-gray-900"> TCET SHASTRA</span> is where talent meets runtime constraints, and ideas transform into O(1) solutions.
+                <span className="font-semibold text-gray-900 dark:text-white"> TCET SHASTRA</span> is where talent meets runtime constraints, and ideas transform into O(1) solutions.
               </p>
 
               <div className="mt-10 grid grid-cols-2 gap-6">
-                <div className="rounded-xl border border-gray-100 bg-gray-50 p-6 text-center hover:bg-blue-50 transition-colors">
+                <div className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-[#141414] p-6 text-center hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
                   <div className="text-4xl font-bold text-blue-600 mb-1">₹60k</div>
-                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Prize Pool</div>
+                  <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Prize Pool</div>
                 </div>
-                <div className="rounded-xl border border-gray-100 bg-gray-50 p-6 text-center hover:bg-blue-50 transition-colors">
+                <div className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-[#141414] p-6 text-center hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
                   <div className="text-4xl font-bold text-blue-600 mb-1">500+</div>
-                  <div className="text-xs font-bold text-gray-500 uppercase tracking-widest">Coders</div>
+                  <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Coders</div>
                 </div>
               </div>
             </motion.div>
@@ -350,13 +351,13 @@ export function About() {
                 {/* Tape (Orange) */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] rotate-2 shadow-sm z-10 border border-orange-400/50 backdrop-blur-sm opacity-90"></div>
 
-                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                <div className="bg-white dark:bg-[#1a1a1a] rounded-xl p-5 shadow-xl h-full border border-blue-100 dark:border-blue-900 flex flex-col justify-between relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="font-mono text-xs text-blue-500 mb-1">var n_colleges</div>
-                    <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">national level</div>
+                    <div className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">national level</div>
                     <div className="w-8 h-1 bg-blue-500 rounded-full"></div>
                   </div>
-                  <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-blue-50 rounded-full"></div>
+                  <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-blue-50 dark:bg-blue-900/30 rounded-full"></div>
                 </div>
               </motion.div>
 
@@ -369,18 +370,18 @@ export function About() {
                 {/* Tape (Orange) */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] -rotate-1 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
 
-                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                <div className="bg-white dark:bg-[#1a1a1a] rounded-xl p-5 shadow-xl h-full border border-blue-100 dark:border-blue-900 flex flex-col justify-between relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="font-mono text-xs text-blue-500 mb-1">const duration</div>
-                    <div className="text-4xl font-black text-slate-900 mb-2 tracking-tighter">12hrs</div>
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">12hrs</div>
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
                       <div className="h-full w-2/3 bg-blue-500 rounded-full"></div>
                     </div>
                   </div>
                 </div>
               </motion.div>
 
-                            {/* Sticker 3: Eligibility (TypeScript) */}
+              {/* Sticker 3: Eligibility (TypeScript) */}
               <motion.div
                 className="relative group mt-6"
                 whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
@@ -389,10 +390,10 @@ export function About() {
                 {/* Tape (Orange) */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] -rotate-2 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
 
-                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                <div className="bg-white dark:bg-[#1a1a1a] rounded-xl p-5 shadow-xl h-full border border-blue-100 dark:border-blue-900 flex flex-col justify-between relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="font-mono text-xs text-blue-500 mb-1">type Eligibility</div>
-                    <div className="text-3xl font-black text-slate-900 mb-2 tracking-tighter">
+                    <div className="text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">
                       1–3 Members
                     </div>
                     <div className="text-[10px] font-mono font-bold text-blue-600">
@@ -419,12 +420,12 @@ export function About() {
                 {/* Tape (Orange) */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#f97316] rotate-1 shadow-sm z-10 border border-orange-400/50 opacity-90"></div>
 
-                <div className="bg-white rounded-xl p-5 shadow-xl h-full border border-blue-100 flex flex-col justify-between relative overflow-hidden">
+                <div className="bg-white dark:bg-[#1a1a1a] rounded-xl p-5 shadow-xl h-full border border-blue-100 dark:border-blue-900 flex flex-col justify-between relative overflow-hidden">
                   <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-blue-500 border border-white shadow-sm z-20"></div>
 
                   <div className="relative z-10">
                     <div className="font-mono text-xs text-blue-500 mb-1">bool goodies</div>
-                    <div className="text-3xl font-black text-slate-900 mb-2 tracking-tighter">
+                    <div className="text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">
                       YES
                     </div>
                   </div>
@@ -435,7 +436,7 @@ export function About() {
 
           {/* Execution Stack */}
           <div className="mb-12 text-center">
-            <h3 className="font-mono text-xl font-bold uppercase tracking-[0.2em] text-gray-400">Execution Stack</h3>
+            <h3 className="font-mono text-xl font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Execution Stack</h3>
           </div>
 
           <motion.div

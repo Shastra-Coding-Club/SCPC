@@ -84,7 +84,7 @@ export default function Home() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="min-h-screen bg-white font-sans overflow-x-hidden">
+      <div className="min-h-screen bg-white dark:bg-[#0f0f0f] font-sans overflow-x-hidden transition-colors duration-300">
         {showLoader && (
           <Loader
             appReadyPromise={appReadyPromiseRef.current}
