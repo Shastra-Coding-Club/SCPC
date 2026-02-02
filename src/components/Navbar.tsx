@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SCPC_LOGO_URL } from "@/lib/constants"
 import { ThemeToggle } from "./ThemeToggle"
+import { useTheme } from "./ThemeContext"
 
 // We use 'id' to find the section, but 'label' for the text.
 const navLinks = [
@@ -15,9 +16,14 @@ const navLinks = [
   { id: "contact", label: "Contact" },
 ]
 
+const LIGHT_LOGO_URL = "/lightlogo.png"
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { theme } = useTheme()
+
+  const logoSrc = theme === "dark" ? LIGHT_LOGO_URL : SCPC_LOGO_URL
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -54,7 +60,7 @@ export function Navbar() {
       >
         {/* Logo */}
         <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer">
-          <img id="site-header-logo" src={SCPC_LOGO_URL} alt="SCPC logo" width={44} height={44} className="object-contain" />
+          <img id="site-header-logo" src={logoSrc} alt="SCPC logo" width={44} height={44} className="object-contain" />
           <span className="sr-only">SCPC</span>
         </a>
 
