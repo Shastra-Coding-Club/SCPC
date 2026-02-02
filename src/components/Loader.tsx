@@ -5,6 +5,8 @@ import { CodeTyper } from "./CodeTyper";
 import "../styles/loader.css";
 import { SCPC_LOGO_URL } from "@/lib/constants";
 
+const LIGHT_LOGO_URL = "/lightlogo.png";
+
 const CPP_SNIPPET = `#include <bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -56,11 +58,14 @@ export function Loader({
   const [fadeOverlay, setFadeOverlay] = useState(false);
   const [isRemoved, setIsRemoved] = useState(false);
   const [codeVisible, setCodeVisible] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const [typingDuration, setTypingDuration] = useState(3500);
   const [effectiveMinDuration, setEffectiveMinDuration] = useState(minDurationMs);
   const [logoIntroComplete, setLogoIntroComplete] = useState(false);
 
+  // Get the correct logo based on theme
+  const logoSrc = isDarkTheme ? LIGHT_LOGO_URL : SCPC_LOGO_URL;
 
   const mountTimeRef = useRef(Date.now());
   const logoShownTimeRef = useRef(0);
@@ -71,6 +76,11 @@ export function Loader({
   const isReturningUser = useRef(false);
 
   useEffect(() => {
+    // Check theme from localStorage or system preference
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setIsDarkTheme(storedTheme === "dark" || (!storedTheme && prefersDark));
+
     prefersReducedMotion.current = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -229,7 +239,7 @@ export function Loader({
         className={`loader-logo-container ${logoVisible ? "visible" : ""}`}
       >
         <img
-          src={SCPC_LOGO_URL}
+          src={logoSrc}
           alt="SCPC Logo"
           className="loader-logo"
           draggable={false}
