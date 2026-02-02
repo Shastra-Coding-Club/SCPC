@@ -20,16 +20,6 @@ interface Prize {
 
 const prizes: Prize[] = [
   {
-    position: '2nd',
-    title: 'Second Prize',
-    amount: '₹20,000',
-    description: 'Runner Up',
-    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
-    accent: '#64748B', // darker silver
-    filename: 'second_prize.cpp',
-    scale: 'scale-95',
-  },
-  {
     position: '1st',
     title: 'First Prize',
     amount: '₹30,000',
@@ -38,6 +28,16 @@ const prizes: Prize[] = [
     accent: '#F59E0B', // strong gold
     filename: 'first_prize.cpp',
     scale: 'scale-110',
+  },
+  {
+    position: '2nd',
+    title: 'Second Prize',
+    amount: '₹20,000',
+    description: 'Runner Up',
+    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
+    accent: '#64748B', // darker silver
+    filename: 'second_prize.cpp',
+    scale: 'scale-95',
   },
   {
     position: '3rd',
@@ -69,7 +69,7 @@ const PrizeCard: React.FC<PrizeCardProps> = ({ data, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.15 }}
       viewport={{ once: true }}
-      className={`w-[320px] md:w-[360px] ${scale}`}
+      className={`w-[85vw] max-w-[300px] sm:w-[300px] md:w-[320px] lg:w-[340px] shrink-0 lg:${scale}`}
     >
       <div className="bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
@@ -93,41 +93,37 @@ const PrizeCard: React.FC<PrizeCardProps> = ({ data, index }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <div className="mb-4">
-            <div className="font-mono text-sm text-gray-500 dark:text-gray-400 mb-1">
+        <div className="p-4 sm:p-6">
+          <div className="mb-3 sm:mb-4">
+            <div className="font-mono text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-1">
               const prize =
             </div>
             <div
-              className="font-black tracking-tight"
-              style={{
-                color: accent,
-                fontSize: position === '1st' ? '3.5rem' : '3rem',
-              }}
+              className="font-black tracking-tight text-4xl sm:text-5xl"
+              style={{ color: accent }}
             >
               {amount}
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
             {title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 font-mono text-sm mb-6">
+          <p className="text-gray-600 dark:text-gray-400 font-mono text-xs sm:text-sm mb-4 sm:mb-6">
             // {description}
           </p>
 
           {/* Perks */}
-          <div className="bg-gray-50 dark:bg-[#141414] rounded-xl p-4 border dark:border-gray-700">
+          <div className="bg-gray-50 dark:bg-[#141414] rounded-xl p-3 sm:p-4 border dark:border-gray-700">
             <div className="font-mono text-xs text-gray-500 dark:text-gray-400 mb-2">
               perks[] = {'{'}
             </div>
 
-            <div className="space-y-2 pl-4">
+            <div className="space-y-1.5 sm:space-y-2 pl-3 sm:pl-4">
               {perks.map((perk, i) => (
                 <div key={i} className="flex gap-2 items-center">
                   <span className="font-mono text-xs text-gray-400">
-                    {i}:
-                  </span>
+                    {i}:</span>
                   <span
                     className="px-2 py-1 rounded text-sm font-medium text-gray-700 dark:text-gray-300"
                     style={{
@@ -154,24 +150,24 @@ const PrizeCard: React.FC<PrizeCardProps> = ({ data, index }) => {
 
 export function CardsParallax() {
   return (
-    <section id="prizes" className="bg-gray-50 dark:bg-[#0f0f0f] py-24 transition-colors duration-300">
+    <section id="prizes" className="bg-gray-50 dark:bg-[#0f0f0f] py-24 transition-colors duration-300 overflow-hidden">
       {/* Header */}
-      <div className="text-center mb-20 px-4">
+      <div className="text-center mb-12 sm:mb-20 px-4">
         <span className="font-mono text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1a1a] px-3 py-1 rounded border dark:border-gray-700">
           // prizes = [30000, 20000, 10000]
         </span>
 
-        <h2 className="text-5xl font-extrabold text-gray-900 dark:text-white mt-6">
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mt-6">
           Prize Pool
         </h2>
 
-        <p className="text-gray-600 dark:text-gray-400 text-lg mt-4">
+        <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg mt-4">
           Stand out. Solve hard. Win big.
         </p>
       </div>
 
       {/* Podium */}
-      <div className="flex justify-center items-end gap-10 px-4">
+      <div className="flex flex-col lg:flex-row justify-center items-center lg:items-end gap-6 lg:gap-8 px-4 overflow-x-hidden">
         {prizes.map((prize, index) => (
           <PrizeCard key={index} data={prize} index={index} />
         ))}
