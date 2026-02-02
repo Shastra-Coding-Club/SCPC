@@ -9,7 +9,7 @@ import { SCPC_LOGO_URL } from "@/lib/constants"
 export function Hero() {
   const [copied, setCopied] = useState(false)
 
-const registrationCode = `#include <bits/stdc++.h>
+  const registrationCode = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
@@ -65,7 +65,7 @@ int main() {
   }, [])
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-white pt-20 pb-12 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-white dark:bg-[#0f0f0f] pt-20 pb-12 overflow-hidden transition-colors duration-300">
       {/* Decorative background logo (watermark - centered) */}
       <div
         aria-hidden
@@ -81,7 +81,7 @@ int main() {
 
       {/* Main glassmorphic container with watermark visible behind */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="w-full bg-white/8 backdrop-blur-sm border border-black/20 rounded-2xl p-5 md:p-6">
+        <div className="w-full bg-white/8 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-black/20 dark:border-white/20 rounded-2xl p-5 md:p-6">
           {/* Main Content */}
           <div className="grid xl:grid-cols-2 gap-8 xl:gap-12 items-stretch">
             {/* Left Section - Problem Description */}
@@ -92,39 +92,39 @@ int main() {
               className="space-y-6"
             >
               <div>
-                <h2 className="text-3xl font-bold text-black mb-4">Problem Description</h2>
-                <p className="text-base text-gray-700 leading-relaxed mb-4">
+                <h2 className="text-3xl font-bold text-black dark:text-white mb-4">Problem Description</h2>
+                <p className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                   SCPC — TCET SHASTRA 2026 is a 12-hour competitive programming hackathon at Thakur College of Engineering & Technology, Mumbai.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-black mb-3">Input Format</h3>
-                <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 space-y-2">
-                  <p className="text-sm text-gray-700 font-semibold">Event parameters (short):</p>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-3">Input Format</h3>
+                <div className="bg-gray-100 dark:bg-[#1e1e1e] border border-gray-300 dark:border-gray-700 rounded-lg p-4 space-y-2">
+                  <p className="text-sm text-gray-700 dark:text-gray-300 font-semibold">Event parameters (short):</p>
                   <ul className="text-sm space-y-2">
-                    <li className="text-gray-700">
-                      <span className="text-blue-600 font-semibold">Duration</span> – 12 Hours
+                    <li className="text-gray-700 dark:text-gray-300">
+                      <span className="text-blue-600 dark:text-blue-400 font-semibold">Duration</span> – 12 Hours
                     </li>
-                    <li className="text-gray-700">
-                      <span className="text-blue-600 font-semibold">Team Size</span> – 1-3 members
+                    <li className="text-gray-700 dark:text-gray-300">
+                      <span className="text-blue-600 dark:text-blue-400 font-semibold">Team Size</span> – 1-3 members
                     </li>
-                    <li className="text-gray-700">
-                      <span className="text-blue-600 font-semibold">Mode</span> – Hybird
+                    <li className="text-gray-700 dark:text-gray-300">
+                      <span className="text-blue-600 dark:text-blue-400 font-semibold">Mode</span> – Hybrid
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-black mb-3">Output Format</h3>
-                <div className="bg-green-50 border border-green-200 rounded-md p-3">
-                  <p className="text-sm font-semibold text-gray-800">Prizes</p>
-                  <ul className="text-sm text-gray-700 mt-2 space-y-1">
+                <h3 className="text-xl font-bold text-black dark:text-white mb-3">Output Format</h3>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
+                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">Prizes</p>
+                  <ul className="text-sm text-gray-700 dark:text-gray-300 mt-2 space-y-1">
                     <li>1st Prize: ₹30,000 + Trophy</li>
                     <li>2nd Prize: ₹20,000 + Trophy</li>
                     <li>3rd Prize: ₹10,000 + Trophy</li>
-                    <li className="pt-1 border-t border-green-100"><strong>Total:</strong> ₹60,000</li>
+                    <li className="pt-1 border-t border-green-100 dark:border-green-800"><strong>Total:</strong> ₹60,000</li>
                   </ul>
                 </div>
               </div>
@@ -137,50 +137,50 @@ int main() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="space-y-4 flex flex-col"
             >
-              <h2 className="text-3xl font-bold text-black">Event Detail</h2>
+              <h2 className="text-3xl font-bold text-black dark:text-white">Event Detail</h2>
 
               {/* Code Editor Box */}
-              <div className="bg-white/40 backdrop-blur-sm border border-black/20 rounded-lg shadow-lg overflow-hidden">
+              <div className="bg-white/40 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border border-black/20 dark:border-white/20 rounded-lg shadow-lg overflow-hidden">
                 {/* Header */}
-                <div className="bg-gray-100 px-4 py-3 border-b-2 border-black flex items-center justify-between">
+                <div className="bg-gray-100 dark:bg-[#1e1e1e] px-4 py-3 border-b-2 border-gray-300 dark:border-gray-700 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600 font-semibold">Language:</span>
-                    <span className="text-sm font-semibold text-black">eventDetails.cpp</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400 font-semibold">Language:</span>
+                    <span className="text-sm font-semibold text-black dark:text-white">eventDetails.cpp</span>
                   </div>
                   <m.button
                     onClick={handleCopy}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 transition-colors border border-black text-sm"
+                    className="flex items-center gap-2 px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors border border-gray-400 dark:border-gray-600 text-sm"
                   >
                     {copied ? (
                       <>
-                        <Check className="w-4 h-4 text-black" />
-                        <span className="text-xs text-black font-semibold">Copied!</span>
+                        <Check className="w-4 h-4 text-black dark:text-white" />
+                        <span className="text-xs text-black dark:text-white font-semibold">Copied!</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-4 h-4 text-black" />
-                        <span className="text-xs text-black font-semibold">Copy</span>
+                        <Copy className="w-4 h-4 text-black dark:text-white" />
+                        <span className="text-xs text-black dark:text-white font-semibold">Copy</span>
                       </>
                     )}
                   </m.button>
                 </div>
 
                 {/* Code Content */}
-                <div className="bg-white/30 p-4 min-h-64 max-h-80 overflow-y-auto font-mono text-sm flex-1">
+                <div className="bg-white/30 dark:bg-[#0f0f0f] p-4 min-h-64 max-h-80 overflow-y-auto font-mono text-sm flex-1">
                   {registrationCode.split('\n').map((line, idx) => (
-                    <div key={idx} className="hover:bg-gray-50 px-2 py-1 transition-colors leading-relaxed">
+                    <div key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-800 px-2 py-1 transition-colors leading-relaxed">
                       <span className="text-gray-400 mr-3 inline-block w-8 text-right">{String(idx + 1).padStart(2, '0')}</span>
-                      <span className="text-gray-500">{line}</span>
+                      <span className="text-gray-500 dark:text-gray-400">{line}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Footer with Status */}
-                <div className="px-4 py-3 border-t-2 border-black bg-gray-100 flex items-center justify-between">
-                  <span className="text-sm text-gray-600 font-semibold">Ready</span>
-                  <span className="text-xs text-gray-500">Lines: {registrationCode.split('\n').length} | Chars: {registrationCode.length}</span>
+                <div className="px-4 py-3 border-t-2 border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-[#1e1e1e] flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 font-semibold">Ready</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-500">Lines: {registrationCode.split('\n').length} | Chars: {registrationCode.length}</span>
                 </div>
               </div>
 
@@ -193,7 +193,7 @@ int main() {
                 </a>
               </div>
 
-              <p className="text-xs text-gray-500 text-center">Press Ctrl + Enter to submit</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Press Ctrl + Enter to submit</p>
             </m.div>
           </div>
         </div>

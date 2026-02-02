@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode (Tailwind v4) */
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -79,11 +82,30 @@ section {
 }
 
 /* ========== DARK MODE ========== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Class-based dark mode - CSS variables only */
+/* All component styling uses Tailwind dark: variants */
+
+html.dark {
+  --background: #0f0f0f;
+  --foreground: #ededed;
+}
+
+/* Only override body and section backgrounds - no !important */
+html.dark body {
+  background-color: var(--background);
+}
+
+html.dark section {
+  background-color: var(--background);
+}
+
+/* Dark skeleton - no conflict with light mode */
+html.dark .skeleton {
+  background: linear-gradient(90deg,
+      #1a1a1a 25%,
+      #252525 50%,
+      #1a1a1a 75%);
+  background-size: 200% 100%;
 }
 
 /* ========== COMPONENT SPECIFIC ========== */

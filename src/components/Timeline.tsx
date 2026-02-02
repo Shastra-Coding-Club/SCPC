@@ -182,7 +182,7 @@ export function Timeline() {
   };
 
   return (
-    <section id="timeline" ref={sectionRef} className="py-16 bg-white">
+    <section id="timeline" ref={sectionRef} className="py-16 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <m.div
@@ -191,31 +191,29 @@ export function Timeline() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-black mb-4">Event Timeline</h2>
-          <p className="text-lg text-gray-600 mb-6">
+          <h2 className="text-4xl font-bold text-black dark:text-white mb-4">Event Timeline</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             27 February 2026 - A Day of Conquest
           </p>
 
           {/* Data Structure Controls */}
-          <div className="inline-flex items-center gap-2 p-2 bg-gray-100 rounded-xl">
+          <div className="inline-flex items-center gap-2 p-2 bg-gray-100 dark:bg-[#1a1a1a] rounded-xl">
             <button
               onClick={() => switchMode("stack")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-                mode === "stack"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${mode === "stack"
                   ? "bg-blue-600 text-white shadow-md"
-                  : "bg-transparent text-gray-600 hover:bg-gray-200"
-              }`}
+                  : "bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
             >
               <Layers className="w-4 h-4" />
               Stack (LIFO)
             </button>
             <button
               onClick={() => switchMode("queue")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-                mode === "queue"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${mode === "queue"
                   ? "bg-orange-500 text-white shadow-md"
-                  : "bg-transparent text-gray-600 hover:bg-gray-200"
-              }`}
+                  : "bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
             >
               <ListOrdered className="w-4 h-4" />
               Queue (FIFO)
@@ -227,18 +225,17 @@ export function Timeline() {
             <button
               onClick={startAnimation}
               disabled={isPlaying}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                isPlaying
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-black text-white hover:bg-gray-800"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${isPlaying
+                  ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
+                }`}
             >
               <Play className="w-4 h-4" />
               {isPlaying ? "Playing..." : "Play"}
             </button>
             <button
               onClick={resetAnimation}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
             >
               <RotateCcw className="w-4 h-4" />
               Reset
@@ -276,29 +273,28 @@ export function Timeline() {
                         className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}
                       >
                         <m.div
-                          animate={{
-                            borderColor: isInStructure
-                              ? mode === "stack"
-                                ? "#2563eb"
-                                : "#f97316"
-                              : "#000",
-                            backgroundColor: isCurrent
-                              ? mode === "stack"
-                                ? "#eff6ff"
-                                : "#fff7ed"
-                              : "#fff",
-                            y: isCurrent ? -4 : 0,
-                          }}
                           transition={{ duration: 0.3 }}
-                          className="relative bg-white border-2 border-black rounded-lg p-4 shadow-md"
+                          className={`relative border-2 rounded-lg p-4 shadow-md transition-all ${
+                            isInStructure
+                              ? mode === "stack"
+                                ? "border-blue-600"
+                                : "border-orange-500"
+                              : "border-black dark:border-gray-700"
+                          } ${
+                            isCurrent
+                              ? mode === "stack"
+                                ? "bg-blue-50 dark:bg-blue-900/30 -translate-y-1"
+                                : "bg-orange-50 dark:bg-orange-900/30 -translate-y-1"
+                              : "bg-white dark:bg-[#1e1e1e]"
+                          }`}
                         >
                           <div className="text-xs font-bold text-blue-600 uppercase tracking-wide">
                             {item.time}
                           </div>
-                          <h3 className="text-base font-bold text-black mt-1">
+                          <h3 className="text-base font-bold text-black dark:text-white mt-1">
                             {item.title}
                           </h3>
-                          <p className="text-gray-600 text-sm mt-1">
+                          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
                             {item.description}
                           </p>
 
@@ -309,11 +305,10 @@ export function Timeline() {
                                 initial={{ scale: 0, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0, opacity: 0 }}
-                                className={`absolute -top-2 ${index % 2 === 0 ? "left-3" : "right-3"} px-2 py-0.5 rounded text-xs font-bold text-white ${
-                                  mode === "stack"
+                                className={`absolute -top-2 ${index % 2 === 0 ? "left-3" : "right-3"} px-2 py-0.5 rounded text-xs font-bold text-white ${mode === "stack"
                                     ? "bg-blue-600"
                                     : "bg-orange-500"
-                                }`}
+                                  }`}
                               >
                                 #{structure.indexOf(index) + 1}
                               </m.div>
@@ -345,7 +340,7 @@ export function Timeline() {
           {/* Data Structure Visualizer - Right */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              <div className="bg-white rounded-xl p-6 border-2 border-gray-200 shadow-lg">
+              <div className="bg-white dark:bg-[#1a1a1a] rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 shadow-lg">
                 {/* Visualizer Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
@@ -354,11 +349,11 @@ export function Timeline() {
                     ) : (
                       <ListOrdered className="w-5 h-5 text-orange-500" />
                     )}
-                    <span className="font-mono font-bold text-gray-900">
+                    <span className="font-mono font-bold text-gray-900 dark:text-white">
                       {mode === "stack" ? "Stack" : "Queue"}&lt;Event&gt;
                     </span>
                   </div>
-                  <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
+                  <span className="text-xs text-gray-500 font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                     size: {structure.length}
                   </span>
                 </div>
@@ -366,7 +361,7 @@ export function Timeline() {
                 {/* Visualizer Body */}
                 <div className="space-y-2 min-h-[300px]">
                   {mode === "stack" && (
-                    <div className="text-xs text-gray-500 font-mono mb-2 flex items-center gap-2 bg-blue-50 px-2 py-1 rounded">
+                    <div className="text-xs text-gray-500 font-mono mb-2 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
                       <span>↓ TOP (pop here)</span>
                     </div>
                   )}
@@ -376,7 +371,7 @@ export function Timeline() {
                       <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-gray-400 text-sm font-mono py-8 text-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                        className="text-gray-400 text-sm font-mono py-8 text-center bg-gray-50 dark:bg-[#141414] rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700"
                       >
                         // Empty {mode}
                         <br />
@@ -407,15 +402,14 @@ export function Timeline() {
                             stiffness: 500,
                             damping: 30,
                           }}
-                          className={`p-3 rounded-lg border-2 font-mono text-sm ${
-                            mode === "stack"
-                              ? "bg-blue-50 border-blue-300 text-blue-900"
-                              : "bg-orange-50 border-orange-300 text-orange-900"
-                          } ${pos === 0 ? "ring-2 ring-offset-1 " + (mode === "stack" ? "ring-blue-400" : "ring-orange-400") : ""}`}
+                          className={`p-3 rounded-lg border-2 font-mono text-sm ${mode === "stack"
+                              ? "bg-blue-50 dark:bg-blue-900/40 border-blue-300 dark:border-blue-600 text-blue-900 dark:text-blue-200"
+                              : "bg-orange-50 dark:bg-orange-900/40 border-orange-300 dark:border-orange-600 text-orange-900 dark:text-orange-200"
+                            } ${pos === 0 ? "ring-2 ring-offset-1 dark:ring-offset-gray-900 " + (mode === "stack" ? "ring-blue-400" : "ring-orange-400") : ""}`}
                         >
                           <div className="flex items-center justify-between">
                             <span
-                              className={`text-xs ${mode === "stack" ? "text-blue-500" : "text-orange-500"}`}
+                              className={`text-xs ${mode === "stack" ? "text-blue-500 dark:text-blue-400" : "text-orange-500 dark:text-orange-400"}`}
                             >
                               [{pos}]
                             </span>
@@ -424,7 +418,7 @@ export function Timeline() {
                             </span>
                           </div>
                           <div
-                            className={`text-xs mt-1 ${mode === "stack" ? "text-blue-600" : "text-orange-600"}`}
+                            className={`text-xs mt-1 ${mode === "stack" ? "text-blue-600 dark:text-blue-300" : "text-orange-600 dark:text-orange-300"}`}
                           >
                             {scheduleItems[itemIndex].time}
                           </div>
@@ -434,14 +428,14 @@ export function Timeline() {
                   </AnimatePresence>
 
                   {mode === "queue" && structure.length > 0 && (
-                    <div className="text-xs text-gray-500 font-mono mt-2 flex items-center gap-2 bg-orange-50 px-2 py-1 rounded">
+                    <div className="text-xs text-gray-500 font-mono mt-2 flex items-center gap-2 bg-orange-50 dark:bg-orange-900/30 px-2 py-1 rounded">
                       <span>↑ BACK (enqueue here)</span>
                     </div>
                   )}
                 </div>
 
                 {/* Code Preview */}
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="font-mono text-xs bg-gray-900 text-gray-300 p-3 rounded-lg">
                     <div className="text-green-400">// Last operation:</div>
                     {currentStep >= 0 ? (
@@ -460,38 +454,38 @@ export function Timeline() {
               </div>
 
               {/* Legend */}
-              <div className="mt-4 bg-white rounded-xl p-5 border-2 border-gray-200 shadow-sm">
-                <h4 className="text-base font-bold text-gray-900 mb-3">
+              <div className="mt-4 bg-white dark:bg-[#1a1a1a] rounded-xl p-5 border-2 border-gray-200 dark:border-gray-700 shadow-sm">
+                <h4 className="text-base font-bold text-gray-900 dark:text-white mb-3">
                   Legend
                 </h4>
                 <div className="grid grid-cols-1 gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-green-500 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Start
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-blue-600 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Event
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-gray-400 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Break
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-orange-500 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Deadline
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 rounded-full bg-red-500 shadow-sm"></div>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       End
                     </span>
                   </div>

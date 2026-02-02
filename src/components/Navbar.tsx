@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SCPC_LOGO_URL } from "@/lib/constants"
+import { ThemeToggle } from "./ThemeToggle"
 
 // We use 'id' to find the section, but 'label' for the text.
 const navLinks = [
@@ -47,7 +48,7 @@ export function Navbar() {
         className={cn(
           "mx-auto flex items-center justify-between px-6 transition-all duration-300",
           scrolled
-            ? "max-w-5xl rounded-full border border-black/20 bg-white/80 backdrop-blur-xl shadow-lg mx-4 lg:mx-auto py-2 px-4"
+            ? "max-w-5xl rounded-full border border-black/20 dark:border-white/20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-lg mx-4 lg:mx-auto py-2 px-4"
             : "max-w-6xl",
         )}
       >
@@ -64,7 +65,7 @@ export function Navbar() {
               key={link.id}
               href="/" // Shows '/' on hover (clean), but we intercept the click below
               onClick={(e) => handleNavClick(e, link.id)}
-              className="text-sm font-medium text-gray-700 hover:text-black transition-colors cursor-pointer"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
             >
               {link.label}
             </a>
@@ -73,6 +74,9 @@ export function Navbar() {
 
         {/* Right Section - CTA */}
         <div className="flex items-center gap-2">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
           {/* Register Button */}
           <a
             id="site-register"
@@ -85,18 +89,18 @@ export function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 lg:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X className="h-5 w-5 text-black" /> : <Menu className="h-5 w-5 text-black" />}
+            {mobileOpen ? <X className="h-5 w-5 text-black dark:text-white" /> : <Menu className="h-5 w-5 text-black dark:text-white" />}
           </button>
         </div>
       </nav>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="fixed inset-x-0 top-16 border-b border-gray-200 bg-white/95 backdrop-blur-xl lg:hidden">
+        <div className="fixed inset-x-0 top-16 border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl lg:hidden">
           <div className="mx-auto max-w-7xl px-4 py-4">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
@@ -104,12 +108,12 @@ export function Navbar() {
                   key={link.id}
                   href="/"
                   onClick={(e) => handleNavClick(e, link.id)}
-                  className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-black rounded-lg hover:bg-gray-100 transition-colors block"
+                  className="px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors block"
                 >
                   {link.label}
                 </a>
               ))}
-              <hr className="border-gray-200 my-2" />
+              <hr className="border-gray-200 dark:border-gray-700 my-2" />
 
               <a
                 href="/"

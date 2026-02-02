@@ -21,6 +21,7 @@ const dancingScript = Dancing_Script({
 });
 
 import { SCPC_LOGO_URL, SCPC_FAVICON_URL, SCPC_ICON_URL } from "@/lib/constants";
+import { ThemeProvider } from "@/components/ThemeContext";
 
 export const metadata: Metadata = {
   title: "SCPC — Shastra Competitive Programming Competition",
@@ -39,6 +40,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                var theme = localStorage.getItem('theme');
+                var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (isDark) {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.classList.remove('light');
+                } else {
+                  document.documentElement.classList.add('light');
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {}
+            })();
+          `
+        }} />
         <link rel="preload" href={SCPC_LOGO_URL} as="image" fetchPriority="high" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
@@ -51,9 +69,8 @@ export default function RootLayout({
         <meta name="twitter:image" content={SCPC_LOGO_URL} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased bg-white dark:bg-[#0f0f0f] transition-colors duration-300`}
         suppressHydrationWarning
-        style={{ backgroundColor: '#ffffff' }}
       >
         {/* Pre-loader */}
         <div id="pre-loader" style={{
@@ -66,7 +83,8 @@ export default function RootLayout({
           justifyContent: 'center',
           padding: '60px 24px 24px',
         }}>
-          <style dangerouslySetInnerHTML={{ __html: `
+          <style dangerouslySetInnerHTML={{
+            __html: `
             @keyframes pre-cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
             #pre-loader-cursor { display:inline-block; width:3px; height:1.1em; background:#1a1a2e; animation:pre-cursor-blink 530ms step-end infinite; vertical-align:text-bottom; margin-left:2px; }
             #pre-loader-container { width:100%; max-width:800px; }
@@ -90,7 +108,9 @@ export default function RootLayout({
             window.addEventListener('keydown', onKey);
           })();
         `}} />
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

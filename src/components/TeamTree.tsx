@@ -13,6 +13,37 @@ interface TeamMember {
   index: number
 }
 
+// Move static data definitions outside or use useMemo
+const parse = (txt: string, tier: TeamMember["tier"], start: number): TeamMember[] =>
+  txt.trim().split('\n').map((line, i) => {
+    const p = line.split('\t')
+    return { id: `${tier}-${i}`, name: p[6] || '', role: p[7] || '', tier, index: start + i }
+  })
+
+const ADVISORY_DATA = parse(`
+1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Representative
+2	BE/BT	22-E&CS10-26	E&CS	NA	10	Rohan Dol	Advisory
+3	BE/BT	23-AI&ML67-26	AI&ML	NA	67	Adnan Qureshi	Advisory`, 'advisory', 0)
+
+const LEADERSHIP_DATA = parse(`
+1	TE/TT	23-COMPSA35-27	COMP	A	35	Aayush Dubey	Chairperson
+2	TE/TT	23-AI&DSB62-27	AI&DS	B	62	Swamini Yesade	Vice Chairperson`, 'leadership', ADVISORY_DATA.length)
+
+const CORE_DATA = parse(`
+3	TE/TT	23-E&CS48-27	E&CS	N/A	48	Chetan Sharma	Technical Lead
+4	TE/TT	23-COMPSA36-27	COMP	A	36	Ayush Dubey	Documentation Lead
+5	TE/TT	23-COMPSA21-27	COMP	A	21	Pranjal Chavan	Creative Lead
+6	TE/TT	23-AI&MLA42-27	AI&ML	A	42	Rudra Sharma	Research Lead
+7	TE/TT	23-AI&DSB12-27	AI&DS	B	12	Kanchan Saini	PR & Marketing Lead`, 'core', ADVISORY_DATA.length + LEADERSHIP_DATA.length)
+
+const SUBCORE_DATA = parse(`
+1	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kshitij Yadav	Problem Setters Head
+2	TE/TT	23-ITC30-27	IT	C	30	Shreyansh Singh	Editorialists Head
+3	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kashish	Creative Head
+3	SE/ST	24-COMPSA32-28	COMP	A	32	Purva Gade	Documentation Head
+4	TE/TT	23-E&CS30-27	E&CS	N/A	30	Shivam Pandey	Research Head
+5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	PR Head`, 'subcore', ADVISORY_DATA.length + LEADERSHIP_DATA.length + CORE_DATA.length)
+
 function TreeNode({
   member, delay, size, isVisible, onNodeRef
 }: {
@@ -44,8 +75,6 @@ function TreeNode({
     const local = MEMBER_IMAGE_URLS[name]
     return local || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f1f5f9&color=334155&rounded=true&size=200`
   }
-
-
 
   const cfg = sizes[size]
 
@@ -84,26 +113,26 @@ function TreeNode({
       </div>
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
-        <div className="font-semibold text-gray-800 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
-        <div className="text-gray-500 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
+        <div className="font-semibold text-gray-800 dark:text-gray-200 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
+        <div className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
       </div>
     </m.div>
   )
 }
 
-// Edge with proper path
+// Edge with proper path - static version to prevent layout issues
 function AnimatedEdge({
-  x1, y1, x2, y2, delay, color, isVisible
+  x1, y1, x2, y2, color
 }: {
   x1: number; y1: number; x2: number; y2: number
-  delay: number; color: string; isVisible: boolean
+  color: string
 }) {
   const midY = y1 + (y2 - y1) * 0.5
   const path = `M ${x1} ${y1} V ${midY} H ${x2} V ${y2}`
 
   return (
     <g>
-      <m.path
+      <path
         d={path}
         stroke={color}
         strokeWidth={8}
@@ -111,11 +140,8 @@ function AnimatedEdge({
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity={0.08}
-        initial={{ pathLength: 0 }}
-        animate={isVisible ? { pathLength: 1 } : {}}
-        transition={{ duration: 0.7, delay, ease: "easeOut" }}
       />
-      <m.path
+      <path
         d={path}
         stroke={color}
         strokeWidth={2}
@@ -123,19 +149,7 @@ function AnimatedEdge({
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity={0.6}
-        initial={{ pathLength: 0 }}
-        animate={isVisible ? { pathLength: 1 } : {}}
-        transition={{ duration: 0.7, delay, ease: "easeOut" }}
       />
-      <m.circle
-        r={3}
-        fill={color}
-        initial={{ opacity: 0 }}
-        animate={isVisible ? { opacity: [0, 0.8, 0.8, 0] } : {}}
-        transition={{ duration: 2, delay: delay + 1.2, repeat: Infinity, repeatDelay: 4 }}
-      >
-        <animateMotion dur="2s" repeatCount="indefinite" path={path} />
-      </m.circle>
     </g>
   )
 }
@@ -147,9 +161,7 @@ function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colo
       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={`relative z-30 inline-block px-6 py-2.5 rounded-2xl text-[10px] sm:text-xs font-bold uppercase tracking-wider
-        backdrop-blur-2xl bg-gradient-to-br from-white/90 via-white/70 to-white/50
-        border border-white/80 shadow-xl shadow-black/10
-        before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/40 before:to-transparent before:pointer-events-none
+        bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-600 shadow-md dark:shadow-lg
         ${colorClass}`}
     >
       <span className="relative z-10">{text}</span>
@@ -158,35 +170,10 @@ function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colo
 }
 
 export function TeamTree() {
-  const parse = (txt: string, tier: TeamMember["tier"], start: number): TeamMember[] =>
-    txt.trim().split('\n').map((line, i) => {
-      const p = line.split('\t')
-      return { id: `${tier}-${i}`, name: p[6] || '', role: p[7] || '', tier, index: start + i }
-    })
-
-  const advisory = parse(`
-1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Representative
-2	BE/BT	22-E&CS10-26	E&CS	NA	10	Rohan Dol	Advisory
-3	BE/BT	23-AI&ML67-26	AI&ML	NA	67	Adnan Qureshi	Advisory`, 'advisory', 0)
-
-  const leadership = parse(`
-1	TE/TT	23-COMPSA35-27	COMP	A	35	Aayush Dubey	Chairperson
-2	TE/TT	23-AI&DSB62-27	AI&DS	B	62	Swamini Yesade	Vice Chairperson`, 'leadership', advisory.length)
-
-  const core = parse(`
-3	TE/TT	23-E&CS48-27	E&CS	N/A	48	Chetan Sharma	Technical Lead
-4	TE/TT	23-COMPSA36-27	COMP	A	36	Ayush Dubey	Documentation Lead
-5	TE/TT	23-COMPSA21-27	COMP	A	21	Pranjal Chavan	Creative Lead
-6	TE/TT	23-AI&MLA42-27	AI&ML	A	42	Rudra Sharma	Research Lead
-7	TE/TT	23-AI&DSB12-27	AI&DS	B	12	Kanchan Saini	PR & Marketing Lead`, 'core', advisory.length + leadership.length)
-
-  const subCore = parse(`
-1	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kshitij Yadav	Problem Setters Head
-2	TE/TT	23-ITC30-27	IT	C	30	Shreyansh Singh	Editorialists Head
-3	TE/TT	23-CS&E62-27	CS&E	N/A	62	Kashish	Creative Head
-3	SE/ST	24-COMPSA32-28	COMP	A	32	Purva Gade	Documentation Head
-4	TE/TT	23-E&CS30-27	E&CS	N/A	30	Shivam Pandey	Research Head
-5	TE/TT	23-COMPSA37-27	COMP	A	37	Pragnesh Dubey	PR Head`, 'subcore', advisory.length + leadership.length + core.length)
+  const advisory = ADVISORY_DATA
+  const leadership = LEADERSHIP_DATA
+  const core = CORE_DATA
+  const subCore = SUBCORE_DATA
 
   const containerRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({})
@@ -207,26 +194,50 @@ export function TeamTree() {
     const cRect = c.getBoundingClientRect()
 
     const pos: typeof positions = {}
-      ;[...advisory, ...leadership, ...core, ...subCore].forEach(m => {
-        const el = nodeRefs.current[m.id]
-        if (el) {
-          const r = el.getBoundingClientRect()
-          // Track entire node - center X, bottom Y for edge connections
-          pos[m.id] = {
-            x: r.left + r.width / 2 - cRect.left,
-            y: r.top - cRect.top,
-            bottom: r.bottom - cRect.top
-          }
+    const allMembers = [...advisory, ...leadership, ...core, ...subCore]
+    allMembers.forEach(m => {
+      const el = nodeRefs.current[m.id]
+      if (el) {
+        const r = el.getBoundingClientRect()
+        pos[m.id] = {
+          x: r.left + r.width / 2 - cRect.left,
+          y: r.top - cRect.top,
+          bottom: r.bottom - cRect.top
         }
-      })
-    setPositions(pos)
+      }
+    })
+    // Only update if positions actually changed to prevent infinite loops
+    setPositions(prev => {
+      const prevKeys = Object.keys(prev)
+      const posKeys = Object.keys(pos)
+      if (prevKeys.length !== posKeys.length) return pos
+      for (const key of posKeys) {
+        if (!prev[key] || 
+            Math.abs(prev[key].x - pos[key].x) > 1 || 
+            Math.abs(prev[key].y - pos[key].y) > 1) {
+          return pos
+        }
+      }
+      return prev
+    })
   }, [advisory, leadership, core, subCore])
 
   useEffect(() => {
     if (!isVisible) return
-    const t = [150, 500, 1000, 1800].map(d => setTimeout(calcPos, d))
-    window.addEventListener('resize', calcPos)
-    return () => { t.forEach(clearTimeout); window.removeEventListener('resize', calcPos) }
+    // Initial calculation after animations settle
+    const t = setTimeout(calcPos, 800)
+    // Debounced resize handler
+    let resizeTimeout: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(calcPos, 150)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => { 
+      clearTimeout(t)
+      clearTimeout(resizeTimeout)
+      window.removeEventListener('resize', handleResize) 
+    }
   }, [isVisible, calcPos])
 
   const D = { ADV: 0, LEAD: 0.3, CORE: 0.65, SUB: 1.0 }
@@ -243,22 +254,22 @@ export function TeamTree() {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white via-gray-50/30 to-white overflow-hidden">
-      <div className="max-w-5xl mx-auto px-4">
+    <section className="py-16 bg-white dark:bg-[#0f0f0f] transition-colors duration-300" style={{ overflow: 'hidden', overflowX: 'clip', overflowY: 'clip' }}>
+      <div className="max-w-5xl mx-auto px-4" style={{ overflow: 'hidden' }}>
         <m.div
           className="text-center mb-10"
           initial={{ opacity: 0, y: 15 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Organising Committee</h2>
-          <p className="text-gray-500 text-sm">The team behind SCPC 2026</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">Organising Committee</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">The team behind SCPC 2026</p>
         </m.div>
 
-        <div ref={containerRef} className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 sm:p-10 shadow-sm overflow-hidden">
+        <div ref={containerRef} className="relative bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-xl p-6 sm:p-10 shadow-sm" style={{ overflow: 'hidden' }}>
 
           {/* SVG Edges */}
           {hasPos && (
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1, overflow: 'hidden' }}>
               {/* Advisory → Leadership */}
               {(() => {
                 const adv = getTierCenter(advisory)
@@ -275,9 +286,7 @@ export function TeamTree() {
                       y1={adv.bottom + 8}
                       x2={lp.x}
                       y2={lp.y - 5}
-                      delay={D.LEAD + 0.15 + i * 0.06}
                       color="#a78bfa"
-                      isVisible={isVisible}
                     />
                   )
                 })
@@ -298,9 +307,7 @@ export function TeamTree() {
                       y1={lead.bottom + 8}
                       x2={cp.x}
                       y2={cp.y - 5}
-                      delay={D.CORE + 0.15 + i * 0.05}
                       color="#fbbf24"
-                      isVisible={isVisible}
                     />
                   )
                 })
@@ -321,9 +328,7 @@ export function TeamTree() {
                       y1={coreCenter.bottom + 8}
                       x2={sp.x}
                       y2={sp.y - 5}
-                      delay={D.SUB + 0.15 + i * 0.05}
                       color="#3b82f6"
-                      isVisible={isVisible}
                     />
                   )
                 })
@@ -409,102 +414,32 @@ export function TeamTree() {
 
           {/* Behind This Event Card */}
           <div className="relative z-10 mt-16 sm:mt-20">
-            <m.div
-              className="text-center mb-8"
-              initial={{ opacity: 0, y: 15 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: D.SUB + 1.5 }}
-            >
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Behind this event...</h2>
-              <p className="text-gray-500 text-sm">The faces that make it happen</p>
-            </m.div>
-            <m.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: D.SUB + 1.7, ease: "easeOut" }}
-              className="max-w-3xl mx-auto"
-            >
-              <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-50 border-2 border-indigo-300/60 shadow-2xl shadow-indigo-300/40 backdrop-blur-lg p-2">
-                {/* Animated gradient orbs */}
-                <m.div
-                  className="absolute top-0 left-0 w-40 h-40 bg-indigo-400/30 rounded-full blur-3xl"
-                  animate={{
-                    x: [0, 50, 0],
-                    y: [0, 30, 0],
-                    scale: [1, 1.2, 1]
-                  }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <m.div
-                  className="absolute bottom-0 right-0 w-48 h-48 bg-purple-400/30 rounded-full blur-3xl"
-                  animate={{
-                    x: [0, -40, 0],
-                    y: [0, -20, 0],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                />
-
-                {/* Decorative corner elements */}
-                <div className="absolute top-4 left-4 w-12 h-12 border-t-4 border-l-4 border-indigo-400/60 rounded-tl-2xl" />
-                <div className="absolute top-4 right-4 w-12 h-12 border-t-4 border-r-4 border-purple-400/60 rounded-tr-2xl" />
-                <div className="absolute bottom-4 left-4 w-12 h-12 border-b-4 border-l-4 border-purple-400/60 rounded-bl-2xl" />
-                <div className="absolute bottom-4 right-4 w-12 h-12 border-b-4 border-r-4 border-indigo-400/60 rounded-br-2xl" />
-
-                {/* Sparkle dots */}
-                <m.div
-                  className="absolute top-8 left-20 w-2 h-2 bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/50"
-                  animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-                />
-                <m.div
-                  className="absolute top-16 right-24 w-2 h-2 bg-pink-400 rounded-full shadow-lg shadow-pink-400/50"
-                  animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                />
-                <m.div
-                  className="absolute bottom-16 left-32 w-2 h-2 bg-indigo-400 rounded-full shadow-lg shadow-indigo-400/50"
-                  animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                />
-
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">Behind this event...</h2>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">The faces that make it happen</p>
+            </div>
+            <div className="max-w-3xl mx-auto">
+              <div className="rounded-3xl bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-50 dark:from-indigo-950 dark:via-purple-950 dark:to-pink-950 border-2 border-indigo-300/60 dark:border-indigo-600/50 shadow-xl p-3 sm:p-4">
                 {/* Card content */}
-                <div className="relative bg-white/95 rounded-2xl overflow-hidden shadow-inner">
-                  {/* Image container - auto height based on image */}
-                  <div className="relative w-full overflow-hidden group">
-                    <Image
-                      src={BEHIND_EVENT_IMAGE}
-                      alt="Behind this event"
-                      width={1200}
-                      height={800}
-                      className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-700 ease-out"
-                      priority={false}
-                      unoptimized
-                    />
-                    {/* Subtle shimmer effect */}
-                    <m.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none"
-                      initial={{ x: "-100%" }}
-                      animate={{ x: "200%" }}
-                      transition={{ duration: 3, repeat: Infinity, repeatDelay: 3 }}
-                    />
-                  </div>
+                <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl overflow-hidden">
+                  {/* Image - natural size */}
+                  <img
+                    src={BEHIND_EVENT_IMAGE}
+                    alt="Behind this event"
+                    className="w-full h-auto block"
+                    loading="lazy"
+                  />
 
                   {/* Team name text */}
-                  <m.div
-                    className="py-4 sm:py-5 md:py-6 px-4 text-center bg-gradient-to-r from-blue-50 via-white to-orange-50"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: D.SUB + 2.2 }}
-                  >
-                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent leading-tight px-2"
+                  <div className="py-5 sm:py-6 md:py-8 px-4 text-center bg-gradient-to-r from-blue-50 via-white to-orange-50 dark:from-blue-900/20 dark:via-[#1a1a1a] dark:to-orange-900/20">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent leading-tight px-2"
                       style={{ fontFamily: 'var(--font-dancing-script), cursive' }}>
-                      Team TCET-Shastra 2025-26
+                      Team TCET-Shastra 2025-26<span className="text-orange-500">!!</span>
                     </h2>
-                  </m.div>
+                  </div>
                 </div>
               </div>
-            </m.div>
+            </div>
           </div>
         </div>
       </div>

@@ -148,7 +148,7 @@ export function FAQ() {
     }
 
     return (
-        <section id="faq" ref={sectionRef} className="py-20 bg-gray-50">
+        <section id="faq" ref={sectionRef} className="py-20 bg-gray-50 dark:bg-[#0f0f0f] transition-colors duration-300">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <m.div
@@ -159,22 +159,22 @@ export function FAQ() {
                     className="text-center mb-12"
                 >
                     <div className="inline-block mb-4">
-                        <span className="font-mono text-sm text-gray-500 bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-sm">
+                        <span className="font-mono text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1a1a] px-3 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
                             // faqTree.traverse({'{'}mode{'}'})
                         </span>
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                         Frequently Asked{" "}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
                             Questions
                         </span>
                     </h2>
 
-                    <p className="text-gray-500 text-lg mb-2">
+                    <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
                         Question → Answer: Parent → Child relationship
                     </p>
-                    <p className="text-gray-400 text-sm mb-8">
+                    <p className="text-gray-400 dark:text-gray-500 text-sm mb-8">
                         {mode === 'bfs' 
                             ? "BFS: Visit all questions first (level 0), then all answers (level 1)"
                             : "DFS: Go deep into each FAQ before moving to the next"
@@ -183,12 +183,12 @@ export function FAQ() {
 
                     {/* Controls */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <div className="inline-flex items-center p-1.5 bg-white rounded-xl border-2 border-gray-200 shadow-sm">
+                        <div className="inline-flex items-center p-1.5 bg-white dark:bg-[#1a1a1a] rounded-xl border-2 border-gray-200 dark:border-gray-700 shadow-sm">
                             <button
                                 onClick={() => switchMode('bfs')}
                                 className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all ${mode === 'bfs'
                                     ? 'bg-blue-600 text-white shadow-md'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
                                 }`}
                             >
                                 <Layers className="w-4 h-4" />
@@ -198,7 +198,7 @@ export function FAQ() {
                                 onClick={() => switchMode('dfs')}
                                 className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all ${mode === 'dfs'
                                     ? 'bg-purple-600 text-white shadow-md'
-                                    : 'text-gray-600 hover:bg-gray-100'
+                                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
                                 }`}
                             >
                                 <GitBranch className="w-4 h-4" />
@@ -211,8 +211,8 @@ export function FAQ() {
                                 onClick={startAnimation}
                                 disabled={isAnimating}
                                 className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all ${isAnimating
-                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                    : 'bg-gray-900 text-white hover:bg-gray-800'
+                                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
+                                    : 'bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'
                                 }`}
                             >
                                 <Play className="w-4 h-4" />
@@ -221,7 +221,7 @@ export function FAQ() {
                             <button
                                 onClick={resetAnimation}
                                 aria-label="Reset animation"
-                                className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 transition-all"
+                                className="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm bg-white dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-all"
                             >
                                 <RotateCcw className="w-4 h-4" />
                             </button>
@@ -252,19 +252,19 @@ export function FAQ() {
                                 className="relative"
                             >
                             <div 
-                                className={`bg-white rounded-xl border-2 overflow-hidden transition-all duration-300 ${animationComplete ? 'cursor-pointer hover:shadow-md' : ''} ${
+                                className={`bg-white dark:bg-[#1a1a1a] rounded-xl border-2 overflow-hidden transition-all duration-300 ${animationComplete ? 'cursor-pointer hover:shadow-md' : ''} ${
                                     qCurrent || aCurrent
-                                        ? 'border-blue-500 shadow-lg shadow-blue-100'
+                                        ? 'border-blue-500 shadow-lg shadow-blue-100 dark:shadow-blue-900/30'
                                         : qVisited
-                                        ? 'border-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
-                                        : 'border-gray-200 opacity-50'
+                                        ? 'border-gray-800 dark:border-gray-600 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)]'
+                                        : 'border-gray-200 dark:border-gray-700 opacity-50'
                                 }`}
                                 onClick={() => animationComplete && setExpandedIdx(expandedIdx === idx ? null : idx)}
                             >
                                     
                                     {/* Question Row (Parent Node) */}
                                     <div className={`flex items-start gap-4 p-5 transition-all ${
-                                        qCurrent ? 'bg-blue-50' : ''
+                                        qCurrent ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                                     }`}>
                                         {/* Question Icon + Order */}
                                         <div className="relative shrink-0">
@@ -272,8 +272,8 @@ export function FAQ() {
                                                 qCurrent 
                                                     ? 'bg-blue-500 text-white' 
                                                     : qVisited 
-                                                    ? 'bg-gray-900 text-white' 
-                                                    : 'bg-gray-100 text-gray-400'
+                                                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900' 
+                                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
                                             }`}>
                                                 <HelpCircle className="w-5 h-5" />
                                             </div>
@@ -300,7 +300,7 @@ export function FAQ() {
                                                     Level 0 • Question
                                                 </span>
                                             </div>
-                                            <h3 className="font-semibold text-gray-900 text-lg leading-snug">
+                                            <h3 className="font-semibold text-gray-900 dark:text-white text-lg leading-snug">
                                                 {item.question}
                                             </h3>
                                         </div>
@@ -327,17 +327,17 @@ export function FAQ() {
                                                 transition={{ duration: 0.3 }}
                                                 className="overflow-hidden"
                                             >
-                                                <div className={`flex items-start gap-4 px-5 pb-5 pt-3 border-t border-gray-200 transition-all ${
-                                                    aCurrent ? 'bg-purple-50' : 'bg-gray-50'
+                                                <div className={`flex items-start gap-4 px-5 pb-5 pt-3 border-t border-gray-200 dark:border-gray-700 transition-all ${
+                                                    aCurrent ? 'bg-purple-50 dark:bg-purple-900/30' : 'bg-gray-50 dark:bg-[#141414]'
                                                 }`}>
                                                     {/* Answer Icon + Order */}
                                                     <div className="relative shrink-0 ml-5">
-                                                        <div className="absolute -left-5 top-0 h-full w-px bg-gray-300" />
-                                                        <div className="absolute -left-6 top-4 w-3 h-px bg-gray-300" />
+                                                        <div className="absolute -left-5 top-0 h-full w-px bg-gray-300 dark:bg-gray-600" />
+                                                        <div className="absolute -left-6 top-4 w-3 h-px bg-gray-300 dark:bg-gray-600" />
                                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                                                             aCurrent 
                                                                 ? 'bg-purple-500 text-white' 
-                                                                : 'bg-gray-200 text-gray-600'
+                                                                : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                                                         }`}>
                                                             <MessageCircle className="w-4 h-4" />
                                                         </div>
@@ -359,7 +359,7 @@ export function FAQ() {
                                                         <span className="font-mono text-[10px] text-gray-400 uppercase mb-1 block">
                                                             Level 1 • Answer
                                                         </span>
-                                                        <p className="text-gray-600 leading-relaxed">
+                                                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                                                             {item.answer}
                                                         </p>
                                                     </div>
@@ -378,24 +378,24 @@ export function FAQ() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-12 bg-white rounded-xl border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6"
+                    className="mt-12 bg-white dark:bg-[#1a1a1a] rounded-xl border-2 border-gray-900 dark:border-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] p-6"
                 >
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             {mode === 'bfs' ? (
-                                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                                    <Layers className="w-6 h-6 text-blue-600" />
+                                <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                                    <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                                 </div>
                             ) : (
-                                <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                                    <GitBranch className="w-6 h-6 text-purple-600" />
+                                <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
+                                    <GitBranch className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                                 </div>
                             )}
                             <div>
-                                <h4 className="font-bold text-gray-900">
+                                <h4 className="font-bold text-gray-900 dark:text-white">
                                     {mode === 'bfs' ? 'Breadth-First Search' : 'Depth-First Search'}
                                 </h4>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
                                     {mode === 'bfs'
                                         ? 'Q1→Q2→Q3→Q4→Q5→Q6 (all questions) → A1→A2→A3→A4→A5→A6 (all answers)'
                                         : 'Q1→A1 → Q2→A2 → Q3→A3 → Q4→A4 → Q5→A5 → Q6→A6 (go deep each time)'
@@ -404,7 +404,7 @@ export function FAQ() {
                             </div>
                         </div>
 
-                        <div className="font-mono text-sm bg-gray-100 px-4 py-2 rounded-lg text-gray-700">
+                        <div className="font-mono text-sm bg-gray-100 dark:bg-[#1e1e1e] px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300">
                             Visited: <span className={mode === 'bfs' ? 'text-blue-600' : 'text-purple-600'}>{visitedNodes.length}</span> / {faqItems.length * 2} nodes
                         </div>
                     </div>
