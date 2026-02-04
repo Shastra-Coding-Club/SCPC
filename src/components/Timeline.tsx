@@ -193,7 +193,7 @@ export function Timeline() {
         >
           <h2 className="text-4xl font-bold text-black dark:text-white mb-4">Event Timeline</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-            27 February 2026 - A Day of Conquest
+            13 March 2026 - A Day of Conquest
           </p>
 
           {/* Data Structure Controls */}
