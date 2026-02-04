@@ -167,7 +167,7 @@ export function CardsParallax() {
       </div>
 
       {/* Podium */}
-      <div className="flex flex-col lg:flex-row justify-center items-center lg:items-end gap-6 lg:gap-8 px-4 overflow-x-hidden">
+      <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap justify-center items-center md:items-end gap-6 lg:gap-8 px-4 overflow-x-hidden">
         {prizes.map((prize, index) => (
           <PrizeCard key={index} data={prize} index={index} />
         ))}

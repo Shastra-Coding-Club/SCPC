@@ -57,7 +57,6 @@ export default function RootLayout({
             })();
           `
         }} />
-        <link rel="preload" href={SCPC_LOGO_URL} as="image" fetchPriority="high" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <meta name="msapplication-TileImage" content={SCPC_ICON_URL} />
@@ -77,7 +76,7 @@ export default function RootLayout({
           position: 'fixed',
           inset: 0,
           zIndex: 9998,
-          backgroundColor: '#ffffff',
+
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
@@ -85,13 +84,29 @@ export default function RootLayout({
         }}>
           <style dangerouslySetInnerHTML={{
             __html: `
+            #pre-loader {
+              --pl-bg: #ffffff;
+              --pl-text: #1a1a2e;
+              --pl-cursor: #1a1a2e;
+              --pl-accent: #8250df;
+            }
+            .dark #pre-loader {
+              --pl-bg: #0f0f0f;
+              --pl-text: #e5e5e5;
+              --pl-cursor: #e5e5e5;
+              --pl-accent: #d2a8ff;
+            }
+            #pre-loader { background-color: var(--pl-bg); }
+            #pre-loader-code { color: var(--pl-text); }
+            #pre-loader-cursor { background: var(--pl-cursor); }
+
             @keyframes pre-cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
-            #pre-loader-cursor { display:inline-block; width:3px; height:1.1em; background:#1a1a2e; animation:pre-cursor-blink 530ms step-end infinite; vertical-align:text-bottom; margin-left:2px; }
+            #pre-loader-cursor { display:inline-block; width:3px; height:1.1em; animation:pre-cursor-blink 530ms step-end infinite; vertical-align:text-bottom; margin-left:2px; }
             #pre-loader-container { width:100%; max-width:800px; }
-            #pre-loader-code { font-family:'Geist Mono','SF Mono','Fira Code',monospace; font-size:clamp(14px,2vw,18px); color:#1a1a2e; line-height:1.7; white-space:pre-wrap; text-align:left; }
+            #pre-loader-code { font-family:monospace; font-size:clamp(14px,2vw,18px); line-height:1.7; white-space:pre-wrap; text-align:left; }
           `}} />
           <div id="pre-loader-container">
-            <div id="pre-loader-code">#include &lt;bits/stdc++.h&gt;<span id="pre-loader-cursor"></span></div>
+            <div id="pre-loader-code"><span style={{color:'var(--pl-accent)', fontWeight:600}}>#include</span> &lt;bits/stdc++.h&gt;<span id="pre-loader-cursor"></span></div>
           </div>
         </div>
         <script dangerouslySetInnerHTML={{
