@@ -1,6 +1,7 @@
 "use client"
 
 import { m } from "framer-motion"
+import Image from "next/image"
 
 // Sponsor data - only 2 sponsors for now
 const sponsors = [
@@ -80,11 +81,13 @@ export function SponsorsStrip() {
                                         className="flex items-center gap-4 px-8 py-5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/30 hover:-translate-y-1 transition-all duration-300 group cursor-pointer shadow-sm"
                                     >
                                         {/* Logo using regular img tag */}
-                                        <div className="w-12 h-12 rounded-lg bg-white border border-gray-200 dark:border-gray-600 flex items-center justify-center group-hover:border-blue-300 dark:group-hover:border-blue-500 transition-colors shadow-sm overflow-hidden p-1">
-                                            <img
+                                        <div className="w-12 h-12 rounded-lg bg-white border border-gray-200 dark:border-gray-600 flex items-center justify-center group-hover:border-blue-300 dark:group-hover:border-blue-500 transition-colors shadow-sm overflow-hidden p-1 relative">
+                                            <Image
                                                 src={sponsor.logo}
                                                 alt={sponsor.name}
-                                                className="w-full h-full object-contain"
+                                                fill
+                                                className="object-contain p-1"
+                                                sizes="48px"
                                             />
                                         </div>
                                         <span className="text-lg font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition-colors">

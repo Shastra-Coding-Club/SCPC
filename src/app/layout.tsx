@@ -57,7 +57,6 @@ export default function RootLayout({
             })();
           `
         }} />
-        <link rel="preload" href={SCPC_LOGO_URL} as="image" fetchPriority="high" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <meta name="msapplication-TileImage" content={SCPC_ICON_URL} />

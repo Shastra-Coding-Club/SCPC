@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { CodeTyper } from "./CodeTyper";
 import "../styles/loader.css";
 import { SCPC_LOGO_URL } from "@/lib/constants";
+import Image from "next/image";
 
 const LIGHT_LOGO_URL = "/lightlogo.png";
 
@@ -238,11 +239,14 @@ export function Loader({
       <div
         className={`loader-logo-container ${logoVisible ? "visible" : ""}`}
       >
-        <img
+        <Image
           src={logoSrc}
           alt="SCPC Logo"
           className="loader-logo"
           draggable={false}
+          priority
+          width={150}
+          height={150}
         />
       </div>
     </div>

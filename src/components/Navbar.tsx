@@ -8,6 +8,8 @@ import { SCPC_LOGO_URL } from "@/lib/constants"
 import { ThemeToggle } from "./ThemeToggle"
 import { useTheme } from "./ThemeContext"
 
+import Image from "next/image"
+
 // We use 'id' to find the section, but 'label' for the text.
 const navLinks = [
   { id: "about", label: "About" },
@@ -21,9 +23,8 @@ const LIGHT_LOGO_URL = "/lightlogo.png"
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { theme } = useTheme()
-
-  const logoSrc = theme === "dark" ? LIGHT_LOGO_URL : SCPC_LOGO_URL
+  
+  // theme usage removed as we use CSS toggling now
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -59,8 +60,30 @@ export function Navbar() {
         )}
       >
         {/* Logo */}
-        <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer">
-          <img id="site-header-logo" src={logoSrc} alt="SCPC logo" width={44} height={44} className="object-contain" />
+        {/* Logo */}
+        <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer relative w-[44px] h-[44px]">
+          {/* Default Logo (Light Mode) - Hidden in Dark Mode */}
+          <div className="absolute inset-0 dark:hidden transition-opacity duration-300">
+             <Image 
+               src={SCPC_LOGO_URL} 
+               alt="SCPC logo" 
+               fill 
+               className="object-contain"
+               priority
+               sizes="44px"
+             />
+          </div>
+          {/* Light Logo (Dark Mode) - Hidden in Light Mode */}
+          <div className="absolute inset-0 hidden dark:block transition-opacity duration-300">
+             <Image 
+               src={LIGHT_LOGO_URL} 
+               alt="SCPC logo" 
+               fill 
+               className="object-contain scale-155 -translate-y-2 -translate-x-1"
+               priority
+               sizes="44px"
+             />
+          </div>
           <span className="sr-only">SCPC</span>
         </a>
 
