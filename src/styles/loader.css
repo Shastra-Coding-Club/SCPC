@@ -81,7 +81,7 @@ html.dark {
 }
 
 .loader-code {
-  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-family: monospace;
   font-size: clamp(14px, 2vw, 18px);
   line-height: 1.7;
   color: var(--loader-code-color);

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import { LazyMotion, domAnimation } from "framer-motion"
 import { Navbar } from "@/components/Navbar"
 import { Hero } from "@/components/Hero"
-import { Loader } from "@/components/Loader"
+const Loader = dynamic(() => import("@/components/Loader").then(mod => mod.Loader), { ssr: false })
 
 
 const About = dynamic(() => import("@/components/About").then(mod => ({ default: mod.About })), {

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { useEffect, useState } from "react"
 import React from 'react';
 import { ArrowRight, Terminal, Layers, Cpu } from 'lucide-react';
@@ -134,7 +134,7 @@ function CountdownTimer() {
   const TimeUnit = ({ value, label }: { value: number; label: string }) => (
     <div className="flex flex-col items-center">
       <div className="relative">
-        <motion.div
+        <m.div
           key={value}
           initial={{ rotateX: -90, opacity: 0 }}
           animate={{ rotateX: 0, opacity: 1 }}
@@ -144,7 +144,7 @@ function CountdownTimer() {
           <span className="text-xl md:text-4xl font-black text-gray-900 dark:text-white font-mono tabular-nums">
             {String(value).padStart(2, '0')}
           </span>
-        </motion.div>
+        </m.div>
       </div>
       <span className="mt-1.5 text-[10px] md:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
         {label}
@@ -160,7 +160,7 @@ function CountdownTimer() {
   )
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -181,7 +181,7 @@ function CountdownTimer() {
         <Separator />
         <TimeUnit value={timeLeft.seconds} label="Secs" />
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -279,7 +279,7 @@ export function About() {
 
         {/* 2. Header */}
         <div className="mb-20 text-center">
-          <motion.h2
+          <m.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -287,9 +287,9 @@ export function About() {
             className="mb-6 text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-7xl"
           >
             About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">SCPC 2026</span>
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -297,7 +297,7 @@ export function About() {
             className="font-mono text-xl text-gray-500 dark:text-gray-400"
           >
             &lt;Caliber Isn't Claimed; It's Conquered /&gt;
-          </motion.p>
+          </m.p>
         </div>
 
         {/* Countdown Timer */}
@@ -309,7 +309,7 @@ export function About() {
           <div className="mb-32 grid gap-12 lg:grid-cols-2">
 
             {/* LEFT COLUMN: Mission Text */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -333,17 +333,17 @@ export function About() {
                   <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Coders</div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* RIGHT COLUMN: Blue/White Stickers with ORANGE TAPE */}
-            <motion.div
+            <m.div
               className="grid grid-cols-2 gap-6"
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
               {/* Sticker 1: Colleges */}
-              <motion.div
+              <m.div
                 className="relative group mt-6"
                 whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
                 initial={{ rotate: -2 }}
@@ -359,10 +359,10 @@ export function About() {
                   </div>
                   <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-blue-50 dark:bg-blue-900/30 rounded-full"></div>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Sticker 2: Duration */}
-              <motion.div
+              <m.div
                 className="relative group"
                 whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
                 initial={{ rotate: 3 }}
@@ -379,10 +379,10 @@ export function About() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Sticker 3: Eligibility (TypeScript) */}
-              <motion.div
+              <m.div
                 className="relative group mt-6"
                 whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
                 initial={{ rotate: 2 }}
@@ -409,10 +409,10 @@ export function About() {
                     }}
                   ></div>
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Sticker 4: Goodies (C++) */}
-              <motion.div
+              <m.div
                 className="relative group"
                 whileHover={{ rotate: 0, scale: 1.05, y: -10, zIndex: 20 }}
                 initial={{ rotate: -1 }}
@@ -430,8 +430,8 @@ export function About() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           </div>
 
           {/* Execution Stack */}
@@ -439,13 +439,13 @@ export function About() {
             <h3 className="font-mono text-xl font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Execution Stack</h3>
           </div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <ExecutionPipeline />
-          </motion.div>
+          </m.div>
 
         </div>
       </div>
