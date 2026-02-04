@@ -169,6 +169,32 @@ function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colo
   )
 }
 
+function ProgressiveTeamImage() {
+  const [currentSrc, setCurrentSrc] = useState(BEHIND_EVENT_IMAGE)
+
+  useEffect(() => {
+    const highResUrl = BEHIND_EVENT_IMAGE.replace('w_1600,f_auto,q_90', 'f_auto,q_auto')
+    
+    // Safety check - if replacement failed (structure changed), don't do anything
+    if (highResUrl === BEHIND_EVENT_IMAGE) return
+
+    const img = new window.Image()
+    img.src = highResUrl
+    img.onload = () => {
+      setCurrentSrc(highResUrl)
+    }
+  }, [])
+
+  return (
+    <img
+      src={currentSrc}
+      alt="Behind this event"
+      className="w-full h-auto block transition-opacity duration-700"
+      loading="lazy"
+    />
+  )
+}
+
 export function TeamTree() {
   const advisory = ADVISORY_DATA
   const leadership = LEADERSHIP_DATA
@@ -422,13 +448,8 @@ export function TeamTree() {
               <div className="rounded-3xl bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-50 dark:from-indigo-950 dark:via-purple-950 dark:to-pink-950 border-2 border-indigo-300/60 dark:border-indigo-600/50 shadow-xl p-3 sm:p-4">
                 {/* Card content */}
                 <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl overflow-hidden">
-                  {/* Image - natural size */}
-                  <img
-                    src={BEHIND_EVENT_IMAGE}
-                    alt="Behind this event"
-                    className="w-full h-auto block"
-                    loading="lazy"
-                  />
+                  {/* Image - Progressive Load */}
+                  <ProgressiveTeamImage />
 
                   {/* Team name text */}
                   <div className="py-5 sm:py-6 md:py-8 px-4 text-center bg-gradient-to-r from-blue-50 via-white to-orange-50 dark:from-blue-900/20 dark:via-[#1a1a1a] dark:to-orange-900/20">
