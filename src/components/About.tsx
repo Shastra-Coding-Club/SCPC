@@ -102,7 +102,7 @@ function CarouselStrip() {
 
 // 2. COUNTDOWN TIMER
 function CountdownTimer() {
-  const targetDate = new Date('2026-02-27T09:00:00+05:30').getTime()
+  const targetDate = new Date('2026-03-13T09:00:00+05:30').getTime()
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
