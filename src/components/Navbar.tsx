@@ -81,7 +81,7 @@ export function Navbar() {
                fill 
                className="object-contain scale-155 -translate-y-2 -translate-x-1"
                priority
-               sizes="44px"
+               sizes="128px"
              />
           </div>
           <span className="sr-only">SCPC</span>
