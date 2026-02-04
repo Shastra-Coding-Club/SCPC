@@ -20,14 +20,14 @@ const dancingScript = Dancing_Script({
   display: "swap",
 });
 
-import { SCPC_LOGO_URL, SCPC_FAVICON_URL, SCPC_ICON_URL } from "@/lib/constants";
+import { SCPC_LOGO_URL, SCPC_ICON_URL } from "@/lib/constants";
 import { ThemeProvider } from "@/components/ThemeContext";
 
 export const metadata: Metadata = {
   title: "SCPC — Shastra Competitive Programming Competition",
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
-    icon: SCPC_FAVICON_URL,
+    icon: "/lightlogo.png",
     apple: SCPC_ICON_URL,
   },
 };
