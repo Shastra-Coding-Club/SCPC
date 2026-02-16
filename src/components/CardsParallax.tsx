@@ -22,7 +22,7 @@ const prizes: Prize[] = [
   {
     position: '1st',
     title: 'First Prize',
-    amount: '₹30,000',
+    amount: '₹25,000',
     description: 'Champion Team',
     perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
     accent: '#F59E0B', // strong gold
@@ -32,7 +32,7 @@ const prizes: Prize[] = [
   {
     position: '2nd',
     title: 'Second Prize',
-    amount: '₹20,000',
+    amount: '₹15,000',
     description: 'Runner Up',
     perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
     accent: '#64748B', // darker silver
@@ -42,7 +42,7 @@ const prizes: Prize[] = [
   {
     position: '3rd',
     title: 'Third Prize',
-    amount: '₹10,000',
+    amount: '₹5,000',
     description: 'Second Runner Up',
     perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
     accent: '#B45309', // darker bronze
@@ -154,7 +154,7 @@ export function CardsParallax() {
       {/* Header */}
       <div className="text-center mb-12 sm:mb-20 px-4">
         <span className="font-mono text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1a1a] px-3 py-1 rounded border dark:border-gray-700">
-          // prizes = [30000, 20000, 10000]
+          // prizes = [25000, 15000, 5000]
         </span>
 
         <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mt-6">
