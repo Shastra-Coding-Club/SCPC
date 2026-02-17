@@ -71,10 +71,7 @@ function TreeNode({
     advisory: "bg-purple-500"
   }
 
-  const getImg = (name: string) => {
-    const local = MEMBER_IMAGE_URLS[name]
-    return local || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f1f5f9&color=334155&rounded=true&size=200`
-  }
+  const getImg = (name: string) => MEMBER_IMAGE_URLS[name]
 
   const cfg = sizes[size]
 

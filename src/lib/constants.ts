@@ -22,6 +22,6 @@ export const MEMBER_IMAGE_URLS: Record<string, string> = {
   "Pragnesh Dubey": "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/Pragnesh_new?_a=BAMAOGRg0",
   "Rohan Dol": "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/rohan_new?_a=BAMAOGRg0",
   "Kashish": "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/scpc-team/kashish_new?_a=BAMAOGRg0",
-  "Amitabh Dwivedi": "https://res.cloudinary.com/divj3y2cp/image/upload/v1771265546/WhatsApp_Image_2026-02-16_at_7.44.48_PM_1_hzeldn.jpg",
-  "Adnan Qureshi": "https://res.cloudinary.com/divj3y2cp/image/upload/v1771265589/WhatsApp_Image_2026-02-16_at_7.44.48_PM_uaonaf.jpg",
+  "Amitabh Dwivedi": "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/WhatsApp_Image_2026-02-16_at_7.44.48_PM_1_hzeldn.jpg",
+  "Adnan Qureshi": "https://res.cloudinary.com/divj3y2cp/image/upload/c_fill,f_auto,g_face,h_400,q_auto,w_400/v1/WhatsApp_Image_2026-02-16_at_7.44.48_PM_uaonaf.jpg",
 };
