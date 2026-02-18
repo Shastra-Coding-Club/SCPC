@@ -21,7 +21,7 @@ const parse = (txt: string, tier: TeamMember["tier"], start: number): TeamMember
   })
 
 const ADVISORY_DATA = parse(`
-1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Rep
+1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Representative
 2	BE/BT	22-E&CS10-26	E&CS	NA	10	Rohan Dol	Advisory
 3	BE/BT	23-AI&ML67-26	AI&ML	NA	67	Adnan Qureshi	Advisory`, 'advisory', 0)
 
@@ -111,7 +111,7 @@ function TreeNode({
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
         <div className="font-semibold text-gray-800 dark:text-gray-200 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
-        <div className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
+        <div className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-[9px] md:text-[10px] leading-tight ">{member.role}</div>
       </div>
     </m.div>
   )
