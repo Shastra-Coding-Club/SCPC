@@ -111,7 +111,7 @@ function TreeNode({
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
         <div className="font-semibold text-gray-800 dark:text-gray-200 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
-        <div className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-[9px] md:text-[10px] leading-tight truncate">{member.role}</div>
+        <div className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-[9px] md:text-[10px] leading-tight ">{member.role}</div>
       </div>
     </m.div>
   )

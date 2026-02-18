@@ -24,7 +24,7 @@ const prizes: Prize[] = [
     title: 'First Prize',
     amount: '₹25,000',
     description: 'Champion Team',
-    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
+    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit', 'Internships'],
     accent: '#F59E0B', // strong gold
     filename: 'first_prize.cpp',
     scale: 'scale-110',
@@ -34,7 +34,7 @@ const prizes: Prize[] = [
     title: 'Second Prize',
     amount: '₹15,000',
     description: 'Runner Up',
-    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
+    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit', 'Internships'],
     accent: '#64748B', // darker silver
     filename: 'second_prize.cpp',
     scale: 'scale-95',
@@ -44,7 +44,7 @@ const prizes: Prize[] = [
     title: 'Third Prize',
     amount: '₹5,000',
     description: 'Second Runner Up',
-    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit'],
+    perks: ['Trophy', 'Certificate', 'Goodies', 'Swag Kit', 'Internships'],
     accent: '#B45309', // darker bronze
     filename: 'third_prize.cpp',
     scale: 'scale-95',

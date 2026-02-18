@@ -211,7 +211,7 @@ export function Contact() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-black dark:text-white mb-4">
-            Linked with Us!!
+            Link with Us!
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             Have questions? Traverse our contact form!
