@@ -5,11 +5,11 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import { Play, RotateCcw, GitBranch, Layers, ChevronDown, HelpCircle, MessageCircle } from "lucide-react"
 
 const faqItems = [
-    { id: "q1", category: "General", question: "What is TCET SHASTRA?", answer: "TCET SHASTRA is a 12-hour competitive programming hackathon organized by Thakur College of Engineering & Technology. It brings together coders from various colleges to solve algorithmic challenges." },
-    { id: "q2", category: "General", question: "When and where is the event?", answer: "The event is scheduled for January 15, 2026 at TCET Campus, Kandivali (E), Mumbai. It starts at 9:00 AM and runs for 12 hours." },
+    { id: "q1", category: "General", question: "What is SCPC?", answer: "Shastra Competitive Programming Contest is a 12-hour competitive programming hackathon organized by TCET Shastra of Thakur College of Engineering & Technology. It brings together coders from various colleges to solve algorithmic challenges." },
+    { id: "q2", category: "General", question: "When and where is the event?", answer: "The event is scheduled for March 13, 2026 at TCET Campus, Kandivali (E), Mumbai. It starts at 8:30 AM and runs for 12 hours." },
     { id: "q3", category: "Registration", question: "How do I register?", answer: "You can register through our official registration portal. Click the 'Register Now' button on our website. Registration is open until slots are filled!" },
-    { id: "q4", category: "Registration", question: "What's the team size?", answer: "Teams can have 2-4 members. All team members must register together. Solo participation is not allowed." },
-    { id: "q5", category: "Prizes", question: "What are the prizes?", answer: "Total prize pool is ₹90,000+! 1st Prize: ₹45,000, 2nd Prize: ₹30,000, 3rd Prize: ₹15,000. Plus special category awards and goodies for all participants." },
+    { id: "q4", category: "Registration", question: "What's the team size?", answer: "Teams can have 1-3 members. All team members must register together." },
+    { id: "q5", category: "Prizes", question: "What are the prizes?", answer: "Total prize pool is ₹60,000+! 1st Prize: ₹25,000, 2nd Prize: ₹15,000, 3rd Prize: ₹5,000 along with internship oppurtunities. Plus special category awards and goodies for all participants." },
     { id: "q6", category: "Technical", question: "What languages are allowed?", answer: "You can use C, C++, Java, Python, or JavaScript. The platform supports all major competitive programming languages." },
 ]
 

@@ -21,7 +21,7 @@ const parse = (txt: string, tier: TeamMember["tier"], start: number): TeamMember
   })
 
 const ADVISORY_DATA = parse(`
-1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Representative
+1	BE/BT	22-ITA28-26	IT	A	28	Amitabh Dwivedi	TSDW Rep
 2	BE/BT	22-E&CS10-26	E&CS	NA	10	Rohan Dol	Advisory
 3	BE/BT	23-AI&ML67-26	AI&ML	NA	67	Adnan Qureshi	Advisory`, 'advisory', 0)
 
