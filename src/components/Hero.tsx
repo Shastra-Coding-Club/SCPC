@@ -187,7 +187,7 @@ int main() {
 
               {/* Action Button */}
               <div className="pt-2">
-                <a id="hero-register" href="https://unstop.com/p/tcet-shastras-competitive-programming-competition-2026-thakur-college-of-engineering-and-technology-tcet-mumbai-1631441" target="_blank" rel="noopener noreferrer">
+                <a id="hero-register" href="https://unstop.com/o/gc8MVwn?lb=EPXO7qEG&utm_medium=Share&utm_source=tcetcod19106&utm_campaign=Online_coding_challenge" target="_blank" rel="noopener noreferrer">
                   <Button size="sm" className="w-full bg-[#f97316] text-white hover:bg-[#e55f10]">
                     Register Now
                   </Button>

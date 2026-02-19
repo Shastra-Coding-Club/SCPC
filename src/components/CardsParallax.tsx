@@ -192,7 +192,7 @@ export function CardsParallax() {
           </div>
 
           <a
-            href="https://unstop.com/p/tcet-shastras-competitive-programming-competition-2026-thakur-college-of-engineering-and-technology-tcet-mumbai-1631441"
+            href="https://unstop.com/o/gc8MVwn?lb=EPXO7qEG&utm_medium=Share&utm_source=tcetcod19106&utm_campaign=Online_coding_challenge"
             className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-md"
           >
             Register Now
