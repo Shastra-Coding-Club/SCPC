@@ -1,0 +1,5 @@
+Contact: https://tcet-shastra.online/#contact
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: en, hi
+Canonical: https://tcet-shastra.online/.well-known/security.txt
+Policy: https://tcet-shastra.online/#contact
