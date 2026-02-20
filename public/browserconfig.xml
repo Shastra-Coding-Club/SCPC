@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="https://res.cloudinary.com/divj3y2cp/image/upload/w_70,h_70,f_auto,q_auto/v1/scpc-team/scpc"/>
+      <square150x150logo src="https://res.cloudinary.com/divj3y2cp/image/upload/w_150,h_150,f_auto,q_auto/v1/scpc-team/scpc"/>
+      <square310x310logo src="https://res.cloudinary.com/divj3y2cp/image/upload/w_310,h_310,f_auto,q_auto/v1/scpc-team/scpc"/>
+      <wide310x150logo src="https://res.cloudinary.com/divj3y2cp/image/upload/w_310,h_150,f_auto,q_auto/v1/scpc-team/scpc"/>
+      <TileColor>#1a1a2e</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
