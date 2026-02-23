@@ -121,9 +121,10 @@ int main() {
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
                   <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">Prizes</p>
                   <ul className="text-sm text-gray-700 dark:text-gray-300 mt-2 space-y-1">
-                    <li>1st Prize: ₹30,000 + Trophy</li>
-                    <li>2nd Prize: ₹20,000 + Trophy</li>
-                    <li>3rd Prize: ₹10,000 + Trophy</li>
+                    <li>1st Prize: ₹25,000 + Trophy</li>
+                    <li>2nd Prize: ₹15,000 + Trophy</li>
+                    <li>3rd Prize: ₹5,000 + Trophy</li>
+                    <li>PLUS Gifts worth ₹15,000 </li>
                     <li className="pt-1 border-t border-green-100 dark:border-green-800"><strong>Total:</strong> ₹60,000</li>
                   </ul>
                 </div>
