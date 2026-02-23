@@ -121,10 +121,9 @@ int main() {
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
                   <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">Prizes</p>
                   <ul className="text-sm text-gray-700 dark:text-gray-300 mt-2 space-y-1">
-                    <li>1st Prize: ₹25,000 + Trophy</li>
-                    <li>2nd Prize: ₹15,000 + Trophy</li>
-                    <li>3rd Prize: ₹5,000 + Trophy</li>
-                    <li>PLUS Gifts worth ₹15,000 </li>
+                    <li>1st Prize: ₹30,000 + Trophy</li>
+                    <li>2nd Prize: ₹20,000 + Trophy</li>
+                    <li>3rd Prize: ₹10,000 + Trophy</li>
                     <li className="pt-1 border-t border-green-100 dark:border-green-800"><strong>Total:</strong> ₹60,000</li>
                   </ul>
                 </div>
@@ -187,7 +186,7 @@ int main() {
 
               {/* Action Button */}
               <div className="pt-2">
-                <a id="hero-register" href="https://unstop.com/o/gc8MVwn?lb=EPXO7qEG&utm_medium=Share&utm_source=tcetcod19106&utm_campaign=Online_coding_challenge" target="_blank" rel="noopener noreferrer">
+                <a id="hero-register" href="https://unstop.com/p/tcet-shastras-competitive-programming-competition-2026-thakur-college-of-engineering-and-technology-tcet-mumbai-1631441" target="_blank" rel="noopener noreferrer">
                   <Button size="sm" className="w-full bg-[#f97316] text-white hover:bg-[#e55f10]">
                     Register Now
                   </Button>
