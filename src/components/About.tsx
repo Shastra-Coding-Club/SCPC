@@ -164,9 +164,9 @@ function CountdownTimer() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="w-full max-w-3xl mx-auto mb-12"
+      className="w-full max-w-3xl mx-auto mb-8"
     >
-      <div className="text-center mb-4">
+      <div className="text-center mb-8">
         <span className="font-mono text-xs md:text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 rounded-md border border-blue-200 dark:border-blue-800">
           countdown_to_event()
         </span>
@@ -278,7 +278,7 @@ export function About() {
         <CarouselStrip />
 
         {/* 2. Header */}
-        <div className="mb-20 text-center">
+        <div className="mb-8 text-center">
           <m.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
