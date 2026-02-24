@@ -52,9 +52,14 @@ function CarouselStrip() {
       {/* The Retro Container */}
       <div className="overflow-hidden rounded-lg border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
 
-        {/* Header */}
-        <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-900/30 dark:to-orange-900/30 border-b border-gray-200 dark:border-gray-700">
-          <div className="text-sm font-semibold text-black dark:text-white">Live Submissions</div>
+        {/* Header bar */}
+        <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-900/30 dark:to-orange-900/30 border-b border-black/50 dark:border-gray-700">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-400 border border-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-400 border border-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-400 border border-green-500"></div>
+          </div>
+          <div className="text-sm font-semibold text-black dark:text-white font-mono">Live Submissions</div>
         </div>
 
         {/* Scrolling Content */}
