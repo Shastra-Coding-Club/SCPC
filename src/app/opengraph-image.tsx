@@ -11,6 +11,11 @@ export const contentType = 'image/png'
 
 // Image generation
 export default async function Image() {
+  // Fetch Noto Sans (full TTF) which supports the ₹ (Indian Rupee) symbol
+  const notoSans = await fetch(
+    'https://fonts.gstatic.com/s/notosans/v42/o-0mIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjcz6L1SoM-jCpoiyD9A99d.ttf'
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       <div
@@ -88,6 +93,14 @@ export default async function Image() {
     ),
     {
       ...size,
+      fonts: [
+        {
+          name: 'Noto Sans',
+          data: notoSans,
+          style: 'normal',
+          weight: 400,
+        },
+      ],
     }
   )
 }
