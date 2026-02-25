@@ -40,6 +40,7 @@ export function FAQ() {
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null)
     const sectionRef = useRef<HTMLElement>(null)
     const hasStartedRef = useRef(false)
+    const hasBeenOutOfViewRef = useRef(false)
 
     const traversalOrder = mode === 'bfs' ? bfsOrder() : dfsOrder()
 
@@ -126,7 +127,19 @@ export function FAQ() {
 
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && !hasStartedRef.current) {
+                const inView = entries[0].isIntersecting
+
+                if (!inView) {
+                    // Section is out of view — mark it and stop any running animation
+                    hasBeenOutOfViewRef.current = true
+                    setIsAnimating(false)
+                    setVisitedNodes([])
+                    setCurrentNode(null)
+                    setAnimationComplete(false)
+                    setExpandedIdx(null)
+                    hasStartedRef.current = false
+                } else if (inView && hasBeenOutOfViewRef.current && !hasStartedRef.current) {
+                    // Only start if section was previously out of view (prevents page-load auto-start)
                     startAnimation()
                 }
             },
