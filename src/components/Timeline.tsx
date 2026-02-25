@@ -74,6 +74,7 @@ export function Timeline() {
   const [currentStep, setCurrentStep] = useState(-1);
   const sectionRef = useRef<HTMLElement>(null);
   const hasStartedRef = useRef(false);
+  const hasBeenOutOfViewRef = useRef(false);
 
   // Reset and start animation
   const startAnimation = useCallback(() => {
@@ -148,14 +149,26 @@ export function Timeline() {
     };
   }, [isPlaying, mode, scheduleItems.length]);
 
-  // Intersection Observer to auto-start on first view
+  // Intersection Observer — auto-start when visible, stop when scrolled away
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !hasStartedRef.current) {
+        const inView = entries[0].isIntersecting;
+
+        if (!inView) {
+          // Section is out of view — mark it so animation can trigger on scroll-in
+          hasBeenOutOfViewRef.current = true;
+          // Stop any running animation so it doesn't disturb other sections
+          setIsPlaying(false);
+          setStructure([]);
+          setCurrentStep(-1);
+          hasStartedRef.current = false;
+        } else if (inView && hasBeenOutOfViewRef.current && !hasStartedRef.current) {
+          // Section scrolled into view — only start if it was previously out of view
+          // (prevents auto-start on initial page load)
           startAnimation();
         }
       },
