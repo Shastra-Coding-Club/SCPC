@@ -1,0 +1,39 @@
+/* TEAM */
+Organization: TCET Shastra
+Site: https://scpc.tcetmumbai.in
+Location: Mumbai, Maharashtra, India
+
+Team Leads:
+- Aayush Dubey
+- Swamini Yesade
+- Chetan Sharma
+
+Core Team:
+- Ayush Dubey
+- Pranjal Chavan
+- Rudra Sharma
+- Kanchan Saini
+- Kshitij Yadav
+- Shreyansh Singh
+- Purva Gade
+- Shivam Pandey
+- Pragnesh Dubey
+- Rohan Dol
+- Kashish
+- Amitabh Dwivedi
+- Adnan Qureshi
+
+/* SITE */
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React 19, Next.js 16
+Styling: Tailwind CSS 4
+Animation: Framer Motion
+Hosting: Vercel
+CDN: Cloudinary
+
+/* THANKS */
+Special thanks to all participants, sponsors, and the TCET community
+for making SCPC a success!
+
+Build Date: 2026-02-21
+Version: 2.0

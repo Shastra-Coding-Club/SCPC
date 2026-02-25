@@ -24,6 +24,7 @@ import { SCPC_LOGO_URL, SCPC_ICON_URL } from "@/lib/constants";
 import { ThemeProvider } from "@/components/ThemeContext";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tcet-shastra.online"),
   title: "SCPC — Shastra Competitive Programming Competition",
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
