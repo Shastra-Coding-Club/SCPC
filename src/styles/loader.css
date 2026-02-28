@@ -46,8 +46,8 @@ html.dark {
   inset: 0;
   display: flex;
   align-items: flex-start;
-  justify-content: center;
-  padding: 3.75rem 1.5rem 1.5rem;
+  justify-content: flex-start;
+  padding: 3.75rem 5% 1.5rem;
   opacity: 1;
   transition: opacity 150ms ease-out;
   overflow: hidden;
@@ -59,25 +59,6 @@ html.dark {
 
 .loader-code-container {
   width: 100%;
-  max-width: 50rem;
-  max-height: calc(100vh - 7.5rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
-}
-
-.loader-code-container::-webkit-scrollbar {
-  width: 0.375rem;
-}
-
-.loader-code-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.loader-code-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 0.1875rem;
 }
 
 .loader-code {
@@ -339,8 +320,8 @@ html.dark .loader-code .operator {
 
 /* Large screens */
 @media (min-width: 75rem) {
-  .loader-code-container {
-    max-width: 56.25rem;
+  .loader-code-wrapper {
+    padding: 3.75rem 10% 1.5rem;
   }
 
   .loader-code {
