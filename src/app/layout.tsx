@@ -22,6 +22,7 @@ const dancingScript = Dancing_Script({
 
 import { SCPC_LOGO_URL, SCPC_ICON_URL } from "@/lib/constants";
 import { ThemeProvider } from "@/components/ThemeContext";
+import { ChatWidget } from "@/components/ChatWidget";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcet-shastra.online"),
@@ -130,6 +131,7 @@ export default function RootLayout({
         `}} />
         <ThemeProvider>
           {children}
+          <ChatWidget />
         </ThemeProvider>
       </body>
     </html>
