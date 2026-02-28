@@ -80,8 +80,8 @@ export default function RootLayout({
 
           display: 'flex',
           alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: '3.75rem 1.5rem 1.5rem',
+          justifyContent: 'flex-start',
+          padding: '3.75rem 5% 1.5rem',
         }}>
           <style dangerouslySetInnerHTML={{
             __html: `
@@ -97,14 +97,18 @@ export default function RootLayout({
               --pl-cursor: #e5e5e5;
               --pl-accent: #d2a8ff;
             }
-            #pre-loader { background-color: var(--pl-bg); }
+            #pre-loader { background-color: var(--pl-bg); overflow: hidden; }
             #pre-loader-code { color: var(--pl-text); }
             #pre-loader-cursor { background: var(--pl-cursor); }
 
             @keyframes pre-cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
             #pre-loader-cursor { display:inline-block; width:0.1875rem; height:1.1em; animation:pre-cursor-blink 530ms step-end infinite; vertical-align:text-bottom; margin-left:0.125rem; }
-            #pre-loader-container { width:100%; max-width:50rem; }
+            #pre-loader-container { width:100%; }
             #pre-loader-code { font-family:monospace; font-size:clamp(0.875rem,2vw,1.125rem); line-height:1.7; white-space:pre-wrap; text-align:left; }
+
+            @media (min-width: 75rem) {
+              #pre-loader { padding: 3.75rem 10% 1.5rem !important; }
+            }
           `}} />
           <div id="pre-loader-container">
             <div id="pre-loader-code"><span style={{color:'var(--pl-accent)', fontWeight:600}}>#include</span> &lt;bits/stdc++.h&gt;<span id="pre-loader-cursor"></span></div>
