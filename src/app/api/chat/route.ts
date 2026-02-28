@@ -1,98 +1,136 @@
-import { createGroq } from '@ai-sdk/groq';
-import { streamText, convertToModelMessages } from 'ai';
-import { SCPC_CONTEXT } from '@/lib/knowledge';
+import { createGroq } from "@ai-sdk/groq";
+import { streamText, convertToModelMessages } from "ai";
+import { retrieveContext, SYSTEM_BASE } from "@/lib/rag";
 
-export const runtime = 'edge';
+export const runtime = "edge";
+
+/* ─── per-user rate limiter ───────────────────────────────────────── */
 
 const userHits = new Map<string, { count: number; windowStart: number }>();
 const WINDOW_MS = 15_000;
 
 function getUserRate(userId: string): number {
   const now = Date.now();
-  const record = userHits.get(userId);
-
-  if (!record || now - record.windowStart > WINDOW_MS) {
+  const rec = userHits.get(userId);
+  if (!rec || now - rec.windowStart > WINDOW_MS) {
     userHits.set(userId, { count: 1, windowStart: now });
     return 1;
   }
-
-  record.count++;
-  return record.count;
+  rec.count++;
+  return rec.count;
 }
 
-const PRIMARY_MODEL = 'llama-3.3-70b-versatile';
-const BACKUP_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+/* ─── global request queue (per edge instance) ────────────────────── */
 
-const HARD_BLOCK_MESSAGE = "You're sending too many messages. Please wait a few seconds before asking another question about SCPC.";
+let active = 0;
+const MAX_ACTIVE = 12; // max concurrent Groq calls per instance
+const queue: Array<() => void> = [];
+const MAX_QUEUE = 200; // park up to 200 waiting requests
+
+function acquire(): Promise<void> {
+  if (active < MAX_ACTIVE) {
+    active++;
+    return Promise.resolve();
+  }
+  if (queue.length >= MAX_QUEUE) {
+    return Promise.reject("overloaded");
+  }
+  return new Promise<void>((resolve) => queue.push(resolve));
+}
+
+function release() {
+  active--;
+  if (queue.length > 0) {
+    active++;
+    queue.shift()!();
+  }
+}
+
+/* ─── models ──────────────────────────────────────────────────────── */
+
+const PRIMARY = "compound-beta";
+const FALLBACK = "compound-beta-mini";
+
+/* ─── handler ─────────────────────────────────────────────────────── */
 
 export async function POST(req: Request) {
+  /* acquire queue slot */
+  try {
+    await acquire();
+  } catch {
+    return new Response(
+      "We're experiencing high traffic. Please try again in a moment.",
+      { status: 503, headers: { "Retry-After": "5" } },
+    );
+  }
+
   try {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-      return new Response("Missing GROQ_API_KEY environment variable", { status: 500 });
+      return new Response("Missing GROQ_API_KEY", { status: 500 });
     }
 
-    const forwarded = req.headers.get('x-forwarded-for');
-    const userId = forwarded?.split(',')[0]?.trim() || 'unknown';
+    /* rate limit */
+    const fwd = req.headers.get("x-forwarded-for");
+    const userId = fwd?.split(",")[0]?.trim() || "unknown";
     const rate = getUserRate(userId);
 
     if (rate >= 11) {
-      return new Response(HARD_BLOCK_MESSAGE, {
-        status: 429,
-        headers: { 'Content-Type': 'text/plain' },
-      });
+      return new Response(
+        "You're sending too many messages. Please wait a few seconds.",
+        { status: 429 },
+      );
     }
 
-    const selectedModel = rate <= 6 ? PRIMARY_MODEL : BACKUP_MODEL;
-
+    const model = rate <= 6 ? PRIMARY : FALLBACK;
     const groq = createGroq({ apiKey });
     const { messages } = await req.json();
-
-    const SYSTEM_PROMPT = `
-You are the official Support Agent for the SCPC 2026 Hackathon (TCET Shastra).
-You are professional, concise, and helpful.
-
-CRITICAL INSTRUCTIONS:
-1. You may ONLY answer questions using the information provided in the "KNOWLEDGE BASE" below.
-2. If the user asks a question that is NOT answered in the knowledge base, you MUST reply with exactly: "I don't have that information. Please contact the organizers at the help desk."
-3. Do NOT invent, guess, or hallucinate any information, dates, rules, or prizes.
-4. Keep all answers under 3 sentences if possible. Be direct.
-5. Do NOT answer generic programming questions or act like a coding assistant. You are purely an event guide.
-6. Use Markdown links for emails (mailto:) and WhatsApp chat links (https://wa.me/) for contact numbers. 
-CRITICAL: Example for WhatsApp: [8454096454](https://wa.me/918454096454).
-====================
-KNOWLEDGE BASE:
-${SCPC_CONTEXT}
-====================
-`;
-
     const modelMessages = await convertToModelMessages(messages);
 
+    /* ── RAG: extract last user message → retrieve only relevant chunks ── */
+    const lastUserMsg =
+      [...messages].reverse().find((m: any) => m.role === "user")?.content ??
+      "";
+    const queryText =
+      typeof lastUserMsg === "string"
+        ? lastUserMsg
+        : Array.isArray(lastUserMsg)
+          ? lastUserMsg
+              .filter((p: any) => p.type === "text")
+              .map((p: any) => p.text)
+              .join(" ")
+          : "";
+
+    const context = retrieveContext(queryText, 3);
+
+    const systemPrompt = `${SYSTEM_BASE}\n\nCONTEXT:\n${context}`;
+
+    /* ── call Groq ── */
     try {
       const result = streamText({
-        model: groq(selectedModel),
-        system: SYSTEM_PROMPT,
+        model: groq(model),
+        system: systemPrompt,
         messages: modelMessages,
-        maxOutputTokens: 500,
+        maxOutputTokens: 300,
         temperature: 0.1,
       });
 
       return result.toTextStreamResponse();
-    } catch (primaryError) {
-      console.warn(`Model ${selectedModel} failed, falling back to ${BACKUP_MODEL}:`, primaryError);
-
+    } catch (primaryErr) {
+      console.warn(`${model} failed, falling back:`, primaryErr);
       const result = streamText({
-        model: groq(BACKUP_MODEL),
-        system: SYSTEM_PROMPT,
+        model: groq(FALLBACK),
+        system: systemPrompt,
         messages: modelMessages,
-        maxOutputTokens: 500,
+        maxOutputTokens: 300,
         temperature: 0.1,
       });
-
       return result.toTextStreamResponse();
     }
   } catch (error) {
-    console.error("Chat API Error:", error);
-    return new Response("An error occurred during chat processing.", { status: 500 });
+    console.error("Chat API error:", error);
+    return new Response("Something went wrong.", { status: 500 });
+  } finally {
+    release();
   }
 }
