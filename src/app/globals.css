@@ -56,13 +56,13 @@ section {
 .gpu-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;
-  perspective: 1000px;
+  perspective: 62.5rem;
 }
 
 /* Intersection Observer optimization - only render when visible */
 .lazy-section {
   content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
+  contain-intrinsic-size: auto 31.25rem;
 }
 
 /* ========== REDUCED MOTION ========== */

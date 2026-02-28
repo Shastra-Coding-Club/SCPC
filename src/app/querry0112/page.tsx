@@ -54,8 +54,8 @@ export default async function QueryDashboard() {
 //         minHeight: "100vh",
 //         background: "white",
 //         color: "black",
-//         padding: "40px",
-//         fontSize: "24px",
+//         padding: "2.5rem",
+//         fontSize: "1.5rem",
 //       }}
 //     >
 //       <h1>TEST PAGE WORKING</h1>

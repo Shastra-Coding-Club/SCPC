@@ -61,7 +61,7 @@ export function Navbar() {
       >
         {/* Logo */}
         {/* Logo */}
-        <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer relative w-[44px] h-[44px]">
+        <a href="/" onClick={handleLogoClick} className="flex items-center gap-2.5 group cursor-pointer relative w-[2.75rem] h-[2.75rem]">
           {/* Default Logo (Light Mode) - Hidden in Dark Mode */}
           <div className="absolute inset-0 dark:hidden transition-opacity duration-300">
              <Image 
@@ -70,7 +70,7 @@ export function Navbar() {
                fill 
                className="object-contain"
                priority
-               sizes="128px"
+               sizes="8rem"
              />
           </div>
           {/* Light Logo (Dark Mode) - Hidden in Light Mode */}
@@ -82,7 +82,7 @@ export function Navbar() {
                className="object-contain scale-155 -translate-y-2 -translate-x-1"
                priority 
                quality = {100}
-               sizes="128px"
+               sizes="8rem"
              />
           </div>
           <span className="sr-only">SCPC</span>

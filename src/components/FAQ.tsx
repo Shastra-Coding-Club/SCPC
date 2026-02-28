@@ -269,7 +269,7 @@ export function FAQ() {
                                     qCurrent || aCurrent
                                         ? 'border-blue-500 shadow-lg shadow-blue-100 dark:shadow-blue-900/30'
                                         : qVisited
-                                        ? 'border-gray-800 dark:border-gray-600 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)]'
+                                        ? 'border-gray-800 dark:border-gray-600 shadow-[0.1875rem_0.1875rem_0_0_rgba(0,0,0,0.3)] dark:shadow-[0.1875rem_0.1875rem_0_0_rgba(255,255,255,0.1)]'
                                         : 'border-gray-200 dark:border-gray-700 opacity-50'
                                 }`}
                                 onClick={() => animationComplete && setExpandedIdx(expandedIdx === idx ? null : idx)}
@@ -309,7 +309,7 @@ export function FAQ() {
                                                 <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${getCategoryColor(item.category)}`}>
                                                     {item.category}
                                                 </span>
-                                                <span className="font-mono text-[10px] text-gray-400 uppercase">
+                                                <span className="font-mono text-[0.625rem] text-gray-400 uppercase">
                                                     Level 0 • Question
                                                 </span>
                                             </div>
@@ -358,7 +358,7 @@ export function FAQ() {
                                                             <m.div
                                                                 initial={{ scale: 0 }}
                                                                 animate={{ scale: 1 }}
-                                                                className={`absolute -top-2 -right-2 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center text-white ${
+                                                                className={`absolute -top-2 -right-2 w-5 h-5 rounded-full text-[0.625rem] font-bold flex items-center justify-center text-white ${
                                                                     mode === 'bfs' ? 'bg-blue-600' : 'bg-purple-600'
                                                                 }`}
                                                             >
@@ -369,7 +369,7 @@ export function FAQ() {
 
                                                     {/* Answer Content */}
                                                     <div className="flex-1">
-                                                        <span className="font-mono text-[10px] text-gray-400 uppercase mb-1 block">
+                                                        <span className="font-mono text-[0.625rem] text-gray-400 uppercase mb-1 block">
                                                             Level 1 • Answer
                                                         </span>
                                                         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -391,7 +391,7 @@ export function FAQ() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-12 bg-white dark:bg-[#1a1a1a] rounded-xl border-2 border-gray-900 dark:border-gray-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] p-6"
+                    className="mt-12 bg-white dark:bg-[#1a1a1a] rounded-xl border-2 border-gray-900 dark:border-gray-700 shadow-[0.25rem_0.25rem_0_0_rgba(0,0,0,1)] dark:shadow-[0.25rem_0.25rem_0_0_rgba(255,255,255,0.1)] p-6"
                 >
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">

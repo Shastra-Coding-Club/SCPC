@@ -69,7 +69,7 @@ const PrizeCard: React.FC<PrizeCardProps> = ({ data, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.15 }}
       viewport={{ once: true }}
-      className={`w-[85vw] max-w-[300px] sm:w-[300px] md:w-[320px] lg:w-[340px] shrink-0 lg:${scale}`}
+      className={`w-[85vw] max-w-[18.75rem] sm:w-[18.75rem] md:w-[20rem] lg:w-[21.25rem] shrink-0 lg:${scale}`}
     >
       <div className="bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}

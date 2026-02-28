@@ -50,7 +50,7 @@ function CarouselStrip() {
   return (
     <div className="w-full max-w-7xl mx-auto mb-20 overflow-hidden">
       {/* The Retro Container */}
-      <div className="overflow-hidden rounded-lg border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
+      <div className="overflow-hidden rounded-lg border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-[0.25rem_0.25rem_0_0_rgba(0,0,0,0.2)] dark:shadow-[0.25rem_0.25rem_0_0_rgba(255,255,255,0.1)]">
 
         {/* Header bar */}
         <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-900/30 dark:to-orange-900/30 border-b border-black/50 dark:border-gray-700">
@@ -71,26 +71,26 @@ function CarouselStrip() {
           <div className="flex py-4">
             <div className="flex gap-6 whitespace-nowrap will-change-transform carousel-scroll">
               {duplicatedTemplates.map((t, i) => (
-                <div key={i} className="inline-block w-[300px] shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] shadow-sm transition-transform hover:-translate-y-1">
+                <div key={i} className="inline-block w-[18.75rem] shrink-0 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] shadow-sm transition-transform hover:-translate-y-1">
                   {/* Card Header */}
                   <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-[#141414] px-3 py-2">
                     <div className="flex items-center gap-2">
                       <div className="h-2 w-2 rounded-full bg-blue-500"></div>
                       <span className="font-mono text-xs font-medium text-gray-600 dark:text-gray-400">{t.name}</span>
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400">{t.language}</span>
+                    <span className="text-[0.625rem] font-bold text-gray-400">{t.language}</span>
                   </div>
 
                   {/* Card Body */}
                   <div className="bg-white dark:bg-[#1e1e1e] p-3">
-                    <pre className="font-mono text-[10px] leading-relaxed text-gray-600 dark:text-gray-400 opacity-80">
+                    <pre className="font-mono text-[0.625rem] leading-relaxed text-gray-600 dark:text-gray-400 opacity-80">
                       {t.code}
                     </pre>
                     <div className="mt-3 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-2">
-                      <span className="rounded bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase text-green-700">
+                      <span className="rounded bg-green-100 px-2 py-0.5 text-[0.625rem] font-bold uppercase text-green-700">
                         {t.status}
                       </span>
-                      <span className="font-mono text-[10px] text-gray-400">
+                      <span className="font-mono text-[0.625rem] text-gray-400">
                         Runtime: {t.runtime}
                       </span>
                     </div>
@@ -144,14 +144,14 @@ function CountdownTimer() {
           initial={{ rotateX: -90, opacity: 0 }}
           animate={{ rotateX: 0, opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="bg-white dark:bg-[#1e1e1e] rounded-lg border-2 border-black dark:border-gray-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)] px-3 py-2 md:px-5 md:py-3 min-w-[55px] md:min-w-[80px]"
+          className="bg-white dark:bg-[#1e1e1e] rounded-lg border-2 border-black dark:border-gray-600 shadow-[0.125rem_0.125rem_0_0_rgba(0,0,0,1)] dark:shadow-[0.125rem_0.125rem_0_0_rgba(255,255,255,0.1)] px-3 py-2 md:px-5 md:py-3 min-w-[3.4375rem] md:min-w-[5rem]"
         >
           <span className="text-xl md:text-4xl font-black text-gray-900 dark:text-white font-mono tabular-nums">
             {String(value).padStart(2, '0')}
           </span>
         </m.div>
       </div>
-      <span className="mt-1.5 text-[10px] md:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+      <span className="mt-1.5 text-[0.625rem] md:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
         {label}
       </span>
     </div>
@@ -218,7 +218,7 @@ function ExecutionPipeline() {
       <div className="rounded-xl border border-blue-200 dark:border-blue-900 bg-white dark:bg-[#1a1a1a] shadow-xl overflow-hidden">
         <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-blue-100 dark:divide-blue-900">
           {steps.map((step, i) => (
-            <div key={i} className="group relative p-10 min-h-[280px] transition-colors hover:bg-blue-50/30 dark:hover:bg-blue-900/20 flex flex-col h-full">
+            <div key={i} className="group relative p-10 min-h-[17.5rem] transition-colors hover:bg-blue-50/30 dark:hover:bg-blue-900/20 flex flex-col h-full">
 
               {/* Index Marker */}
               <div className="absolute top-6 right-6 font-mono text-sm text-blue-300 dark:text-blue-600 group-hover:text-blue-500 transition-colors">
@@ -273,7 +273,7 @@ export function About() {
       <div className="absolute inset-0 z-0 opacity-40 dark:opacity-20"
         style={{
           backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
-          backgroundSize: '24px 24px'
+          backgroundSize: '1.5rem 1.5rem'
         }}>
       </div>
 
@@ -401,7 +401,7 @@ export function About() {
                     <div className="text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter">
                       1–3 Members
                     </div>
-                    <div className="text-[10px] font-mono font-bold text-blue-600">
+                    <div className="text-[0.625rem] font-mono font-bold text-blue-600">
                       Any Year • Any Branch
                     </div>
                   </div>
@@ -410,7 +410,7 @@ export function About() {
                     className="absolute top-0 right-0 w-full h-full opacity-10"
                     style={{
                       backgroundImage: 'radial-gradient(#3b82f6 1px, transparent 1px)',
-                      backgroundSize: '8px 8px'
+                      backgroundSize: '0.5rem 0.5rem'
                     }}
                   ></div>
                 </div>

@@ -87,9 +87,9 @@ function TreeNode({
       <div className="relative mb-2">
         <m.div
           initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0)" }}
-          animate={isVisible ? { boxShadow: "0 4px 15px rgba(0,0,0,0.1)" } : {}}
+          animate={isVisible ? { boxShadow: "0 0.25rem 0.9375rem rgba(0,0,0,0.1)" } : {}}
           transition={{ delay: delay + 0.2 }}
-          className={`${cfg.avatar} ring-[3px] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100 relative`}
+          className={`${cfg.avatar} ring-[0.1875rem] ${rings[member.tier]} rounded-full overflow-hidden bg-gray-100 relative`}
         >
           <Image
             src={getImg(member.name)}
@@ -103,15 +103,15 @@ function TreeNode({
           initial={{ scale: 0 }}
           animate={isVisible ? { scale: 1 } : {}}
           transition={{ type: "spring", delay: delay + 0.15 }}
-          className={`absolute -top-1 -right-1 w-5 h-5 ${badges[member.tier]} text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-md`}
+          className={`absolute -top-1 -right-1 w-5 h-5 ${badges[member.tier]} text-white text-[0.5625rem] font-bold rounded-full flex items-center justify-center shadow-md`}
         >
           {member.index}
         </m.span>
       </div>
       {/* Text - wider container for proper centering */}
       <div className={`text-center ${cfg.text}`}>
-        <div className="font-semibold text-gray-800 dark:text-gray-200 text-[10px] sm:text-[11px] md:text-xs leading-tight">{member.name}</div>
-        <div className="text-gray-500 dark:text-gray-400 text-[8px] sm:text-[9px] md:text-[10px] leading-tight ">{member.role}</div>
+        <div className="font-semibold text-gray-800 dark:text-gray-200 text-[0.625rem] sm:text-[0.6875rem] md:text-xs leading-tight">{member.name}</div>
+        <div className="text-gray-500 dark:text-gray-400 text-[0.5rem] sm:text-[0.5625rem] md:text-[0.625rem] leading-tight ">{member.role}</div>
       </div>
     </m.div>
   )
@@ -157,7 +157,7 @@ function GlassLabel({ text, colorClass, delay, isVisible }: { text: string; colo
       initial={{ opacity: 0, y: -10, scale: 0.85 }}
       animate={isVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={`relative z-30 inline-block px-6 py-2.5 rounded-2xl text-[10px] sm:text-xs font-bold uppercase tracking-wider
+      className={`relative z-30 inline-block px-6 py-2.5 rounded-2xl text-[0.625rem] sm:text-xs font-bold uppercase tracking-wider
         bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-600 shadow-md dark:shadow-lg
         ${colorClass}`}
     >

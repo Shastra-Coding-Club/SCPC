@@ -23,7 +23,7 @@ export function SponsorsStrip() {
                 className="absolute inset-0 z-0 opacity-40"
                 style={{
                     backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
-                    backgroundSize: '24px 24px'
+                    backgroundSize: '1.5rem 1.5rem'
                 }}
             />
 
@@ -56,7 +56,7 @@ export function SponsorsStrip() {
 
                 {/* Sponsors container - static display for 2 sponsors */}
                 <div className="w-full max-w-7xl mx-auto px-4">
-                    <div className="overflow-hidden rounded-lg border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)]">
+                    <div className="overflow-hidden rounded-lg border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] shadow-[0.25rem_0.25rem_0_0_rgba(0,0,0,0.2)] dark:shadow-[0.25rem_0.25rem_0_0_rgba(255,255,255,0.1)]">
 
                         {/* Header bar */}
                         <div className="py-3 px-4 flex items-center gap-4 bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-900/30 dark:to-orange-900/30 border-b border-black/50 dark:border-gray-700">
@@ -87,7 +87,7 @@ export function SponsorsStrip() {
                                                 alt={sponsor.name}
                                                 fill
                                                 className="object-contain p-1"
-                                                sizes="48px"
+                                                sizes="3rem"
                                             />
                                         </div>
                                         <span className="text-lg font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition-colors">

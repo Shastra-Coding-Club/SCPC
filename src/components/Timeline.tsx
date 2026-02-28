@@ -337,7 +337,7 @@ export function Timeline() {
                           animate={{
                             scale: isCurrent ? 1.5 : isInStructure ? 1.2 : 1,
                             boxShadow: isCurrent
-                              ? "0 0 20px rgba(37, 99, 235, 0.5)"
+                              ? "0 0 1.25rem rgba(37, 99, 235, 0.5)"
                               : "none",
                           }}
                           transition={{ duration: 0.3 }}
@@ -373,7 +373,7 @@ export function Timeline() {
                 </div>
 
                 {/* Visualizer Body */}
-                <div className="space-y-2 min-h-[300px]">
+                <div className="space-y-2 min-h-[18.75rem]">
                   {mode === "stack" && (
                     <div className="text-xs text-gray-500 font-mono mb-2 flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
                       <span>↓ TOP (pop here)</span>

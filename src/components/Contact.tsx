@@ -310,7 +310,7 @@ export function Contact() {
                             isCurrent
                               ? "border-blue-500 shadow-lg ring-2 ring-blue-100 dark:ring-blue-900"
                               : isVisible
-                                ? "border-gray-800 dark:border-gray-600 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.1)]"
+                                ? "border-gray-800 dark:border-gray-600 shadow-[0.1875rem_0.1875rem_0_0_rgba(0,0,0,0.3)] dark:shadow-[0.1875rem_0.1875rem_0_0_rgba(255,255,255,0.1)]"
                                 : "border-gray-200 dark:border-gray-700"
                           }`}
                         >
@@ -382,7 +382,7 @@ export function Contact() {
                             <div className="flex flex-col items-center">
                               <div className="w-0.5 h-4 bg-gray-300 dark:bg-gray-600"></div>
                               <div className="flex items-center gap-1">
-                                <span className="font-mono text-[10px] text-gray-400">
+                                <span className="font-mono text-[0.625rem] text-gray-400">
                                   next
                                 </span>
                               </div>
@@ -470,7 +470,7 @@ export function Contact() {
               </div>
 
               {/* Visual representation */}
-              <div className="space-y-2 min-h-[200px]">
+              <div className="space-y-2 min-h-[12.5rem]">
                 <AnimatePresence mode="popLayout">
                   {visibleNodes.length === 0 ? (
                     <m.div
