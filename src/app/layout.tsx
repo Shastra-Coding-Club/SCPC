@@ -22,10 +22,11 @@ const dancingScript = Dancing_Script({
 
 import { SCPC_LOGO_URL, SCPC_ICON_URL } from "@/lib/constants";
 import { ThemeProvider } from "@/components/ThemeContext";
+import { ChatWidget } from "@/components/ChatWidget";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcet-shastra.online"),
-  title: "SCPC — Shastra Competitive Programming Competition",
+  title: "SCPC 2026",
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
     icon: "/lightlogo.png",
@@ -130,6 +131,7 @@ export default function RootLayout({
         `}} />
         <ThemeProvider>
           {children}
+          <ChatWidget />
         </ThemeProvider>
       </body>
     </html>
