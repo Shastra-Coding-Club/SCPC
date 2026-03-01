@@ -5,7 +5,7 @@ import { getSystemPrompt } from "@/lib/rag";
 export const runtime = "edge";
 
 const userHits = new Map<string, { count: number; windowStart: number }>();
-const WINDOW_MS = 15_000;
+const WINDOW_MS = 45_000;
 
 function getUserRate(userId: string): number {
   const now = Date.now();
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     const userId = fwd?.split(",")[0]?.trim() || "unknown";
     const rate = getUserRate(userId);
 
-    if (rate >= 11) {
+    if (rate > 11) {
       return new Response(
         "You're sending too many messages. Please wait a few seconds.",
         { status: 429 },
