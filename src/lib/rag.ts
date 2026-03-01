@@ -1,115 +1,69 @@
-import { SCPC_CONTEXT } from "./knowledge";
+import {
+  KNOWLEDGE_ABOUT,
+  KNOWLEDGE_SPONSORS,
+  KNOWLEDGE_PRIZES,
+  KNOWLEDGE_SCHEDULE,
+  KNOWLEDGE_TEAM,
+  KNOWLEDGE_STRUCTURE,
+  KNOWLEDGE_RULES,
+  KNOWLEDGE_CONTACT,
+} from "./knowledge";
 
-/* ─── chunk the knowledge base by ## headers ──────────────────────── */
+export const getSystemPrompt = (userInput: string) => {
+  const input = userInput.toLowerCase();
+  let injectedContext = "";
 
-interface Chunk {
-  id: string;
-  title: string;
-  body: string;
-  keywords: string[];
-}
-
-function buildChunks(): Chunk[] {
-  const sections = SCPC_CONTEXT.split(/\n#\s+\*\*/);
-  const chunks: Chunk[] = [];
-
-  for (const raw of sections) {
-    const trimmed = raw.trim();
-    if (!trimmed) continue;
-
-    // extract title from the first line (between ** markers or plain)
-    const titleMatch = trimmed.match(/^([^*\n]+)\**/);
-    const title = (titleMatch?.[1] ?? trimmed.split("\n")[0])
-      .replace(/\*+/g, "")
-      .trim();
-
-    if (!title) continue;
-
-    const body = trimmed;
-    const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-
-    // extract keywords: lowercase words > 2 chars from the full section
-    const words = body
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, " ")
-      .split(/\s+/)
-      .filter((w) => w.length > 2);
-    const unique = [...new Set(words)];
-
-    chunks.push({ id, title, body, keywords: unique });
+  if (/(prize|win|money|cash|reward|₹|goodies|swag|first|second|third|champion)/.test(input)) {
+    injectedContext += KNOWLEDGE_PRIZES + "\n";
   }
 
-  return chunks;
-}
+  if (/(schedule|time|when|date|deadline|march|timeline|hour|lunch|breakfast|tea|food|eat)/.test(input)) {
+    injectedContext += KNOWLEDGE_SCHEDULE + "\n";
+  }
 
-const CHUNKS = buildChunks();
+  if (/(rule|allow|prohibit|ban|laptop|device|phone|cheat|plagiarism|id card|tab|window|alcohol|smoke|drug)/.test(input)) {
+    injectedContext += KNOWLEDGE_RULES + "\n";
+  }
 
-/* ─── keyword aliases (query words → domain terms) ────────────────── */
+  if (/(team|size|member|eligib|who can|college|branch|year|inter)/.test(input)) {
+    injectedContext += KNOWLEDGE_TEAM + "\n";
+  }
 
-const ALIASES: Record<string, string[]> = {
-  register: ["registration", "register", "signup", "sign", "unstop", "form"],
-  prize: ["prize", "prizes", "reward", "rewards", "cash", "winner", "goodies", "swag"],
-  rule: ["rule", "rules", "regulation", "regulations", "prohibited", "disqualification", "allowed", "devices"],
-  schedule: ["schedule", "timeline", "time", "date", "dates", "deadline", "when", "timing", "timings", "march"],
-  team: ["team", "teams", "eligibility", "members", "size", "college", "inter"],
-  venue: ["venue", "address", "location", "where", "tcet", "college", "campus"],
-  contact: ["contact", "email", "phone", "call", "chairperson", "committee", "organizer", "organizers", "who"],
-  sponsor: ["sponsor", "sponsors", "partner", "partners", "codechef", "redbull", "red bull"],
-  stage: ["stage", "round", "rounds", "qualifier", "hackathon", "finale", "competition", "structure", "format"],
-  food: ["food", "breakfast", "lunch", "tea", "refreshments", "meals"],
-  about: ["about", "shastra", "scpc", "mission", "motto", "tagline", "what"],
-  laptop: ["laptop", "device", "devices", "bring", "carry"],
-  prohibited: ["prohibited", "banned", "alcohol", "tobacco", "drugs", "items", "confiscated"],
+  if (/(structure|round|stage|qualifier|hackathon|finale|platform|codechef|format)/.test(input)) {
+    injectedContext += KNOWLEDGE_STRUCTURE + "\n";
+  }
+
+  if (/(contact|email|phone|call|organizer|committee|who|chairperson|faculty)/.test(input)) {
+    injectedContext += KNOWLEDGE_CONTACT + "\n";
+  }
+
+  if (/(sponsor|partner|codechef|redbull|red bull)/.test(input)) {
+    injectedContext += KNOWLEDGE_SPONSORS + "\n";
+  }
+
+  if (/(about|mission|motto|tagline|venue|where|location|tcet|shastra|scpc|who are you)/.test(input)) {
+    injectedContext += KNOWLEDGE_ABOUT + "\n";
+  }
+
+  if (injectedContext === "") {
+    injectedContext = "No specific context needed for this query.";
+  }
+
+  return `You are the official Support Agent for the SCPC 2026 Hackathon (TCET Shastra).
+You are professional, concise, and helpful.
+
+CRITICAL INSTRUCTIONS:
+1. You may ONLY answer questions using the information provided in the "KNOWLEDGE BASE" below.
+2. If the user asks a question that is NOT answered in the knowledge base, you MUST reply with exactly: "I don't have that information. Please contact the organizers at the help desk."
+3. IF the user is just saying hello, greeting you, or saying thanks, politely acknowledge them and ask how you can help them with SCPC 2026. Do NOT use the fallback message for simple greetings.
+4. Do NOT invent, guess, or hallucinate any information, dates, rules, or prizes.
+5. Keep all answers under 3 sentences if possible. Be direct.
+6. Do NOT answer generic programming questions or act like a coding assistant. You are purely an event guide.
+7. Use Markdown links for emails (mailto:) and WhatsApp chat links (https://wa.me/) for contact numbers.
+CRITICAL: Example for WhatsApp: [8454096454](https://wa.me/918454096454).
+====================
+KNOWLEDGE BASE:
+${injectedContext.trim()}
+====================
+`;
 };
-
-/* ─── retrieve relevant chunks ────────────────────────────────────── */
-
-export function retrieveContext(query: string, topK = 3): string {
-  const q = query.toLowerCase().replace(/[^a-z0-9\s]/g, " ");
-  const qWords = q.split(/\s+/).filter((w) => w.length > 2);
-
-  // expand query words using aliases
-  const expanded = new Set(qWords);
-  for (const word of qWords) {
-    for (const [, synonyms] of Object.entries(ALIASES)) {
-      if (synonyms.some((s) => s.includes(word) || word.includes(s))) {
-        synonyms.forEach((s) => expanded.add(s));
-      }
-    }
-  }
-
-  // score each chunk
-  const scored = CHUNKS.map((chunk) => {
-    let score = 0;
-    for (const qw of expanded) {
-      for (const kw of chunk.keywords) {
-        if (kw === qw) score += 3; // exact match
-        else if (kw.includes(qw) || qw.includes(kw)) score += 1; // partial
-      }
-    }
-    // boost title matches heavily
-    const titleLower = chunk.title.toLowerCase();
-    for (const qw of expanded) {
-      if (titleLower.includes(qw)) score += 5;
-    }
-    return { chunk, score };
-  });
-
-  // sort by score desc, take topK with score > 0
-  scored.sort((a, b) => b.score - a.score);
-  const relevant = scored.filter((s) => s.score > 0).slice(0, topK);
-
-  // fallback: if nothing matched, return the 2 smallest chunks as general context
-  if (relevant.length === 0) {
-    const smallest = [...CHUNKS]
-      .sort((a, b) => a.body.length - b.body.length)
-      .slice(0, 2);
-    return smallest.map((c) => c.body).join("\n\n");
-  }
-
-  return relevant.map((s) => s.chunk.body).join("\n\n");
-}
-
-/* ─── short system prompt (no knowledge duplication) ──────────────── */
-
-export const SYSTEM_BASE = `You are the official support bot for SCPC 2026 (TCET Shastra). Be concise (1-3 sentences). Answer ONLY from the CONTEXT below. If the answer isn't in CONTEXT reply: "I don't have that information. Please contact the organizers." Never invent info. Use markdown links for emails (mailto:) and WhatsApp (https://wa.me/91XXXXXXXXXX).`;

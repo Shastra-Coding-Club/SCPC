@@ -121,6 +121,26 @@ export function ChatWidget() {
     if (!isStreaming && isOpen && !isRecording) inputRef.current?.focus();
   }, [isStreaming, isOpen, isRecording]);
 
+  /* ── 15-second soft cap ── */
+  useEffect(() => {
+    if (isRecording && recordSec >= 15) {
+      stopRecording();
+    }
+  }, [recordSec, isRecording]);
+
+  /* ── Stop recording on Enter key ── */
+  useEffect(() => {
+    if (!isRecording) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        stopRecording();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isRecording]);
+
   /* ── close on outside click ── */
   useEffect(() => {
     if (!isOpen) return;
@@ -187,7 +207,9 @@ export function ChatWidget() {
         audio: { echoCancellation: true, noiseSuppression: true },
       });
       setMicAllowed(true);
-    } catch {
+    } catch (err) {
+      console.error("Microphone access failed:", err);
+      alert("Microphone access required. Please check your browser permissions.");
       setMicAllowed(false);
       return;
     }
@@ -218,14 +240,16 @@ export function ChatWidget() {
           blob,
           mime.includes("mp4") ? "audio.mp4" : "audio.webm",
         );
-        const res = await fetch("/api/transcribe", {
+        const res = await fetch("/api/whisper", {
           method: "POST",
           body: fd,
         });
         if (res.ok) {
           const { text } = await res.json();
-          if (text?.trim())
-            setInput((p) => (p ? p + " " + text.trim() : text.trim()));
+          if (text?.trim()) {
+            sendMessage({ text: text.trim() });
+            setInput(""); // Clear any residual typed input
+          }
         } else {
           console.error("Transcription failed:", res.status);
         }
@@ -237,14 +261,17 @@ export function ChatWidget() {
     };
 
     /* AudioContext → AnalyserNode for waveform */
-    const audioCtx = new AudioContext();
-    const source = audioCtx.createMediaStreamSource(stream);
-    const analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 256;
-    analyser.smoothingTimeConstant = 0.82;
-    source.connect(analyser);
-    audioCtxRef.current = audioCtx;
-    analyserRef.current = analyser;
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (AudioContextClass) {
+      const audioCtx = new AudioContextClass();
+      const source = audioCtx.createMediaStreamSource(stream);
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.82;
+      source.connect(analyser);
+      audioCtxRef.current = audioCtx;
+      analyserRef.current = analyser;
+    }
 
     /* start */
     recorder.start(150);
@@ -256,19 +283,21 @@ export function ChatWidget() {
     timerRef.current = setInterval(() => setRecordSec((s) => s + 1), 1000);
 
     /* waveform animation loop */
-    const dataArr = new Uint8Array(analyser.frequencyBinCount);
-    const tick = () => {
-      if (!analyserRef.current) return;
-      analyserRef.current.getByteFrequencyData(dataArr);
-      const step = Math.floor(dataArr.length / BAR_COUNT);
-      const next: number[] = [];
-      for (let i = 0; i < BAR_COUNT; i++) {
-        next.push(dataArr[Math.min(i * step, dataArr.length - 1)] / 255);
-      }
-      setLevels(next);
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    tick();
+    if (analyserRef.current) {
+      const dataArr = new Uint8Array(analyserRef.current.frequencyBinCount);
+      const tick = () => {
+        if (!analyserRef.current) return;
+        analyserRef.current.getByteFrequencyData(dataArr);
+        const step = Math.floor(dataArr.length / BAR_COUNT);
+        const next: number[] = [];
+        for (let i = 0; i < BAR_COUNT; i++) {
+          next.push(dataArr[Math.min(i * step, dataArr.length - 1)] / 255);
+        }
+        setLevels(next);
+        rafRef.current = requestAnimationFrame(tick);
+      };
+      tick();
+    }
   }, []);
 
   /* ── stop recording ── */
@@ -455,29 +484,53 @@ export function ChatWidget() {
                     </p>
 
                     {/* ── WAVEFORM BARS ── */}
-                    <div className="flex items-center justify-center gap-[3px] w-full h-28 mb-6">
-                      {levels.map((l, i) => (
-                        <div
-                          key={i}
-                          className="rounded-full flex-shrink-0"
-                          style={{
-                            width: "3.5px",
-                            height: `${Math.max(6, l * 112)}px`,
-                            background: `linear-gradient(180deg, #f97316 ${30 + l * 40}%, #fdba74)`,
-                            opacity: 0.35 + l * 0.65,
-                            transition: "height 80ms ease-out, opacity 80ms ease-out",
-                          }}
-                        />
-                      ))}
+                    <div className="flex items-end justify-center gap-[4.5px] w-full h-24 mb-8 px-8">
+                      {[...levels.slice(0, 14).reverse(), ...levels.slice(0, 14)].map((l, i) => {
+                        const dist = Math.abs(i - 13.5);
+                        const bellMult = Math.max(0.35, 1.3 - dist * 0.08);
+                        return (
+                          <div
+                            key={i}
+                            className="w-[4.5px] rounded-t-full rounded-b-[2px] bg-gradient-to-t from-orange-300 via-orange-400 to-orange-500 shadow-sm"
+                            style={{
+                              height: `${Math.max(12, l * 100 * bellMult)}px`,
+                              transition: "height 75ms ease-out",
+                            }}
+                          />
+                        );
+                      })}
                     </div>
 
-                    {/* timer */}
-                    <p
-                      className="text-[1.5rem] font-light tracking-widest tabular-nums"
-                      style={{ color: "#1a1a1a" }}
-                    >
-                      {formatTime(recordSec)}
-                    </p>
+                    {/* Stop Button & Timer */}
+                    <div className="flex flex-col items-center gap-6">
+                      <motion.button
+                        onClick={stopRecording}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-16 h-16 rounded-full bg-white flex items-center justify-center relative group"
+                        style={{
+                          boxShadow: "0 8px 32px rgba(249,115,22,0.25), inset 0 2px 4px rgba(255,255,255,1)",
+                          border: "1px solid rgba(249,115,22,0.15)"
+                        }}
+                        aria-label="Stop recording"
+                      >
+                        <div className="absolute inset-0 rounded-full border-[3px] border-transparent group-hover:border-red-100 transition-colors" />
+                        <Square className="w-6 h-6 text-red-500 fill-red-500 rounded-sm" />
+                      </motion.button>
+                      
+                      <div className="flex flex-col items-center">
+                        <p
+                          className={`text-[1.125rem] font-medium tracking-widest tabular-nums transition-colors ${recordSec >= 12 ? 'text-amber-500' : 'text-gray-400'}`}
+                        >
+                          {formatTime(recordSec)} <span className="text-gray-300">/ 00:15</span>
+                        </p>
+                        {recordSec >= 10 && (
+                          <span className="text-[0.65rem] text-amber-500 uppercase tracking-widest mt-1 animate-pulse font-medium">
+                            Reaching Limit
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </motion.div>
                 ) : /* ---- WELCOME VIEW ---- */
                 !hasMessages ? (
@@ -748,6 +801,14 @@ export function ChatWidget() {
                       ref={inputRef}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          if (input.trim() && !isStreaming && !isRecording && !isTranscribing) {
+                            handleSubmit(e as unknown as React.FormEvent);
+                          }
+                        }
+                      }}
                       placeholder={
                         !isOnline
                           ? "You are offline…"
@@ -778,25 +839,26 @@ export function ChatWidget() {
                       }}
                     />
 
-                    {/* mic / stop button — hidden entirely when permission denied */}
-                    {micAllowed !== false && (
-                      <motion.button
+                    {/* mic / stop button */}
+                    <motion.button
                         type="button"
                         onClick={isRecording ? stopRecording : startRecording}
                         disabled={!isOnline || isStreaming || isTranscribing}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.88 }}
                         className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-40"
                         style={
                           isRecording
                             ? {
                                 background: "rgba(239,68,68,0.1)",
-                                border: "0.5px solid rgba(239,68,68,0.3)",
+                                border: "1px solid rgba(239,68,68,0.4)",
                                 boxShadow:
                                   "0 0 0 4px rgba(239,68,68,0.08), 0 2px 8px rgba(239,68,68,0.2)",
                               }
                             : {
-                                background: "rgba(0,0,0,0.04)",
-                                border: "0.5px solid rgba(0,0,0,0.06)",
+                                background: "#fff",
+                                border: "1px solid rgba(0,0,0,0.12)",
+                                boxShadow: "0 2px 6px rgba(0,0,0,0.04)"
                               }
                         }
                         aria-label={
@@ -805,20 +867,16 @@ export function ChatWidget() {
                       >
                         {isRecording ? (
                           <Square
-                            className="w-4 h-4"
-                            style={{ color: "#ef4444" }}
+                            className="w-4 h-4 text-red-500 fill-red-500"
                             strokeWidth={2.5}
-                            fill="#ef4444"
                           />
                         ) : (
                           <Mic
-                            className="w-[18px] h-[18px]"
-                            style={{ color: "#888" }}
+                            className="w-[18px] h-[18px] text-gray-700"
                             strokeWidth={2}
                           />
                         )}
                       </motion.button>
-                    )}
 
                     {/* send button */}
                     <motion.button
@@ -861,9 +919,7 @@ export function ChatWidget() {
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.92 }}
         onClick={() => {
-          const opening = !isOpen;
-          setIsOpen(opening);
-          if (opening) requestMicPermission();
+          setIsOpen(!isOpen);
         }}
         className="w-14 h-14 rounded-full flex items-center justify-center"
         style={

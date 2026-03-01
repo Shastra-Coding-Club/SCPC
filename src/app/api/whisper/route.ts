@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export const runtime = 'edge';
 
 const userHits = new Map<string, { count: number; windowStart: number }>();
-const WINDOW_MS = 60_000; // 1 minute window for 20 requests
+const WINDOW_MS = 60_000;
 
 function getUserRate(userId: string): number {
   const now = Date.now();
@@ -28,7 +28,6 @@ export async function POST(req: Request) {
     const userId = forwarded?.split(',')[0]?.trim() || 'unknown';
     const rate = getUserRate(userId);
 
-    // Groq Whisper allows ~20 requests per minute
     if (rate > 20) {
       return NextResponse.json(
         { error: "Voice transcription rate limit exceeded. Please wait a minute." },
@@ -37,7 +36,7 @@ export async function POST(req: Request) {
     }
 
     const formData = await req.formData();
-    const audioFile = formData.get('file') as Blob;
+    const audioFile = formData.get('audio') as Blob;
 
     if (!audioFile) {
       return NextResponse.json({ error: "No audio file provided" }, { status: 400 });
@@ -47,7 +46,6 @@ export async function POST(req: Request) {
     groqFormData.append('file', audioFile, 'audio.webm');
     groqFormData.append('response_format', 'json');
 
-    // Helper to attempt fetch with a specific model
     const attemptTranscription = async (model: string) => {
       const data = new FormData();
       for (const [key, value] of Array.from(groqFormData.entries())) {
@@ -64,7 +62,6 @@ export async function POST(req: Request) {
 
     let response = await attemptTranscription('whisper-large-v3');
 
-    // Fallback to turbo if primary fails or is rate limited
     if (!response.ok) {
       console.warn("Primary whisper model failed, falling back to turbo.");
       response = await attemptTranscription('whisper-large-v3-turbo');
