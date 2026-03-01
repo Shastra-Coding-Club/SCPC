@@ -26,7 +26,7 @@ import { ChatWidget } from "@/components/ChatWidget";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tcet-shastra.online"),
-  title: "SCPC — Shastra Competitive Programming Competition",
+  title: "SCPC 2026",
   description: "SCPC: Shastra Competitive Programming Competition — timeline, prizes, registration details.",
   icons: {
     icon: "/lightlogo.png",
